@@ -1,0 +1,117 @@
+$vertical-line: rgb(71, 77, 91);
+$border-green: rgb(36, 93, 93);
+$text-green: rgb(48, 173, 156);
+$box-background:  rgb(41, 50, 71);
+
+.header {
+  margin: 0;
+
+  .logo {
+    width: 299px;
+  }
+
+  .icon {
+    font-size: 50px;
+    position: absolute;
+    right: 25px;
+    top: 26px;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .title {
+    left: 0;
+    line-height: 200px;
+    margin-top: -100px;
+    position: absolute;
+    text-align: center;
+    top: 57px;
+    width: 100%;
+  }
+}
+
+.wrapper {
+  margin: 15px;
+  background-color: red;
+
+  .row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .column {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 100%;
+    flex: 1;
+  }
+
+  .column-one {
+    background-color: blue;
+    height: 800px;
+  }
+
+  .column-two {
+    background-color: green;
+    border-left: 3px solid $vertical-line;
+    height: 800px;
+  }
+
+  .column-three {
+    background-color: purple;
+    border-left: 3px solid $vertical-line;
+    height: 800px;
+  }
+
+  /** common stylings for box **/
+  .box {
+    display:block;
+    border-style:solid;
+    border-color: $border-green;
+    border-radius:7px;
+    background-color: $box-background;
+    height: 400px;
+    margin: 10px;
+    overflow: hidden;
+    position: relative;
+
+   .subheading {
+     margin-top: 37px;
+    margin-bottom: 2px;
+    font-size: 20px;
+     color: $text-green;
+  }
+
+  .hr {
+    margin-top:2px;
+  }
+
+  .value {
+   font-size: 37px;
+    font-weight: 700;
+  }
+
+  }
+
+
+
+  .left {
+    height: 100%;
+    width: 44%;
+    position: absolute;
+    left: 4%;
+    top: 0;
+  }
+
+  .right {
+    height: 100%;
+    width: 44%;
+    position: absolute;
+    right: 4%;
+    top: 0;
+  }
+}

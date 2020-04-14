@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../keplr-extension/.idea/keplr-extension.iml" filepath="$PROJECT_DIR$/../keplr-extension/.idea/keplr-extension.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../react-chrome-extension/.idea/react-chrome-extension.iml" filepath="$PROJECT_DIR$/../react-chrome-extension/.idea/react-chrome-extension.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/token-information-page.iml" filepath="$PROJECT_DIR$/.idea/token-information-page.iml" />
+    </modules>
+  </component>
+</project>
