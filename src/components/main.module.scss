@@ -1,11 +1,14 @@
-$vertical-line: rgb(71, 77, 91);
+$vertical-line: white;
 $border-green: rgb(36, 93, 93);
 $text-green: rgb(48, 173, 156);
 $box-background:  rgba(255,255,255, .6);
-
-$first-box-height: 360px;
-$second-box-height: 360px;
+$opaque-white: rgba(255,255,255, .05);
+$first-box-height: 295px;
+$second-box-height: 230px;
 $third-box-height: $first-box-height + $second-box-height;
+$column-height: 593px;
+$border-blue: #1c2846;
+$border-blue-2: rgba(88, 135, 218, 1);
 
 
 .header {
@@ -42,8 +45,7 @@ $third-box-height: $first-box-height + $second-box-height;
 
 .wrapper {
   margin: 30px 15px 15px;
-  //background-color: red;
-
+}
   .row {
     display: flex;
     flex-direction: row;
@@ -66,37 +68,41 @@ width: 17px;
   }
 
   .column-one {
-    //background-color: blue;
-    height: 800px;
+    height: $column-height;
   }
 
   .column-two {
-    background-color: green;
-    border-left: 3px solid $vertical-line;
-    height: 800px;
+    border-left: 3px solid rgb(255, 255, 255);
+
+    height: $column-height;
   }
 
   .column-three {
-    background-color: purple;
-    border-left: 3px solid $vertical-line;
-    height: 800px;
+    border-left: 3px solid white;
+    height: $column-height;
   }
   /** the boxes named with a number**/
 
     .first {
        height: $first-box-height;
-        background-color: $box-background;
+
     }
 
     .second {
        height: $second-box-height;
-      background-color: rgba(41, 50, 71, .5);
+
       margin-bottom: 20px;
     }
 
   .third {
        height: $third-box-height;
-      background-color: rgba(41, 50, 71, .5);
+
+      margin-bottom: 20px;
+    }
+
+  .fourth {
+       height:$first-box-height;
+
       margin-bottom: 20px;
     }
 
@@ -107,18 +113,31 @@ width: 17px;
     .hr {
       width: 92%;
       margin-bottom: 20px;
+
     }
   }
 
   .full-width-item {
-    display:block;
-    width: 100%;
-    text-align:center;
+    display: block;
+    width: 92%;
+    text-align: left;
+    margin-left: 4%;
+    overflow: hidden;
+
+
      .hr {
-      width: 44%;
-      margin-bottom: 20px;
+     width: 44%;
+    margin-bottom: 8px;
+    margin-left: 0;
+    }
+
+    .full-width-hr{
+      width: 100%;
+    margin-left: 0;
     }
   }
+
+
 
   /** common stylings for box **/
   .box {
@@ -128,9 +147,14 @@ width: 17px;
     border-radius:7px;
     border-width: 1px;
     padding-top: 25px;
-    margin: 10px;
+    margin: 13px;
     overflow: hidden;
     position: relative;
+    background-color:  $opaque-white;
+
+    &.top {
+      margin-top:0;
+    }
 
    .subheading {
     margin-top: 37px;
@@ -171,6 +195,29 @@ color:grey;
     width: 44%;
     position: absolute;
     right: 4%;
-    //top: 0;
   }
+
+  .single-row-left {
+    width: 44%;
+    float: left;
+    margin-left: 4%;
+  }
+
+  .single-row-right {
+    width: 44%;
+    float: right;
+    margin-right: 4%;
+  }
+
+
+.footer {
+  @extend .box;
+ position: absolute;
+    border-color: #1c2846;
+    top: 720px;
+    width: 85%;
+    left: 5%;
+    text-align: center;
+    paddimng: auto;
+    padding: 15px 30px;
 }
