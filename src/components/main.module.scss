@@ -5,7 +5,7 @@ $box-background:  rgba(255,255,255, .6);
 $opaque-white: rgba(255,255,255, .05);
 $first-box-height: 295px;
 $second-box-height: 230px;
-$third-box-height: $first-box-height + $second-box-height;
+$third-box-height: $first-box-height + $second-box-height + 26px;
 $column-height: 593px;
 $border-blue: #1c2846;
 $border-blue-2: rgba(88, 135, 218, 1);

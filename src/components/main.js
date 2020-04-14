@@ -3,14 +3,48 @@ import style from './main.module.scss'
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import classnames from 'classnames'
+import { fetchFetPrice, RateLimitError, toDisplayString } from '../price/fetchFetPrice'
 
 /**
  * page in one component since small application.
  *
  */
 export default class MainPage extends Component {
+
   constructor (props) {
     super(props)
+
+     // this.fetchFetPriceLoop = this.fetchFetPriceLoop.bind(this)
+    this.state = {
+      highPrice: "",
+      lastPrice: "",
+      lowPrice: ""
+    }
+  }
+
+  async componentDidMount () {
+    debugger;
+    const json = await fetchFetPrice()
+     this.setState({highPrice: json.highPrice,
+      lastPrice: json.lastPrice,
+      lowPrice: json.lowPrice})
+    this.fetchFetPriceLoop();
+
+
+  }
+
+ async fetchFetPriceLoop(){
+    let json;
+    try {
+       json = await fetchFetPrice()
+    } catch(error){
+      // binance API requests you to stop if you hit 429 or IP ban.
+      if(error instanceof RateLimitError) return;
+    }
+console.log("YUP YUP YUP")
+    this.setState({highPrice: toDisplayString(json.highPrice),
+      lastPrice: toDisplayString(json.lastPrice),
+      lowPrice: toDisplayString(json.lowPrice)}, setTimeout.bind(null, this.fetchFetPriceLoop, 5000))
   }
 
   render () {
@@ -34,7 +68,7 @@ export default class MainPage extends Component {
                     <img src="assets/info-icon.svg" alt="info icon"
                          className={style.info}></img>
                     <hr className={style.hr}></hr>
-                    <span className={style.value}>.019c</span>
+                    <span className={style.value}>{this.state.highPrice}</span>
                     <h3 className={style.subheading}>Total Supply</h3>
                     <img src="assets/info-icon.svg" alt="info icon"
                          className={style.info}></img>
@@ -45,12 +79,12 @@ export default class MainPage extends Component {
                   <div className={style.right}>
                     <h3 className={style.subheading}>Price</h3>
                     <hr className={style.hr}></hr>
-                    <span className={style.value}>.018c</span>
+                    <span className={style.value}>{this.state.lastPrice}</span>
                     <h3 className={style.subheading}>24 Hr LOW</h3>
                     <img src="assets/info-icon.svg" alt="info icon"
                          className={style.info}></img>
                     <hr className={style.hr}></hr>
-                    <span className={style.value}>.017c</span>
+                    <span className={style.value}>{this.state.lowPrice}</span>
                     <h3 className={style.subheading}>Remaining Supply</h3>
                     <img src="assets/info-icon.svg" alt="info icon"
                          className={style.info}></img>
