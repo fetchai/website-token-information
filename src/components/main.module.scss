@@ -1,20 +1,27 @@
 $vertical-line: rgb(71, 77, 91);
 $border-green: rgb(36, 93, 93);
 $text-green: rgb(48, 173, 156);
-$box-background:  rgb(41, 50, 71);
+$box-background:  rgba(255,255,255, .6);
+
+$first-box-height: 360px;
+$second-box-height: 360px;
+$third-box-height: $first-box-height + $second-box-height;
+
 
 .header {
   margin: 0;
 
   .logo {
-    width: 299px;
+    width: 290px;
+    margin-left: 20px;
+    margin-top: 20px;
   }
 
   .icon {
-    font-size: 50px;
+        font-size: 35px;
     position: absolute;
-    right: 25px;
-    top: 26px;
+    right: 35px;
+    top: 40px;
 
     &:hover {
       cursor: pointer;
@@ -27,31 +34,39 @@ $box-background:  rgb(41, 50, 71);
     margin-top: -100px;
     position: absolute;
     text-align: center;
-    top: 57px;
+    top: 65px;
     width: 100%;
+    font-size: 37px;
   }
 }
 
 .wrapper {
-  margin: 15px;
-  background-color: red;
+  margin: 30px 15px 15px;
+  //background-color: red;
 
   .row {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    width: 100%;
+    width: 90%;
+    position: absolute;
+    left: 5%;
+  }
+
+  .info {
+width: 17px;
+    float: right;
   }
 
   .column {
     display: flex;
     flex-direction: column;
-    flex-basis: 100%;
+    flex-basis: 90%;
     flex: 1;
   }
 
   .column-one {
-    background-color: blue;
+    //background-color: blue;
     height: 800px;
   }
 
@@ -66,6 +81,44 @@ $box-background:  rgb(41, 50, 71);
     border-left: 3px solid $vertical-line;
     height: 800px;
   }
+  /** the boxes named with a number**/
+
+    .first {
+       height: $first-box-height;
+        background-color: $box-background;
+    }
+
+    .second {
+       height: $second-box-height;
+      background-color: rgba(41, 50, 71, .5);
+      margin-bottom: 20px;
+    }
+
+  .third {
+       height: $third-box-height;
+      background-color: rgba(41, 50, 71, .5);
+      margin-bottom: 20px;
+    }
+
+  .full-width-subheading {
+    display:block;
+    width: 100%;
+    text-align:center;
+    .hr {
+      width: 92%;
+      margin-bottom: 20px;
+    }
+  }
+
+  .full-width-item {
+    display:block;
+    width: 100%;
+    text-align:center;
+     .hr {
+      width: 44%;
+      margin-bottom: 20px;
+    }
+  }
 
   /** common stylings for box **/
   .box {
@@ -73,38 +126,44 @@ $box-background:  rgb(41, 50, 71);
     border-style:solid;
     border-color: $border-green;
     border-radius:7px;
-    background-color: $box-background;
-    height: 400px;
+    border-width: 1px;
+    padding-top: 25px;
     margin: 10px;
     overflow: hidden;
     position: relative;
 
    .subheading {
-     margin-top: 37px;
-    margin-bottom: 2px;
-    font-size: 20px;
-     color: $text-green;
+    margin-top: 37px;
+    margin-bottom: 0;
+    font-size: 16px;
+    color: $text-green;
+    display:inline;
   }
+
+    .grey {
+ @extend .subheading;
+color:grey;
+      font-size: 13px;
+    }
 
   .hr {
     margin-top:2px;
   }
 
   .value {
-   font-size: 37px;
+   font-size: 26px;
     font-weight: 700;
+    display:block;
+    margin-bottom: 30px;
   }
-
   }
-
-
 
   .left {
     height: 100%;
     width: 44%;
     position: absolute;
     left: 4%;
-    top: 0;
+    //top: 0;
   }
 
   .right {
@@ -112,6 +171,6 @@ $box-background:  rgb(41, 50, 71);
     width: 44%;
     position: absolute;
     right: 4%;
-    top: 0;
+    //top: 0;
   }
 }
