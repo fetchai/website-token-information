@@ -12,7 +12,6 @@ export const fetchFetPrice = async () => {
     if (typeof response === 'undefined' || 200 < response.status || response.status > 300) throw new Error()
     const json = await response.json().catch(() => error = true)
     if (error || typeof json.symbol === 'undefined') throw new Error()
-  debugger;
     return {
       lastPrice: json.lastPrice,
       lowPrice:  json.lowPrice,

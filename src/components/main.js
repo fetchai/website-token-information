@@ -3,7 +3,14 @@ import style from './main.module.scss'
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import classnames from 'classnames'
-import { fetchFetPrice, RateLimitError, toDisplayString } from '../price/fetchFetPrice'
+import { fetchFetPrice, RateLimitError, toDisplayString } from '../other/fetchFetPrice'
+import { queryFetchApi } from '../other/query-api'
+
+const TOTAL_FET_SUPPLY_DISPLAY_STRING = "1,152,997,575";
+const ETHERSCAN_API_KEY = "2WQZAX9F42ZFGXPBCKHXTTGYGU2A6CD6VG";
+const TOTAL_HOLDERS = "5,642";
+const TOKEN_CONTRACT = "0x1d287cc25dad7ccaf76a26bc660c5f7c8e2a05bd";
+const STAKING_CONTRACT = "0x4f3C38cD3267329f93418F4b106231022cC264c0";
 
 /**
  * page in one component since small application.
@@ -14,23 +21,35 @@ export default class MainPage extends Component {
   constructor (props) {
     super(props)
 
-     // this.fetchFetPriceLoop = this.fetchFetPriceLoop.bind(this)
+      this.queryFetchApiLoop = this.queryFetchApiLoop.bind(this)
+      this.fetchFetPriceLoop = this.fetchFetPriceLoop.bind(this)
     this.state = {
       highPrice: "",
       lastPrice: "",
-      lowPrice: ""
+      lowPrice: "",
+      totalStaked: "",
+      unreleasedAmount: ""
     }
   }
 
   async componentDidMount () {
-    debugger;
-    const json = await fetchFetPrice()
-     this.setState({highPrice: json.highPrice,
-      lastPrice: json.lastPrice,
-      lowPrice: json.lowPrice})
+    const fetPrice = await fetchFetPrice()
+    const fetchAPIData =  await queryFetchApi()
+     this.setState({highPrice: fetPrice.highPrice,
+      lastPrice: fetPrice.lastPrice,
+      lowPrice: fetPrice.lowPrice, totalStaked: fetchAPIData.totalStaked})
     this.fetchFetPriceLoop();
+    this.queryFetchApiLoop();
+  }
 
-
+  async queryFetchApiLoop(){
+      let json;
+      try {
+       json = await queryFetchApi()
+    } catch(error) {
+        return;
+      }
+      this.setState({totalStaked: json.totalStaked, unreleasedAmount: json.unreleasedAmount})
   }
 
  async fetchFetPriceLoop(){
@@ -41,7 +60,6 @@ export default class MainPage extends Component {
       // binance API requests you to stop if you hit 429 or IP ban.
       if(error instanceof RateLimitError) return;
     }
-console.log("YUP YUP YUP")
     this.setState({highPrice: toDisplayString(json.highPrice),
       lastPrice: toDisplayString(json.lastPrice),
       lowPrice: toDisplayString(json.lowPrice)}, setTimeout.bind(null, this.fetchFetPriceLoop, 5000))
@@ -74,7 +92,7 @@ console.log("YUP YUP YUP")
                          className={style.info}></img>
 
                     <hr className={style.hr}></hr>
-                    <span className={style.value}>1,500,000,000</span>
+                    <span className={style.value}>{TOTAL_FET_SUPPLY_DISPLAY_STRING}</span>
                   </div>
                   <div className={style.right}>
                     <h3 className={style.subheading}>Price</h3>
@@ -108,7 +126,7 @@ console.log("YUP YUP YUP")
                     <h3 className={style.grey}>remaining</h3>
                     <span className={style.value}>30000</span>
                     <h3 className={style.grey}>staked</h3>
-                    <span className={style.value}>3000</span>
+                    <span className={style.value}>{this.state.totalStaked}</span>
                   </div>
                 </div>
               </div>
@@ -122,12 +140,12 @@ console.log("YUP YUP YUP")
                   <div className={style.fullWidthItem}>
                     <h3 className={style.subheading}>Un-released tokens</h3>
                     <hr className={style.hr}></hr>
-                    <span className={style.value}>15,000,000,00</span>
+                    <span className={style.value}>{this.state.unreleasedAmount}</span>
                   </div>
                   <div className={style.singleRowLeft}>
                     <h3 className={style.subheading}>Holders</h3>
                     <hr className={style.hr}></hr>
-                    <span className={style.value}>2000000000</span>
+                    <span className={style.value}>{TOTAL_HOLDERS}</span>
                   </div>
                   <div className={style.singleRowRight}>
                     <h3 className={style.subheading}>Of Which are AEA</h3>
@@ -140,7 +158,7 @@ console.log("YUP YUP YUP")
                     <img src="assets/info-icon.svg" alt="info icon"
                          className={style.info}></img>
                     <hr className={style.fullWidthHr}></hr>
-                    <span className={style.value}>0x687fyt........ghjghjg9789789798</span>
+                    <span className={style.value}>{TOKEN_CONTRACT}</span>
                   </div>
 
                   <div className={style.singleRowLeft}>
@@ -155,7 +173,7 @@ console.log("YUP YUP YUP")
                     <img src="assets/info-icon.svg" alt="info icon"
                          className={style.info}></img>
                     <hr className={style.hr}></hr>
-                    <span className={style.value}>30000</span>
+                    <span className={style.value}>{this.state.totalStaked}</span>
                   </div>
 
                   <div className={style.fullWidthItem}>
@@ -163,7 +181,7 @@ console.log("YUP YUP YUP")
                     <img src="assets/info-icon.svg" alt="info icon"
                          className={style.info}></img>
                     <hr className={style.fullWidthHr}></hr>
-                    <span className={style.value}>0x687fyt........ghjghjg9789789798</span>
+                    <span className={style.value}>{STAKING_CONTRACT}</span>
                   </div>
                 </div>
               </div>
