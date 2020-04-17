@@ -72,7 +72,7 @@ export default class MainPage extends Component {
         <h1 className={style.title}>FET Token Information</h1>
         <FontAwesomeIcon icon={faSignOutAlt} className={style.icon} rotation={180}/>
 
-        {/*<div className={style.wrapper}>*/}
+        <div className={style.wrapper}>
           <div className={style.row}>
 
             <div className={style.column}>
@@ -129,6 +129,7 @@ export default class MainPage extends Component {
                     <span className={style.value}>{this.state.totalStaked}</span>
                   </div>
                 </div>
+
               </div>
             </div>
 
@@ -204,7 +205,6 @@ export default class MainPage extends Component {
                     <hr className={style.hr}></hr>
                     <span className={style.value}>2222222</span>
 </div>
-
                     <div className={style.singleRowLeft}>
                     <h3 className={style.subheading}>Agents transacting last 24h</h3>
                     <hr className={style.hr}></hr>
@@ -217,18 +217,15 @@ export default class MainPage extends Component {
                     <hr className={style.hr}></hr>
                     <span className={style.value}>2222222</span>
                   </div>
-
                 </div>
+                 <div className={style.mobileFooter}>This page and the data presented on it is for information purposes only. Whilst every effort is made to ensure it is accurate, Fetch.ai makes absolutely no guarantees as to its accuracy. Nothing on this page indicates financial advice, and the FET token is strictly a utility token. Please consult the tokenomics paper or project white paper for more information
+                   </div>
               </div>
             </div>
-
-
           </div>
-        {/*</div>*/}
-
-        <div className={style.footer}>This page and the data presented on it is for information purposes only. Whilst every effort is made to ensure it is accurate, Fetch.ai makes absolutely no guarantees as to its accuracy. Nothing on this page indicates financial advice, and the FET token is strictly a utility token. Please consult the tokenomics paper or project white paper for more information</div>
-
-
+           <div className={style.desktopFooter}>This page and the data presented on it is for information purposes only. Whilst every effort is made to ensure it is accurate, Fetch.ai makes absolutely no guarantees as to its accuracy. Nothing on this page indicates financial advice, and the FET token is strictly a utility token. Please consult the tokenomics paper or project white paper for more information
+        </div>
+        </div>
       </div>
 
     )
