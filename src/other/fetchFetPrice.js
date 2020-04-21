@@ -1,6 +1,6 @@
 const BINANCE_API = "https://api.binance.com/api/v3/ticker/24hr?symbol=FETUSDT";
-
 export class RateLimitError extends Error {}
+
 
 export const fetchFetPrice = async () => {
 
@@ -19,19 +19,20 @@ export const fetchFetPrice = async () => {
     }
 }
 
-
 export const toDisplayString = (s) =>
 {
   // if its greater than 50 cents we show in dollars ($)
-  if(parseFloat(s) > .5)
+  // if(parseFloat(s) > .5)
+
   return parseFloat(s)
     .toLocaleString('en-US', {
+      maximumFractionDigits: '5',
       style: 'currency',
       currency: 'USD',
     });
-  else {
-    // strip trainling zeros
-    s = s.replace(/0+$/, '');
-    return (parseFloat(s)*100).toString() + "c";
-  }
+  // else {
+  //   // strip trainling zeros
+  //   s = s.replace(/0+$/, '');
+  //   return (parseFloat(s)*100).toString() + "c";
+  // }
 }

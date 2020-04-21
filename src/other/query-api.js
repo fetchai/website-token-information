@@ -1,6 +1,3 @@
-import { RateLimitError } from './fetchFetPrice'
-
-
 const TOKEN_INFORMATION_API = "./token_information_api"
 
 export const queryFetchApi = async () => {
@@ -10,6 +7,6 @@ export const queryFetchApi = async () => {
     if(response.status !== 200)  throw new Error()
     const json = await response.json().catch(() => error = true)
     return {
-      totalStaked: json.totalStaked, unreleasedAmount: json.unreleasedAmount
+      totalStaked: json.totalStaked, unreleasedAmount: json.unreleasedAmount, recentLargeTransfers: json.recentLargeTransfers, recentlyTransfered: json.recentlyTransfered
     }
 }

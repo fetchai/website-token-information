@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node server/index.js",
-    "build": "webpack --mode production",
-    "dev": "webpack --mode development && PGUSER=douglas \\\n  PGHOST=localhost \\\n  PGPASSWORD=myPassword \\\n  PGDATABASE=douglas \\\n  PGPORT=5432 \\node server/index.js",
+    "build": "webpack --mode production --watch --watch-poll",
+    "dev": "webpack --mode development && PGUSER=test \\\n  PGHOST=localhost \\\n  PGPASSWORD=myPassword \\\n  PGDATABASE=douglas \\\n  PGPORT=5432 \\node server/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -31,10 +31,12 @@
     "bn.js": "^5.1.1",
     "classnames": "^2.2.6",
     "copy-webpack-plugin": "^5.1.1",
+    "ejs": "^3.0.2",
     "express": "^4.17.1",
     "pg": "^8.0.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "tooltip": "^1.6.1",
     "web3": "^1.2.6"
   },
   "devDependencies": {
