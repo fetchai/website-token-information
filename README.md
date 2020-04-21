@@ -1,4 +1,4 @@
-#Intructions
+## Intructions
 
 ## Prerequisites
 
@@ -34,7 +34,7 @@ on any operating system)
   
   - From root dir run  ```pipenv install```  ```pipenv shell``` ```python3 contractmon.py``` 
   
-  -Note: This program writes current transactions to Postgres, so needs to be running for 24 hours before data in the Token Information Page will be correct. 
+  - Note: This program writes current transactions to Postgres, so needs to be running for 24 hours before data in the Token Information Page will be correct. 
   
 ##  Running this Node.js application 
   
@@ -47,7 +47,7 @@ on any operating system)
 npm install
 ``` 
 
-- Running for development (with your own Postgres credentials created earlier inserted )
+- Running for development (with your own Postgres credentials created earlier inserted)
 
 ```webpack --mode development && PGUSER=test   PGHOST=localhost   PGPASSWORD=myPassword   PGDATABASE=douglas   PGPORT=5432 node server/index.js```
 
@@ -59,14 +59,16 @@ npm install
 
 - Note: for production change line 11 ```const ETHERSCAN_API_KEY = "2WQZAX9F42ZFGXPBCKHXTTGYGU2A6CD6VG";``` in server/index.js to company Etherscan API key. 
 
-- Note: for production run with ``npm run start`` ( add your Postgres credentials to the start command in Package.json) which runs as daemon 
-  (called forever) which restarts server if it crashes. To stop forever run 
+- Note: for production run with ``npm run start`` (add your Postgres credentials to the start command in Package.json) which runs as daemon 
+  (called forever) which restarts server if it crashes. 
+  
+  - To stop forever run 
 
-`` forever list``
+    `` forever list``
 
-- Then get number from results (usually 0) and then run: 
+   - Then get number from results (usually 0) and then run: 
 
-``forever stop <your number here>``
+    ``forever stop <your number here>``
 
  
   

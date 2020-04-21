@@ -14,11 +14,11 @@ const PROJECT_ID = "cab205e574974e6d903844cb7da7537d";
 const TEN_TO_EIGHTEEN = "1" + "0".repeat(18);
 const NUMERATOR = new BN(TEN_TO_EIGHTEEN);
 
-// process.env.PGUSER = "test";
-// process.env.PGHOST = "localhost";
-// process.env.PGPASSWORD = "myPassword";
-// process.env.PGDATABASE = "douglas";
-// process.env.PGPORT = "5432";
+process.env.PGUSER = "test";
+process.env.PGHOST = "localhost";
+process.env.PGPASSWORD = "myPassword";
+process.env.PGDATABASE = "douglas";
+process.env.PGPORT = "5432";
 
 const { Pool } = require("pg");
 const pool = new Pool();
@@ -35,6 +35,7 @@ String.prototype.insertCommas = function() {
 function calculateTotalStaked(phase, finalisationPrice, slotsSold) {
   // if phase 0 there is nothing staked.
   if (phase === 0) return "0";
+  debugger;
   const erc20StakedAmount = new BN(finalisationPrice).mul(new BN(slotsSold));
   const amount = erc20StakedAmount.div(NUMERATOR);
   return amount.toString().insertCommas();
@@ -139,6 +140,7 @@ function totalStaked() {
       );
     })
     .catch(err => {
+      debugger;
       console.log("caught get");
     });
 }

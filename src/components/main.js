@@ -112,7 +112,7 @@ export default class MainPage extends Component {
                     <hr className={style.hr}></hr>
                     <span className={style.value}>{this.state.lowPrice}</span>
                     <h3 className={style.subheading}>Remaining Supply</h3>
-                    <img src="assets/info-icon.svg" data-tooltip={PRICES_HOVERABLE_MESSAGE} data-tooltip-positions="bottom;left;top;right"  alt="info icon"
+                    <img src="assets/info-icon.svg" data-tooltip="todo" data-tooltip-positions="bottom;left;top;right"  alt="info icon"
                          className={style.info}></img>
                     <hr className={style.hr}></hr>
                     <span className={style.value}>1,500,000,000</span>
@@ -157,12 +157,12 @@ export default class MainPage extends Component {
                   <div className={style.singleRowRight}>
                     <h3 className={style.subheading}>Of Which are AEA</h3>
                     <hr className={style.hr}></hr>
-                    <span className={style.value}>30000</span>
+                    <span className={style.value}>Unknown</span>
                   </div>
 
                   <div className={style.fullWidthItem}>
                     <h3 className={style.subheading}>Token contract</h3>
-                    <img src="assets/info-icon.svg" alt="info icon" data-tooltip={PRICES_HOVERABLE_MESSAGE} data-tooltip-positions="bottom;left;top;right"
+                    <img src="assets/info-icon.svg" alt="info icon" data-tooltip="todo" data-tooltip-positions="bottom;left;top;right"
                          className={style.info}></img>
                     <hr className={style.fullWidthHr}></hr>
                     <span className={classnames(style.value, style.viewPort)} onClick = {() => {window.open("https://etherscan.io/address/0x1d287cc25dad7ccaf76a26bc660c5f7c8e2a05bd",  '_blank');}}>{TOKEN_CONTRACT}</span>
@@ -170,10 +170,10 @@ export default class MainPage extends Component {
 
                   <div className={style.singleRowLeft}>
                     <h3 className={style.subheading}>Total locked</h3>
-                    <img src="assets/info-icon.svg" alt="info icon" data-tooltip={PRICES_HOVERABLE_MESSAGE} data-tooltip-positions="bottom;left;top;right"
+                    <img src="assets/info-icon.svg" alt="info icon" data-tooltip="todo" data-tooltip-positions="bottom;left;top;right"
                          className={style.info}></img>
                     <hr className={style.hr}></hr>
-                    <span className={style.value}>2000000000</span>
+                    <span className={style.value}>Fixed figure: needed</span>
                   </div>
                   <div className={style.singleRowRight}>
                     <h3 className={style.subheading}>Total Staked</h3>
@@ -185,7 +185,7 @@ export default class MainPage extends Component {
 
                   <div className={style.fullWidthItem}>
                     <h3 className={style.subheading}>Staking Contract</h3>
-                    <img src="assets/info-icon.svg" alt="info icon" data-tooltip={PRICES_HOVERABLE_MESSAGE} data-tooltip-positions="bottom;left;top;right"
+                    <img src="assets/info-icon.svg" alt="info icon" data-tooltip="todo" data-tooltip-positions="bottom;left;top;right"
                          className={style.info}></img>
                     <hr className={style.fullWidthHr}></hr>
                     <span className={classnames(style.value, style.viewPort)} onClick = {() => {window.open("https://etherscan.io/address/0x4f3C38cD3267329f93418F4b106231022cC264c0",  '_blank')}} >{STAKING_CONTRACT}</span>
@@ -199,7 +199,7 @@ export default class MainPage extends Component {
                 <div className={classnames(style.box, style.fourth, style.top)}>
                   <div className={style.singleRowLeft}>
                     <h3 className={style.subheading}>Total moved last 24h</h3>
-                    <img src="assets/info-icon.svg" alt="info icon" data-tooltip={PRICES_HOVERABLE_MESSAGE} data-tooltip-positions="bottom;left;top;right"
+                    <img src="assets/info-icon.svg" alt="info icon" data-tooltip="todo" data-tooltip-positions="bottom;left;top;right"
                          className={style.info}></img>
                     <hr className={style.hr}></hr>
                    <span className={classnames(style.value, this.state.recentlyTransfered == "" ? style.invisible : false)}>{(this.state.recentlyTransfered == "") ? "loading" :  this.state.recentlyTransfered}</span>
@@ -219,7 +219,7 @@ export default class MainPage extends Component {
                   </div>
                   <div className={style.singleRowRight}>
                     <h3 className={style.subheading}>Agent TXs</h3>
-                    <img src="assets/info-icon.svg" alt="info icon" data-tooltip={PRICES_HOVERABLE_MESSAGE} data-tooltip-positions="bottom;left;top;right"
+                    <img src="assets/info-icon.svg" alt="info icon" data-tooltip="todo" data-tooltip-positions="bottom;left;top;right"
                          className={style.info}></img>
                     <hr className={style.hr}></hr>
                     <span className={style.value}>Unknown</span>
