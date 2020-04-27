@@ -152,7 +152,7 @@ width: 17px;
     height: $column-height;
 
     @media only screen and (max-width: 600px) {
-     height: 840px;
+     height: 500px;
    }
   }
 
@@ -183,19 +183,6 @@ width: 17px;
 height: 460px;
    }
 
-    }
-
-    .second {
-       height: $second-box-height;
-      margin-bottom: 20px;
-
-      @media only screen and (max-width: 850px){
-    height: 218px;
-}
-
-      @media only screen and (max-width: 650px) {
-    height: 300px;
-   }
     }
 
   .third {

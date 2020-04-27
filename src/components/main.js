@@ -6,14 +6,21 @@ import classnames from 'classnames'
 import { fetchFetPrice, RateLimitError, toDisplayString } from '../other/fetchFetPrice'
 import { queryFetchApi } from '../other/query-api'
 import tooltip  from 'tooltip';
+import { BN } from 'bn.js'
 
 const config  = {
   visibleStyle: { color: "black", background: "light-grey", padding: 5 }
 }
 
+String.prototype.insertCommas = function() {
+  return this.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+};
+
 tooltip(config)
 
 const TOTAL_FET_SUPPLY_DISPLAY_STRING = "1,152,997,575";
+const TOTAL_LOCKED = "109534769";
+const TOTAL_FET_SUPPLY = new BN("1152997575")
 const ETHERSCAN_API_KEY = "2WQZAX9F42ZFGXPBCKHXTTGYGU2A6CD6VG";
 const TOTAL_HOLDERS = "5,642";
 const TOKEN_CONTRACT = "0x1d287cc25dad7ccaf76a26bc660c5f7c8e2a05bd";
@@ -32,6 +39,7 @@ export default class MainPage extends Component {
 
       this.handleQueryFetchApi = this.handleQueryFetchApi.bind(this)
       this.handleFetPrice = this.handleFetPrice.bind(this)
+
     this.state = {
       highPrice: "",
       lastPrice: "",
@@ -39,7 +47,8 @@ export default class MainPage extends Component {
       totalStaked: "",
       unreleasedAmount: "",
       recentlyTransfered: "",
-      recentLargeTransfers: ""
+      recentLargeTransfers: "",
+      currentCirculatingSupply: ""
     }
   }
 
@@ -57,7 +66,11 @@ export default class MainPage extends Component {
     } catch(error) {
         return;
       }
-      this.setState({totalStaked: json.totalStaked, unreleasedAmount: json.unreleasedAmount, recentlyTransfered: json.recentlyTransfered, recentLargeTransfers: json.recentLargeTransfers})
+      this.setState({totalStaked: json.totalStaked,
+        unreleasedAmount: json.unreleasedAmount,
+        recentlyTransfered: json.recentlyTransfered,
+        recentLargeTransfers: json.recentLargeTransfers,
+        currentCirculatingSupply: json.currentCirculatingSupply})
   }
 
  async handleFetPrice(){
@@ -82,7 +95,6 @@ export default class MainPage extends Component {
 
         <div className={style.wrapper}>
           <div className={style.row}>
-
             <div className={style.column}>
               <div className={style.columnOne}>
                 <div className={classnames(style.box, style.first, style.top)}>
@@ -115,39 +127,44 @@ export default class MainPage extends Component {
                     <img src="assets/info-icon.svg" data-tooltip="todo" data-tooltip-positions="bottom;left;top;right"  alt="info icon"
                          className={style.info}></img>
                     <hr className={style.hr}></hr>
-                    <span className={style.value}>1,500,000,000</span>
+                    <span className={style.value}>{this.state.unreleasedAmount.insertCommas()}</span>
                   </div>
                 </div>
-
-                <div className={classnames(style.box, style.second)}>
-                  <div className={style.fullWidthSubheading}>
-                    <h3 className={style.subheading}>Current Circulating Supply</h3>
-                    <hr className={style.hr}></hr>
-                  </div>
-                  <div className={style.left}>
-                    <h3 className={style.grey}>Total</h3>
-                    <span className={style.value}>2000000000</span>
-                    <h3 className={style.grey}>Locked</h3>
-                    <span className={style.value}>Fixed figure: needed</span>
-                  </div>
-                  <div className={style.right}>
-                    <h3 className={style.grey}>remaining</h3>
-                    <span className={style.value}>Unknown</span>
-                    <h3 className={style.grey}>staked</h3>
-                    <span className={style.value}>{this.state.totalStaked}</span>
-                  </div>
-                </div>
-
+                {/*<div className={classnames(style.box, style.second)}>*/}
+                {/*  <div className={style.fullWidthSubheading}>*/}
+                {/*    <h3 className={style.subheading}>Current Circulating Supply</h3>*/}
+                {/*    <hr className={style.hr}></hr>*/}
+                {/*  </div>*/}
+                {/*  <div className={style.left}>*/}
+                {/*    <h3 className={style.grey}>Total</h3>*/}
+                {/*    <span className={style.value}>{this.state.currentCirculatingSupply.insertCommas()}</span>*/}
+                {/*    <h3 className={style.grey}>Locked</h3>*/}
+                {/*    <span className={style.value}>109,534,769.63</span>*/}
+                {/*  </div>*/}
+                {/*  <div className={style.right}>*/}
+                {/*    <h3 className={style.grey}>remaining</h3>*/}
+                {/*    <span className={style.value}>{this.state.unreleasedAmount.insertCommas()}</span>*/}
+                {/*    <h3 className={style.grey}>staked</h3>*/}
+                {/*    <span className={style.value}>{this.state.totalStaked.insertCommas()}</span>*/}
+                {/*  </div>*/}
+                {/*</div>*/}
               </div>
             </div>
 
             <div className={style.column}>
               <div className={style.columnTwo}>
                 <div className={classnames(style.box, style.third, style.top)}>
-                  <div className={style.fullWidthItem}>
+                    <div className={style.singleRowLeft}>
                     <h3 className={style.subheading}>Un-released tokens</h3>
                     <hr className={style.hr}></hr>
-                    <span className={style.value}>{this.state.unreleasedAmount}</span>
+                    <span className={style.value}>{this.state.unreleasedAmount.insertCommas()}</span>
+                  </div>
+                  <div className={style.singleRowRight}>
+                    <h3 className={style.subheading}>Current Circulating Supply</h3>
+                     <img src="assets/info-icon.svg" alt="info icon" data-tooltip="This is the percentage of addresses that are likely to be autonomous economic agents. Coming soon" data-tooltip-positions="bottom;left;top;right"
+                         className={style.info}></img>
+                    <hr className={style.hr}></hr>
+                    <span className={style.value}>{this.state.currentCirculatingSupply.insertCommas()}</span>
                   </div>
                   <div className={style.singleRowLeft}>
                     <h3 className={style.subheading}>Holders</h3>
@@ -155,7 +172,9 @@ export default class MainPage extends Component {
                     <span className={style.value}>{TOTAL_HOLDERS}</span>
                   </div>
                   <div className={style.singleRowRight}>
-                    <h3 className={style.subheading}>Of Which are AEA</h3>
+                    <h3 className={style.subheading}>Of which are agents</h3>
+                     <img src="assets/info-icon.svg" alt="info icon" data-tooltip="This is the percentage of addresses that are likely to be autonomous economic agents. Coming soon" data-tooltip-positions="bottom;left;top;right"
+                         className={style.info}></img>
                     <hr className={style.hr}></hr>
                     <span className={style.value}>Unknown</span>
                   </div>
@@ -173,14 +192,14 @@ export default class MainPage extends Component {
                     <img src="assets/info-icon.svg" alt="info icon" data-tooltip="todo" data-tooltip-positions="bottom;left;top;right"
                          className={style.info}></img>
                     <hr className={style.hr}></hr>
-                    <span className={style.value}>Fixed figure: needed</span>
+                    <span className={style.value}>{TOTAL_LOCKED.insertCommas()}</span>
                   </div>
                   <div className={style.singleRowRight}>
                     <h3 className={style.subheading}>Total Staked</h3>
                     <img src="assets/info-icon.svg" alt="info icon" data-tooltip={PRICES_HOVERABLE_MESSAGE} data-tooltip-positions="bottom;left;top;right"
                          className={style.info}></img>
                     <hr className={style.hr}></hr>
-                    <span className={style.value}>{this.state.totalStaked}</span>
+                    <span className={style.value}>{this.state.totalStaked.insertCommas()}</span>
                   </div>
 
                   <div className={style.fullWidthItem}>
@@ -198,7 +217,7 @@ export default class MainPage extends Component {
               <div className={style.columnThree}>
                 <div className={classnames(style.box, style.fourth, style.top)}>
                   <div className={style.singleRowLeft}>
-                    <h3 className={style.subheading}>Total moved last 24h</h3>
+                    <h3 className={style.subheading}>24 hour volume</h3>
                     <img src="assets/info-icon.svg" alt="info icon" data-tooltip="todo" data-tooltip-positions="bottom;left;top;right"
                          className={style.info}></img>
                     <hr className={style.hr}></hr>
@@ -206,7 +225,7 @@ export default class MainPage extends Component {
                   </div>
                   <div className={style.singleRowRight}>
                     <h3 className={style.subheading}>Large TXs last 24h</h3>
-                    <img src="assets/info-icon.svg" alt="info icon" data-tooltip="Transfers over 250,000 FET" data-tooltip-positions="bottom;left;top;right"
+                    <img src="assets/info-icon.svg" alt="info icon" data-tooltip="Total transactions exceeding 250,000 FET in last 24 hours" data-tooltip-positions="bottom;left;top;right"
                          className={style.info}></img>
                     <hr className={style.hr}></hr>
                     <span className={classnames(style.value, this.state.recentLargeTransfers == "" ? style.invisible : false)}>{(this.state.recentLargeTransfers == "") ? "loading" :  this.state.recentLargeTransfers}</span>

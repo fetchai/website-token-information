@@ -7,6 +7,9 @@ export const queryFetchApi = async () => {
     if(response.status !== 200)  throw new Error()
     const json = await response.json().catch(() => error = true)
     return {
-      totalStaked: json.totalStaked, unreleasedAmount: json.unreleasedAmount, recentLargeTransfers: json.recentLargeTransfers, recentlyTransfered: json.recentlyTransfered
+      totalStaked: json.totalStaked, unreleasedAmount: json.unreleasedAmount,
+      recentLargeTransfers: json.recentLargeTransfers,
+      recentlyTransfered: json.recentlyTransfered,
+      currentCirculatingSupply: json.currentCirculatingSupply
     }
 }
