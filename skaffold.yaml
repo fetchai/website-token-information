@@ -7,7 +7,7 @@ profiles:
 - name: sandbox
   build:
     artifacts:
-    - image: gcr.io/fetch-ai-images/explorer-frontend-testnet
+    - image: gcr.io/fetch-ai-sandbox/token-info-frontend
   deploy:
     kubectl:
       manifests:
