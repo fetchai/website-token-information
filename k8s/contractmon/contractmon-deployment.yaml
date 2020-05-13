@@ -1,0 +1,31 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: contractmonitor
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: contractmonitor
+    spec:
+      containers:
+      - name: contractmonitor
+        image: gcr.io/fetch-ai-sandbox/fetch_contractmonitor:latest
+        env:
+        - name: PYTHONUNBUFFERED
+          value: "1"
+        - name: DBNAME
+          value: "token-info"
+        - name: DBUSERNAME
+          valueFrom:
+            secretKeyRef:
+              name: token-info-db-credentials
+              key: user
+        - name: DBPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: token-info-db-credentials
+              key: password
