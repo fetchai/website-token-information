@@ -2,6 +2,7 @@ apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:
   name: token-info-db
+  # namespace: token-info-page
 spec:
   serviceName: "token-info-db"
   replicas: 1
@@ -22,16 +23,20 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: token-info-db-credentials
-                  key: user
+                  key: PGUSER
 
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: token-info-db-credentials
-                  key: password
+                  key: PGPASSWORD
 
             - name: POSTGRES_DB
               value: token-info
+              valueFrom:
+                secretKeyRef:
+                  name: token-info-db-credentials
+                  key: PGDATABASE
 
             - name: PGDATA
               value: /var/lib/postgresql/data/db-files/
