@@ -5,4 +5,6 @@ WORKDIR /app
 COPY . /app
 RUN npm install && npm run build
 
+EXPOSE 8000
+
 ENTRYPOINT [ "bash", "entrypoint.sh"]
