@@ -15,4 +15,5 @@ COPY ./src/ ./
 
 EXPOSE 8000
 
-ENTRYPOINT [ "bash", "entrypoint.sh"]
+COPY entrypoint.sh ./
+CMD [ "bash", "entrypoint.sh"]
