@@ -14,11 +14,11 @@ const TOTAL_FET_SUPPLY = new BN("1152997575")
 const TEN_TO_EIGHTEEN = "1" + "0".repeat(18);
 const NUMERATOR = new BN(TEN_TO_EIGHTEEN);
 
-process.env.PGUSER = "test";
-process.env.PGHOST = "localhost";
-process.env.PGPASSWORD = "myPassword";
-process.env.PGDATABASE = "douglas";
-process.env.PGPORT = "5432";
+// process.env.PGUSER = "test";
+// process.env.PGHOST = "localhost";
+// process.env.PGPASSWORD = "myPassword";
+// process.env.PGDATABASE = "douglas";
+// process.env.PGPORT = "5432";
 
 const { Pool } = require("pg");
 const pool = new Pool();
@@ -107,7 +107,6 @@ setInterval(countLargeTransactions, 5000);
 function FETRemainingInContract() {
   // https://etherscan.io/readContract?m=normal&a=0x1d287cc25dad7ccaf76a26bc660c5f7c8e2a05bd&v=0x1d287cc25dad7ccaf76a26bc660c5f7c8e2a05bd#readCollapse8
   // Taken from the actual api request performed by this Etherscan page
-
   axios
     .post("https://node3.web3api.com/", {
       jsonrpc: "2.0",
