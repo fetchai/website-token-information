@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: token-info-frontend
+  # namespace: token-info-page
+spec:
+  selector:
+    app: token-info-frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000

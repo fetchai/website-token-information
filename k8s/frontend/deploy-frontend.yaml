@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: token-info-frontend
+  # namespace: token-info-page
+  labels:
+    app: token-info-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: token-info-frontend
+  template:
+    metadata:
+      labels:
+        app: token-info-frontend
+    spec:
+      containers:
+      - name: token-info-frontend
+        image: gcr.io/fetch-ai-sandbox/token-info-frontend:latest
+
+        env: 
+        - name: PGUSER
+          valueFrom:
+            secretKeyRef:
+              name: token-info-db-credentials
+              key: PGUSER
+
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: token-info-db-credentials
+              key: PGPASSWORD
+
+        - name: PGHOST
+          valueFrom:
+            secretKeyRef:
+              name: token-info-db-credentials
+              key: PGHOST
+
+        - name: PGDATABASE
+          valueFrom:
+            secretKeyRef:
+              name: token-info-db-credentials
+              key: PGDATABASE
+
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+
+        ports:
+        - containerPort: 3000
