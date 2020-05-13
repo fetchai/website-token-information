@@ -1,0 +1,54 @@
+apiVersion: apps/v1beta2
+kind: StatefulSet
+metadata:
+  name: token-info-db
+spec:
+  serviceName: "token-info-db"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: token-info-db
+  template:
+    metadata:
+      labels:
+        app: token-info-db
+        tier: backend
+    spec:
+      containers:
+        - name: token-info-db
+          image: postgres:11
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: token-info-db-credentials
+                  key: user
+
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: token-info-db-credentials
+                  key: password
+
+            - name: POSTGRES_DB
+              value: token-info
+
+            - name: PGDATA
+              value: /var/lib/postgresql/data/db-files/
+
+          ports:
+            - containerPort: 5432
+
+          volumeMounts:
+            - name: storage
+              mountPath: /var/lib/postgresql/data
+
+  volumeClaimTemplates:
+  - metadata:
+      name: storage
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 10G
