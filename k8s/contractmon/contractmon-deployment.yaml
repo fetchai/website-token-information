@@ -29,3 +29,13 @@ spec:
             secretKeyRef:
               name: token-info-db-credentials
               key: password
+        - name: INFURAPROJECTID
+          valueFrom:
+            secretKeyRef:
+              name: contractmon-api-keys
+              key: infuraprojectid
+        - name: ETHERSCANAPIKEY
+          valueFrom:
+            secretKeyRef:
+              name: contractmon-api-keys
+              key: etherscanapikey

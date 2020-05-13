@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: token-info-db
-          image: postgres:11
+          image: postgres:11.5
           env:
             - name: POSTGRES_USER
               valueFrom:
@@ -40,12 +40,12 @@ spec:
             - containerPort: 5432
 
           volumeMounts:
-            - name: storage
+            - name: dbstorage
               mountPath: /var/lib/postgresql/data
 
   volumeClaimTemplates:
   - metadata:
-      name: storage
+      name: dbstorage
     spec:
       accessModes:
         - ReadWriteOnce
