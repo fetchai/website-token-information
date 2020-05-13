@@ -1,0 +1,16 @@
+apiVersion: skaffold/v1beta13
+kind: Config
+build:
+  artifacts:
+  local: {}
+profiles:
+- name: sandbox
+  build:
+    artifacts:
+    - image: gcr.io/fetch-ai-images/explorer-frontend-testnet
+  deploy:
+    kubeContext: sandbox
+    kubectl:
+      manifests:
+        - "k8s/db/*.yaml"
+        - "k8s/frontend/*.yaml"
