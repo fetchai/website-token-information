@@ -8,12 +8,12 @@ COPY package*.json ./
 # RUN npm install
 RUN npm ci --only=production
 
-COPY ./src/ ./
-# COPY . /app
+COPY . /app
+
+RUN npm install
 
 # RUN npm install && npm run build
 
 EXPOSE 8000
 
-COPY entrypoint.sh ./
 CMD [ "bash", "entrypoint.sh"]
