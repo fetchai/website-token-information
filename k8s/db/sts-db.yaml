@@ -32,7 +32,6 @@ spec:
                   key: PGPASSWORD
 
             - name: POSTGRES_DB
-              value: token-info
               valueFrom:
                 secretKeyRef:
                   name: token-info-db-credentials
