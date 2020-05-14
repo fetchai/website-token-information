@@ -1,0 +1,60 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: token-information
+  namespace: token-info-page
+spec:
+  selector:
+    app: istio-fetch-gaia-ig
+    istio: ingressgateway
+  servers:
+  - hosts:
+    - token-information.fetch.ai
+    port:
+      name: http
+      number: 80
+      protocol: HTTP
+    tls:
+      httpsRedirect: true
+  - hosts:
+    - token-information.fetch.ai
+    port:
+      name: https
+      number: 443
+      protocol: HTTPS
+    tls:
+      credentialName: wildcard-sandbox
+      mode: SIMPLE
+      privateKey: sds
+      serverCertificate: sds
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: token-information
+  namespace: token-info-page
+spec:
+  gateways:
+  - token-information
+  hosts:
+  - token-information.fetch.ai
+  http:
+  - route:
+    - destination:
+        host: webserver.token-info-page.svc.cluster.local
+        port:
+          number: 80
+---
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: cosmwasm-testnet
+  namespace: cosmwasm-testnet
+spec:
+  endpoints:
+  - dnsName:  token-information.fetch.ai
+    recordTTL: 180
+    recordType: CNAME
+    targets:
+    - fetchpub.sandbox.fetch-ai.com/

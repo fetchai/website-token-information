@@ -16,40 +16,48 @@ spec:
         tier: backend
     spec:
       containers:
-        - name: token-info-db
-          image: postgres:11
-          env:
-            - name: POSTGRES_USER
-              valueFrom:
-                secretKeyRef:
-                  name: token-info-db-credentials
-                  key: PGUSER
+      - name: token-info-db
+        image: postgres:11.5
+        
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "1000m"
+        env:
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: token-info-db-credentials
+                key: PGUSER
 
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: token-info-db-credentials
-                  key: PGPASSWORD
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: token-info-db-credentials
+                key: PGPASSWORD
 
-            - name: POSTGRES_DB
-              valueFrom:
-                secretKeyRef:
-                  name: token-info-db-credentials
-                  key: PGDATABASE
+          - name: POSTGRES_DB
+            valueFrom:
+              secretKeyRef:
+                name: token-info-db-credentials
+                key: PGDATABASE
 
-            - name: PGDATA
-              value: /var/lib/postgresql/data/db-files/
+          - name: PGDATA
+            value: /var/lib/postgresql/data/db-files/
 
-          ports:
-            - containerPort: 5432
+        ports:
+          - containerPort: 5432
 
-          volumeMounts:
-            - name: storage
-              mountPath: /var/lib/postgresql/data
+        volumeMounts:
+          - name: dbstorage
+            mountPath: /var/lib/postgresql/data
 
   volumeClaimTemplates:
   - metadata:
-      name: storage
+      name: dbstorage
     spec:
       accessModes:
         - ReadWriteOnce
