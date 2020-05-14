@@ -42,9 +42,9 @@ spec:
   http:
   - route:
     - destination:
-        host: adminer.token-info-page.svc.cluster.local
+        host: webserver.token-info-page.svc.cluster.local
         port:
-          number: 8080
+          number: 80
 ---
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
