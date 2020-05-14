@@ -14,12 +14,6 @@ const TOTAL_FET_SUPPLY = new BN("1152997575")
 const TEN_TO_EIGHTEEN = "1" + "0".repeat(18);
 const NUMERATOR = new BN(TEN_TO_EIGHTEEN);
 
-// process.env.PGUSER = "test";
-// process.env.PGHOST = "localhost";
-// process.env.PGPASSWORD = "myPassword";
-// process.env.PGDATABASE = "douglas";
-// process.env.PGPORT = "5432";
-
 const { Pool } = require("pg");
 const pool = new Pool();
 let staked = "";
