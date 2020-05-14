@@ -1,9 +1,8 @@
 #!/bin/bash
 
-echo "process.env.PGUSER = \"${GPUSER}\";" >> server/index.js
-echo "process.env.PGHOST = \"${PGHOST}\";" >> server/index.js
-echo "process.env.PGPASSWORD = \"${PGPASSWOR}\";" >> server/index.js
-echo "process.env.PGDATABASE = \"${PGDATABASE}\";" >> server/index.js
-echo "process.env.PGPORT = \"5432\";" >> server/index.js
+sed -i "s/PGUSER=test/PGUSER=${PGUSER}/" package.json
+sed -i "s/PGHOST=localhost/PGHOST=${PGHOST=}}/" package.json
+sed -i "s/PGPASSWORD=myPassword/PGPASSWORD=${PGPASSWORD}/" package.json
+sed -i "s/PGDATABASE=douglas/PGDATABASE=${PGDATABASE}/" package.json
 
 npm run start
