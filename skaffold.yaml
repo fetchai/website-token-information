@@ -13,5 +13,8 @@ profiles:
       manifests:
         - "k8s/db/*.yaml"
         - "k8s/frontend/*.yaml"
+        - "k8s/adminer/*.yaml"
+        - "k8s/contractmon/*.yaml"
+        - "k8s/istio.yaml"
   activation:
   - kubeContext: sandbox
