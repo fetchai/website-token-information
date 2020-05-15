@@ -97,8 +97,8 @@ export default class MainPage extends Component {
   render () {
     return (
       <div className={style.header}>
-        <a href="https://www.w3schools.com" className={style.link}>
-        <img src="assets/fetch-logo.svg" alt="Fetch.ai's Logo" className={style.logo} onClick={() => { debugger; window.alert("hello");}}></img>
+        <a href="https://fetch.ai" className={style.link}>
+        <img src="assets/fetch-logo.svg" alt="Fetch.ai's Logo" className={style.logo}></img>
           </a>
         <h1 className={style.title}>FET Token Information</h1>
         <FontAwesomeIcon icon={faSignOutAlt} className={style.icon} rotation={180} onClick={() => {window.open("https://fetch.ai",  '_blank');}}/>
