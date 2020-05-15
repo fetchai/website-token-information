@@ -44,13 +44,21 @@ spec:
               name: token-info-db-credentials
               key: PGDATABASE
 
+        - name: ETHERSCAN_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: contractmon-api-keys
+              key: etherscanapikey
+
+
+
         resources:
           requests:
             memory: "64Mi"
             cpu: "250m"
           limits:
-            memory: "128Mi"
-            cpu: "500m"
+            memory: "512Mi"
+            cpu: "1000m"
 
         ports:
         - containerPort: 8000
