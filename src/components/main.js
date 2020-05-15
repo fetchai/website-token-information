@@ -11,8 +11,20 @@ const config  = {
   visibleStyle: { color: "black", background: "light-grey", padding: 5, showDelay: 100 }
 }
 
+function addCommas(nStr){
+ nStr += '';
+ var x = nStr.split('.');
+ var x1 = x[0];
+ var x2 = x.length > 1 ? '.' + x[1] : '';
+ var rgx = /(\d+)(\d{3})/;
+ while (rgx.test(x1)) {
+  x1 = x1.replace(rgx, '$1' + ',' + '$2');
+ }
+ return x1 + x2;
+}
+
 String.prototype.insertCommas = function() {
-  return this.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+  return addCommas(this);
 };
 
 tooltip(config)
@@ -84,8 +96,10 @@ export default class MainPage extends Component {
 
   render () {
     return (
-      <div className={style.header}><img src="assets/fetch-logo.svg" alt="Fetch.ai's Logo"
-                                         className={style.logo}></img>
+      <div className={style.header}>
+        <a href="https://fetch.ai" className={style.link}>
+        <img src="assets/fetch-logo.svg" alt="Fetch.ai's Logo" className={style.logo}></img>
+          </a>
         <h1 className={style.title}>FET Token Information</h1>
         <FontAwesomeIcon icon={faSignOutAlt} className={style.icon} rotation={180} onClick={() => {window.open("https://fetch.ai",  '_blank');}}/>
         <div className={style.wrapper}>
@@ -186,8 +200,8 @@ export default class MainPage extends Component {
               <div className={style.columnThree}>
                 <div className={classnames(style.box, style.fourth, style.top)}>
                   <div className={style.singleRowLeft}>
-                    <h3 className={style.subheading}>24 hour volume</h3>
-                    <img src="assets/info-icon.svg" alt="info icon" data-tooltip="Total FET transfered in the last 24 hours" data-tooltip-positions="bottom;left;top;right"
+                    <h3 className={style.subheading}>Total FET transferred</h3>
+                    <img src="assets/info-icon.svg" alt="info icon" data-tooltip="Total FET transferred in the last 24 hours" data-tooltip-positions="bottom;left;top;right"
                          className={style.info}></img>
                     <hr className={style.hr}></hr>
                    <span className={classnames(style.value, this.state.recentlyTransfered === UNAVAILABLE_MESSAGE ? style.placeholderText : false)}>{(this.state.recentlyTransfered == "") ? "loading" :  this.state.recentlyTransfered}</span>
