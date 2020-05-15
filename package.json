@@ -7,7 +7,8 @@
     "start": "webpack --mode production && PGUSER=test \\\n  PGHOST=localhost \\\n  PGPASSWORD=myPassword \\\n  PGDATABASE=douglas \\\n  PGPORT=5432 \\forever start server/index.js",
     "build": "webpack --mode production --watch --watch-poll",
     "dev": "webpack --mode development && PGUSER=test \\\n  PGHOST=localhost \\\n  PGPASSWORD=myPassword \\\n  PGDATABASE=douglas \\\n  PGPORT=5432 \\node server/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prod": "./node_modules/.bin/webpack --mode production && node server/index.js"
   },
   "keywords": [
     "FET",
