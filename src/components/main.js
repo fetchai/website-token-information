@@ -200,7 +200,7 @@ export default class MainPage extends Component {
               <div className={style.columnThree}>
                 <div className={classnames(style.box, style.fourth, style.top)}>
                   <div className={style.singleRowLeft}>
-                    <h3 className={style.subheading}>24 hour volume</h3>
+                    <h3 className={style.subheading}>Total FET transferred</h3>
                     <img src="assets/info-icon.svg" alt="info icon" data-tooltip="Total FET transferred in the last 24 hours" data-tooltip-positions="bottom;left;top;right"
                          className={style.info}></img>
                     <hr className={style.hr}></hr>
