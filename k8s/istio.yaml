@@ -3,7 +3,7 @@ apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
   name: token-info
-  namespace: token-info-page
+  # namespace: token-info-page
 spec:
   selector:
     app: istio-fetchpubig
@@ -11,6 +11,7 @@ spec:
   servers:
   - hosts:
     - token-info.sandbox.fetch-ai.com
+    - token-information.fetch.ai
     port:
       name: http
       number: 80
@@ -19,6 +20,7 @@ spec:
       httpsRedirect: true
   - hosts:
     - token-info.sandbox.fetch-ai.com
+    - token-information.fetch.ai
     port:
       name: https
       number: 443
@@ -33,28 +35,52 @@ apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
   name: token-info
-  namespace: token-info-page
 spec:
   gateways:
   - token-info
   hosts:
   - token-info.sandbox.fetch-ai.com
+  - token-information.fetch.ai
   http:
   - route:
     - destination:
-        host: token-info-frontend.token-info-page.svc.cluster.local
+        host: token-info-frontend
         port:
           number: 80
 ---
-apiVersion: externaldns.k8s.io/v1alpha1
-kind: DNSEndpoint
+# apiVersion: externaldns.k8s.io/v1alpha1
+# kind: DNSEndpoint
+# metadata:
+#   name: token-info
+#   # namespace: token-info-page
+# spec:
+#   endpoints:
+#   - dnsName:  token-info.sandbox.fetch-ai.com
+#     recordTTL: 180
+#     recordType: CNAME
+#     targets:
+#     - fetchpub.sandbox.fetch-ai.com
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
 metadata:
-  name: token-info
-  namespace: token-info-page
+  name: token-info-fetch-ai-com
 spec:
-  endpoints:
-  - dnsName:  token-info.sandbox.fetch-ai.com
-    recordTTL: 180
-    recordType: CNAME
-    targets:
-    - fetchpub.sandbox.fetch-ai.com/
+  host: token-info.sandbox.fetch-ai.com
+  trafficPolicy:
+    loadBalancer:
+      simple: LEAST_CONN
+    tls:
+      mode: DISABLE
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: token-info-fetch-ai
+spec:
+  host: token-information.fetch.ai
+  trafficPolicy:
+    loadBalancer:
+      simple: LEAST_CONN
+    tls:
+      mode: DISABLE
