@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: token-info-frontend
-        image: gcr.io/fetch-ai-sandbox/token-info-frontend:latest
+        image: gcr.io/fetch-ai-sandbox/token-info-frontend:4369605
 
         env: 
         - name: PGUSER
