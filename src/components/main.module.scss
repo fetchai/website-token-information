@@ -10,22 +10,32 @@ $column-height: 593px;
 $border-blue: #1c2846;
 $border-blue-2: rgba(88, 135, 218, 1);
 
-
-
-
 .header {
   margin: 0;
 
+  .link {
+    z-index: 9999999999999999999999999999;
+     pointer-events: all;
+  }
+
   .logo {
+    position: relative;
     width: 290px;
     margin-left: 20px;
     margin-top: 20px;
+    pointer-events: all;
+     z-index: 9999999999999999999999999999;
+
+     &:hover {
+      cursor: pointer;
+    }
 
     @media only screen and (max-width: 600px) {
    width: 140px;
     margin-left: 0px;
     margin-top: 10px;
     margin-bottom: 10px;
+
   }
   }
 
