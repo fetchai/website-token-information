@@ -161,7 +161,7 @@ sizes of item values which vary by screen size.
 width: 17px;
     float: right;
     cursor:pointer;
-
+pointer-event:none;
    @media only screen and (max-width: 1350px) {
         font-size: 16px;
      }
@@ -178,6 +178,11 @@ width: 17px;
   &:hover + .tooltiptext {
       display: block;
 }
+  /** used to trigger programatically a hover like event **/
+   .hover + .tooltiptext {
+      display: block;
+}
+
   }
 
 :global(.tooltip) {
