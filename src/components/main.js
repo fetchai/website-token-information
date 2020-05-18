@@ -6,10 +6,10 @@ import classnames from 'classnames'
 import { fetchFetPrice, RateLimitError, toDisplayString } from '../other/fetchFetPrice'
 import { queryFetchApi } from '../other/query-api'
 // this module was modified to allow tooltips to be triggered manually rather than by click events, hence being moved from node modules
-import tooltip  from './imported-modules/tooltip';
+import tooltip  from '../../imported-modules/tooltip';
 
 
-const tool = tooltip(config)
+
 const TOTAL_FET_SUPPLY_DISPLAY_STRING = "1,152,997,575";
 const TOTAL_LOCKED = "109534769";
 const TOTAL_HOLDERS = "5,642";
@@ -25,6 +25,7 @@ const config  = {
   visibleStyle: { color: "black", background: "light-grey", padding: 5, showDelay: 100 }
 }
 
+const tool = tooltip(config)
 
 function displayIEErrorMessage() {
      const ua = window.navigator.userAgent;
