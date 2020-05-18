@@ -424,6 +424,7 @@ height: unset;
     width: 44%;
     float: left;
     margin-left: 4%;
+    clear: both;
 
      @media only screen and (max-width: $single-column-max-width) {
     float: unset;
