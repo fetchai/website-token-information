@@ -11,6 +11,16 @@ const config  = {
   visibleStyle: { color: "black", background: "light-grey", padding: 5, showDelay: 100 }
 }
 
+
+function displayIEErrorMessage() {
+     const ua = window.navigator.userAgent;
+     const msie = ua.indexOf("MSIE ");
+     if (msie > 0)
+     {
+  window.alert("Does not Support IE, Please switch to modern browser")
+     }
+   }
+
 function addCommas(nStr){
  nStr += '';
  var x = nStr.split('.');
@@ -60,11 +70,14 @@ export default class MainPage extends Component {
     }
   }
 
+
+
   async componentDidMount () {
     this.handleQueryFetchApi()
     this.handleFetPrice();
     setInterval(this.handleQueryFetchApi, 10000)
     setInterval(this.handleFetPrice, 10000)
+    displayIEErrorMessage();
   }
 
   async handleQueryFetchApi(){
@@ -76,8 +89,8 @@ export default class MainPage extends Component {
       }
       this.setState({totalStaked: json.totalStaked,
         unreleasedAmount: json.unreleasedAmount,
-        recentlyTransfered: parseInt(json.recentlyTransfered) > 0 ? json.recentlyTransfered : UNAVAILABLE_MESSAGE,
-        recentLargeTransfers: parseInt(json.recentLargeTransfers) > 0 ? json.recentLargeTransfers : UNAVAILABLE_MESSAGE,
+        recentlyTransfered: parseInt(json.recentlyTransfered) > 0 ? json.recentlyTransfered.insertCommas() : UNAVAILABLE_MESSAGE,
+        recentLargeTransfers: parseInt(json.recentLargeTransfers) > 0 ? json.recentLargeTransfers.insertCommas() : UNAVAILABLE_MESSAGE,
         currentCirculatingSupply: json.currentCirculatingSupply})
   }
 
@@ -204,14 +217,14 @@ export default class MainPage extends Component {
                     <img src="assets/info-icon.svg" alt="info icon" data-tooltip="Total FET transferred in the last 24 hours" data-tooltip-positions="bottom;left;top;right"
                          className={style.info}></img>
                     <hr className={style.hr}></hr>
-                   <span className={classnames(style.value, this.state.recentlyTransfered === UNAVAILABLE_MESSAGE ? style.placeholderText : false)}>{(this.state.recentlyTransfered == "") ? "loading" :  this.state.recentlyTransfered}</span>
+                   <span className={classnames(style.value, this.state.recentlyTransfered === UNAVAILABLE_MESSAGE ? style.unavailablePlaceholderText : false)}>{(this.state.recentlyTransfered == "") ? "loading" :  this.state.recentlyTransfered}</span>
                   </div>
                   <div className={style.singleRowRight}>
                     <h3 className={style.subheading}>Large TXs last 24h</h3>
                     <img src="assets/info-icon.svg" alt="info icon" data-tooltip="Total transactions exceeding <br>  250,000 FET in last 24 hours" data-tooltip-positions="bottom;left;top;right"
                          className={style.info}></img>
                     <hr className={style.hr}></hr>
-                    <span className={classnames(style.value, this.state.recentLargeTransfers == UNAVAILABLE_MESSAGE ? style.placeholderText : false)}>{(this.state.recentLargeTransfers == "") ? "loading" :  this.state.recentLargeTransfers}</span>
+                    <span className={classnames(style.value, this.state.recentLargeTransfers == UNAVAILABLE_MESSAGE ? style.unavailablePlaceholderText : false)}>{(this.state.recentLargeTransfers == "") ? "loading" :  this.state.recentLargeTransfers}</span>
 </div>
                     <div className={style.singleRowLeft}>
                     <h3 className={style.subheading}>Agents transacting last 24h</h3>
