@@ -10,6 +10,32 @@ $column-height: 593px;
 $border-blue: #1c2846;
 $border-blue-2: rgba(88, 135, 218, 1);
 
+$single-column-max-width: 800px;
+
+/**
+sizes of item values which vary by screen size.
+ */
+@mixin value-sizes {
+   font-size: 26px;
+
+    @media only screen and (max-width: 1350px) {
+        font-size: 24px;
+     }
+
+    @media only screen and (max-width: 1300px) {
+        font-size: 21px;
+     }
+
+@media only screen and (max-width: 1200px) {
+        font-size: 19px;
+     }
+
+     @media only screen and (max-width: 1025px) {
+        font-size: 16px;
+     }
+}
+
+
 .header {
   margin: 0;
 
@@ -21,6 +47,19 @@ $border-blue-2: rgba(88, 135, 218, 1);
   .logo {
     position: relative;
     width: 290px;
+
+    @media only screen and (max-width: 1350px) {
+        width: 270px;
+     }
+
+    @media only screen and (max-width: 1300px) {
+       width: 250px;
+     }
+
+@media only screen and (max-width: 1200px) {
+         width: 230px;
+     }
+
     margin-left: 20px;
     margin-top: 20px;
     pointer-events: all;
@@ -30,7 +69,7 @@ $border-blue-2: rgba(88, 135, 218, 1);
       cursor: pointer;
     }
 
-    @media only screen and (max-width: 750px) {
+    @media only screen and (max-width: $single-column-max-width) {
    width: 140px;
     margin-left: 0px;
     margin-top: 10px;
@@ -45,10 +84,14 @@ $border-blue-2: rgba(88, 135, 218, 1);
     right: 35px;
     top: 40px;
 
+      @media only screen and (max-width: 1200px) {
+         font-size: 32px;
+       }
+
      @media only screen and (max-width: 850px) {
        top: 50px;
      }
-  @media only screen and (max-width: 750px) {
+  @media only screen and (max-width: $single-column-max-width) {
     font-size: 27px;
     right: 26px;
     top: 25px;
@@ -70,7 +113,15 @@ $border-blue-2: rgba(88, 135, 218, 1);
     width: 100%;
     font-size: 37px;
 
-       @media only screen and (max-width: 900px) {
+       @media only screen and (max-width: 1200px) {
+         font-size: 32px;
+       }
+
+    @media only screen and (max-width: 1400px) {
+         font-size: 35px;
+       }
+
+       @media only screen and (max-width: 1000px) {
        left: 0;
        line-height:  unset;
        margin-top: unset;
@@ -81,8 +132,6 @@ $border-blue-2: rgba(88, 135, 218, 1);
     @media only screen and (max-width: 700px) {
        font-size: 19px;
      }
-
-
 
   }
 }
@@ -98,7 +147,7 @@ $border-blue-2: rgba(88, 135, 218, 1);
     position: absolute;
     left: 5%;
 
-    @media only screen and (max-width: 750px) {
+    @media only screen and (max-width: $single-column-max-width) {
 
       display: unset;
     flex-direction: unset;
@@ -112,6 +161,15 @@ $border-blue-2: rgba(88, 135, 218, 1);
 width: 17px;
     float: right;
     cursor:pointer;
+
+   @media only screen and (max-width: 1350px) {
+        font-size: 16px;
+     }
+
+        @media only screen and (max-width: $single-column-max-width) {
+       font-size: 17px;
+   }
+
   }
 
 .hoverable {
@@ -161,7 +219,7 @@ width: 17px;
   .column-one {
     height: $column-height;
 
-    @media only screen and (max-width: 750px) {
+    @media only screen and (max-width: $single-column-max-width) {
      height: 500px;
    }
   }
@@ -173,7 +231,6 @@ width: 17px;
     @media only screen and (max-width: 850px) {
  border-left: none;
    }
-
 
   }
 
@@ -189,7 +246,7 @@ width: 17px;
     .first {
        height: $first-box-height;
 
-      @media only screen and (max-width: 750px) {
+      @media only screen and (max-width: $single-column-max-width) {
 height: 460px;
    }
 
@@ -199,15 +256,19 @@ height: 460px;
        height: $third-box-height;
       margin-bottom: 20px;
 
-     @media only screen and (max-width: 850px) {
+     @media only screen and (max-width: $single-column-max-width) {
        height: 552px;
      }
     }
 
   .fourth {
        height:$first-box-height;
+       margin-bottom: 20px;
 
-      margin-bottom: 20px;
+         @media only screen and (max-width: $single-column-max-width) {
+      height: 330px;
+     }
+
     }
 
   .full-width-subheading {
@@ -216,7 +277,7 @@ height: 460px;
     text-align: left;
     text-indent: 5%;
 
-    @media only screen and (max-width: 750px) {
+    @media only screen and (max-width: $single-column-max-width) {
       display: block;
     width: 90%;
     margin-left: 5%;
@@ -228,7 +289,7 @@ height: 460px;
       width: 92%;
       margin-bottom: 20px;
 
-      @media only screen and (max-width: 750px) {
+      @media only screen and (max-width: $single-column-max-width) {
  width: 100%;
 
    }
@@ -243,7 +304,7 @@ height: 460px;
     margin-left: 4%;
     overflow: hidden;
 
-    @media only screen and (max-width: 750px) {
+    @media only screen and (max-width: $single-column-max-width) {
  width: 90%;
     margin-left: 5%;
    }
@@ -254,7 +315,7 @@ height: 460px;
        margin-top: 2px;
     margin-left: 0;
   margin-top: 2px;
-         @media only screen and (max-width: 750px) {
+         @media only screen and (max-width: $single-column-max-width) {
  width: 100%;
    }
     }
@@ -284,7 +345,7 @@ height: 460px;
     overflow: unset;
 
 
-       @media only screen and (max-width: 750px) {
+       @media only screen and (max-width: $single-column-max-width) {
  border-width: 1px;
          margin: 18px unset unset;
        }
@@ -300,7 +361,7 @@ height: 460px;
     color: $text-green;
     display:inline;
 
-        @media only screen and (max-width: 750px) {
+        @media only screen and (max-width: 1200px) {
        font-size: 15px;
    }
 
@@ -317,22 +378,16 @@ color:grey;
   }
 
   .value {
-   font-size: 26px;
+   @include value-sizes;
     font-weight: 700;
     display:block;
     margin-bottom: 30px;
 
-     @media only screen and (max-width: 1000px) {
-        font-size: 16px;
-     }
-
-     @media only screen and (max-width: 750px) {
+     @media only screen and (max-width: $single-column-max-width) {
         font-size: 24px;
         margin-bottom: 13px;
      }
-
   }
-
 
   }
 
@@ -342,7 +397,7 @@ color:grey;
     position: absolute;
     left: 4%;
 
-   @media only screen and (max-width: 750px) {
+   @media only screen and (max-width: $single-column-max-width) {
  height: unset;
     width: 90%;
     position: unset;
@@ -357,7 +412,7 @@ color:grey;
     position: absolute;
     right: 4%;
 
-      @media only screen and (max-width: 750px) {
+      @media only screen and (max-width: $single-column-max-width) {
 height: unset;
     width: 90%;
     position: unset;
@@ -365,30 +420,26 @@ height: unset;
      }
   }
 
-
-
   .single-row-left {
     width: 44%;
     float: left;
     margin-left: 4%;
 
-     @media only screen and (max-width: 750px) {
-  float: unset;
-      width: 90%;
+     @media only screen and (max-width: $single-column-max-width) {
+    float: unset;
+    width: 90%;
     position: unset;
+    margin-left: 5%;
      }
 
   }
-
-
-
 
   .single-row-right {
     width: 44%;
     float: right;
     margin-right: 4%;
 
-     @media only screen and (max-width: 750px) {
+     @media only screen and (max-width: $single-column-max-width) {
     float: unset;
     width: 90%;
     position: unset;
@@ -404,7 +455,6 @@ height: unset;
       display:block;
       border-color: #1c2846;
       text-align: center;
-      paddimng: auto;
       font-size: 12px;
       padding: 15px 30px;
       border-width: 2px;
@@ -419,12 +469,22 @@ height: unset;
     width: 85%;
     left: 5%;
     text-align: center;
-    paddimng: auto;
+    padding: auto;
     padding: 15px 30px;
  border-width: 2px;
-    @media only screen and (max-width: 850px) {
+      margin-top: 25px;
+
+    @media only screen and (max-width: 900px) {
        display: none;
     }
+
+  @media only screen and (max-width: 1200px) {
+        font-size: 14px;
+     }
+
+     @media only screen and (max-width: 1025px) {
+        font-size: 12px;
+     }
 }
 
 .invisible {
@@ -434,10 +494,26 @@ height: unset;
 .view-port {
   font-size: 1.1vw !important;
   cursor: pointer;
+
+   @media only screen and (max-width: $single-column-max-width) {
+     font-size: 2.75vw !important;
+   }
 }
 
 .placeholder-text {
-   font-size: 1.1vw !important;
+  @include value-sizes;
+   //font-size: 1.1vw !important;
+     @media only screen and (max-width: $single-column-max-width) {
+     font-size: 16px;
+   }
+}
+
+.unavailable-placeholder-text {
+  font-size: 1.1vw;
+
+  @media only screen and (max-width: $single-column-max-width) {
+     font-size: 16px;
+   }
 }
 
 .clickable {
