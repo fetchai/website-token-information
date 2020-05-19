@@ -1,0 +1,57 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: contractmonitor
+  namespace: token-info-page
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        io.kompose.service: contractmonitor
+    spec:
+      containers:
+      - name: contractmonitor
+        image: gcr.io/fetch-ai-sandbox/fetch_contractmonitor:latest
+ 
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "1000m"
+
+        env:
+        - name: PYTHONUNBUFFERED
+          value: "1"
+        - name: DBNAME
+          valueFrom:
+            secretKeyRef:
+              name: token-info-db-credentials
+              key: PGDATABASE
+
+        - name: DBUSERNAME
+          valueFrom:
+            secretKeyRef:
+              name: token-info-db-credentials
+              key: PGUSER
+
+        - name: DBPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: token-info-db-credentials
+              key: PGPASSWORD
+
+        - name: INFURAPROJECTID
+          valueFrom:
+            secretKeyRef:
+              name: contractmon-api-keys
+              key: infuraprojectid
+
+        - name: ETHERSCANAPIKEY
+          valueFrom:
+            secretKeyRef:
+              name: contractmon-api-keys
+              key: etherscanapikey

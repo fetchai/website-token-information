@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: token-info-db
+  namespace: token-info-page
+spec:
+  selector:
+    app: token-info-db
+  ports:
+    - protocol: TCP
+      port: 5432

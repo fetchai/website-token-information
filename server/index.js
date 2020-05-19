@@ -8,16 +8,17 @@ const port = process.env.PORT || 8000;
 const DIST_DIR = path.join(__dirname, "../dist");
 const ONE_HOUR = 1000 * 60 * 60;
 const STAKING_API = "http://staking.fetch.ai/api/auction_status?lastBlock=0";
-const ETHERSCAN_API_KEY = "2WQZAX9F42ZFGXPBCKHXTTGYGU2A6CD6VG";
+const ETHERSCAN_API_KEY = ETHERSCAN_API_KEY;
+// const ETHERSCAN_API_KEY = "2WQZAX9F42ZFGXPBCKHXTTGYGU2A6CD6VG";
 const TOTAL_LOCKED = "109534769";
 const TOTAL_FET_SUPPLY = new BN("1152997575")
 const TEN_TO_EIGHTEEN = "1" + "0".repeat(18);
 const NUMERATOR = new BN(TEN_TO_EIGHTEEN);
 
-// process.env.PGUSER = "test";
-// process.env.PGHOST = "localhost";
-// process.env.PGPASSWORD = "myPassword";
-// process.env.PGDATABASE = "douglas";
+// process.env.PGUSER = PGUSER;
+// process.env.PGHOST = PGHOST;
+// process.env.PGPASSWORD = PGPASSWORD;
+// process.env.PGDATABASE = PGDATABASE;
 // process.env.PGPORT = "5432";
 
 const { Pool } = require("pg");
