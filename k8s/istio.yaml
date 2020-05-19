@@ -3,7 +3,7 @@ apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
   name: token-info
-  # namespace: token-info-page
+  namespace: token-info-page
 spec:
   selector:
     app: istio-fetchpubig

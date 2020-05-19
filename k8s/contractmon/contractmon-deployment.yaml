@@ -2,12 +2,12 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: contractmonitor
+  namespace: token-info-page
 spec:
   replicas: 1
   strategy: {}
   template:
     metadata:
-      creationTimestamp: null
       labels:
         io.kompose.service: contractmonitor
     spec:

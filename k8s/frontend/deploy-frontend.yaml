@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: token-info-frontend
-  # namespace: token-info-page
+  namespace: token-info-page
   labels:
     app: token-info-frontend
 spec:

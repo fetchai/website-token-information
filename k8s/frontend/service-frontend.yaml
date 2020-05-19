@@ -2,7 +2,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: token-info-frontend
-  # namespace: token-info-page
+  namespace: token-info-page
 spec:
   selector:
     app: token-info-frontend
