@@ -71,6 +71,12 @@ npm install
     ``forever stop <your number here>``
 
  
-  
+### Deployment 
+
+git clone https://github.com/fetchai/website-token-information
+cd website-token-information
+skaffold delete -p sandbox && skaffold run -p sandbox
+
+
 
 
