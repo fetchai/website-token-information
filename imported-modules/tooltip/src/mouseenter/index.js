@@ -35,7 +35,7 @@ module.exports = function(el, selector, fn, isMobile){
             }
         // }
     }
-    debugger;
+
     if(!isMobile) {
         el.addEventListener('mouseover', onMouseOver)
     }

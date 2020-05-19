@@ -23,7 +23,6 @@ module.exports = function(config){
     var prevStyle
 
     function showTooltip(target){
-        debugger;
         var tooltip = target.getAttribute(config.attrName)
 
         var el = tooltipElement(config)

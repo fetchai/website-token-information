@@ -166,7 +166,7 @@ export default class MainPage extends Component {
  className={style.info}/>
                     </span>
                     <hr className={style.hr}></hr>
-                    <span className={style.value}>{TOTAL_FET_SUPPLY_DISPLAY_STRING}</span>
+                    <span className={classnames(style.value, style.largeNumber)}>{TOTAL_FET_SUPPLY_DISPLAY_STRING}</span>
                   </div>
                   <div className={style.right}>
                     <h3 className={style.subheading}>Price</h3>
@@ -181,7 +181,7 @@ export default class MainPage extends Component {
                     <img src="assets/info-icon.svg" data-tooltip="The total excluding un-released, <br> locked and staked tokens" data-tooltip-positions="bottom;left;top;right"  alt="info icon"
                          className={style.info} onClick={this.triggerHoverFromClickOnMobileOnly} ></img>
                     <hr className={style.hr}></hr>
-                    <span className={style.value}>{this.state.currentCirculatingSupply.insertCommas()}</span>
+                    <span className={classnames(style.value, style.largeNumber)}>{this.state.currentCirculatingSupply.insertCommas()}</span>
                   </div>
                 </div>
               </div>
