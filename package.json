@@ -7,6 +7,7 @@
     "start": "webpack --mode production && PGUSER=test \\\n  PGHOST=localhost \\\n  PGPASSWORD=myPassword \\\n  PGDATABASE=douglas \\\n  PGPORT=5432 \\forever start server/index.js",
     "build": "webpack --mode production --watch --watch-poll",
     "dev": "webpack --mode development && PGUSER=test \\\n  PGHOST=localhost \\\n  PGPASSWORD=myPassword \\\n  PGDATABASE=douglas \\\n  PGPORT=5432 \\node server/index.js",
+    "dev:debug": "webpack --mode development && PGUSER=test \\\n  PGHOST=localhost \\\n  PGPASSWORD=myPassword \\\n  PGDATABASE=douglas \\\n  PGPORT=5432 \\node --inspect-brk server/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prod": "./node_modules/.bin/webpack --mode production && node server/index.js"
   },
@@ -39,7 +40,8 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "tooltip": "^1.6.1",
-    "web3": "^1.2.6"
+    "web3": "^1.2.6",
+    "xml2js": "^0.4.23"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
