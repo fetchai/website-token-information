@@ -111,7 +111,7 @@ function FETRemainingInContract() {
     contract.methods.decimals().call((error, decimals) => {
 
       if(error) return;
-      unreleasedAmount = balance.toString();
+        unreleasedAmount = new BN(balance.toString()).div(NUMERATOR)
     });
   });
 }
