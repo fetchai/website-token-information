@@ -80,7 +80,8 @@ export default class MainPage extends Component {
       currentCirculatingSupply: "",
       totalSearchQueriesForAgentsToFindOtherAgents: "",
       peakAgentsOnlineNow: "",
-      totalAgentsFound: ""
+      totalAgentsFound: "",
+      totalAgentsEver: ""
     }
   }
 
@@ -124,6 +125,7 @@ export default class MainPage extends Component {
         unreleasedAmount: json.unreleasedAmount,
     peakAgentsOnlineNow: json.peakAgentsOnlineNow.insertCommas(),
     totalAgentsFound: json.totalAgentsFound.insertCommas(),
+    totalAgentsEver: json.totalAgentsEver.insertCommas(),
       totalSearchQueriesForAgentsToFindOtherAgents: json.totalSearchQueriesForAgentsToFindOtherAgents.insertCommas(),
         recentlyTransfered: parseInt(json.recentlyTransfered) > 0 ? json.recentlyTransfered.insertCommas() : UNAVAILABLE_MESSAGE,
         recentLargeTransfers: parseInt(json.recentLargeTransfers) > 0 ? json.recentLargeTransfers.insertCommas() : UNAVAILABLE_MESSAGE,
@@ -209,7 +211,7 @@ export default class MainPage extends Component {
                      <img src="assets/info-icon.svg" alt="info icon" data-tooltip="The total number of agents found" data-tooltip-positions="bottom;left;top;right"
                          className={style.info} onClick={this.triggerHoverFromClickOnMobileOnly} ></img>
                     <hr className={style.hr}></hr>
-                    <span className={classnames(style.value, style.placeholderText)}>{this.state.totalAgentsFound}</span>
+                    <span className={classnames(style.value, style.placeholderText)}>{this.state.totalAgentsEver}</span>
                   </div>
 
                   <div className={style.fullWidthItem}>

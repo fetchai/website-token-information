@@ -15,5 +15,6 @@ export const queryFetchApi = async () => {
       totalAgentsOnlineRightNow: json.totalAgentsOnlineRightNow,
       totalSearchQueriesForAgentsToFindOtherAgents: json.totalSearchQueriesForAgentsToFindOtherAgents,
       peakAgentsOnlineNow: json.peakAgentsOnlineNow,
+      totalAgentsEver: json.totalAgentsEver,
     }
 }
