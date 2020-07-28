@@ -10,6 +10,11 @@ export const queryFetchApi = async () => {
       totalStaked: json.totalStaked, unreleasedAmount: json.unreleasedAmount,
       recentLargeTransfers: json.recentLargeTransfers,
       recentlyTransfered: json.recentlyTransfered,
-      currentCirculatingSupply: json.currentCirculatingSupply
+      currentCirculatingSupply: json.currentCirculatingSupply,
+      totalAgentsFound: json.totalAgentsFound,
+      totalAgentsOnlineRightNow: json.totalAgentsOnlineRightNow,
+      totalSearchQueriesForAgentsToFindOtherAgents: json.totalSearchQueriesForAgentsToFindOtherAgents,
+      peakAgentsOnlineNow: json.peakAgentsOnlineNow,
+      totalAgentsEver: json.totalAgentsEver,
     }
 }

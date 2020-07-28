@@ -77,8 +77,11 @@ export default class MainPage extends Component {
       unreleasedAmount: "",
       recentlyTransfered: "",
       recentLargeTransfers: "",
-      currentCirculatingSupply: ""
-
+      currentCirculatingSupply: "",
+      totalSearchQueriesForAgentsToFindOtherAgents: "",
+      peakAgentsOnlineNow: "",
+      totalAgentsFound: "",
+      totalAgentsEver: ""
     }
   }
 
@@ -120,6 +123,10 @@ export default class MainPage extends Component {
       }
       this.setState({totalStaked: json.totalStaked,
         unreleasedAmount: json.unreleasedAmount,
+    peakAgentsOnlineNow: json.peakAgentsOnlineNow.insertCommas(),
+    totalAgentsFound: json.totalAgentsFound.insertCommas(),
+    totalAgentsEver: json.totalAgentsEver.insertCommas(),
+      totalSearchQueriesForAgentsToFindOtherAgents: json.totalSearchQueriesForAgentsToFindOtherAgents.insertCommas(),
         recentlyTransfered: parseInt(json.recentlyTransfered) > 0 ? json.recentlyTransfered.insertCommas() : UNAVAILABLE_MESSAGE,
         recentLargeTransfers: parseInt(json.recentLargeTransfers) > 0 ? json.recentLargeTransfers.insertCommas() : UNAVAILABLE_MESSAGE,
         currentCirculatingSupply: json.currentCirculatingSupply})
@@ -200,11 +207,11 @@ export default class MainPage extends Component {
                     <span className={style.value}>{TOTAL_HOLDERS}</span>
                   </div>
                   <div className={style.singleRowRight}>
-                    <h3 className={style.subheading}>Of which are agents</h3>
-                     <img src="assets/info-icon.svg" alt="info icon" data-tooltip="This is the percentage of addresses that are <br> likely to be autonomous economic agents. Coming soon" data-tooltip-positions="bottom;left;top;right"
+                    <h3 className={style.subheading}>Total Agents</h3>
+                     <img src="assets/info-icon.svg" alt="info icon" data-tooltip="The total number of agents found" data-tooltip-positions="bottom;left;top;right"
                          className={style.info} onClick={this.triggerHoverFromClickOnMobileOnly} ></img>
                     <hr className={style.hr}></hr>
-                    <span className={classnames(style.value, style.placeholderText)}>Not yet available</span>
+                    <span className={classnames(style.value, style.placeholderText)}>{this.state.totalAgentsEver}</span>
                   </div>
 
                   <div className={style.fullWidthItem}>
@@ -259,17 +266,18 @@ export default class MainPage extends Component {
                     <span className={classnames(style.value, this.state.recentLargeTransfers == UNAVAILABLE_MESSAGE ? style.unavailablePlaceholderText : false)}>{(this.state.recentLargeTransfers == "") ? "loading" :  this.state.recentLargeTransfers}</span>
 </div>
                     <div className={style.singleRowLeft}>
-                    <h3 className={style.subheading}>Agents transacting last 24h</h3>
-                    <hr className={style.hr}></hr>
-                    <span className={classnames(style.value, style.placeholderText)}>Not yet available</span>
-                  </div>
-                  <div className={style.singleRowRight}>
-                    <h3 className={style.subheading}>Agent TXs</h3>
-                    <img src="assets/info-icon.svg" alt="info icon" data-tooltip={`Total transactions made by agents.
-                         Coming soon. `} data-tooltip-positions="bottom;left;top;right" onClick={this.triggerHoverFromClickOnMobileOnly}
+                    <h3 className={style.subheading}>Peak Concurrent Agents</h3>
+                          <img src="assets/info-icon.svg" alt="info icon" data-tooltip={`The total number of agents online concurrently at peak time`} data-tooltip-positions="bottom;left;top;right" onClick={this.triggerHoverFromClickOnMobileOnly}
                          className={style.info}></img>
                     <hr className={style.hr}></hr>
-                    <span className={classnames(style.value, style.placeholderText)}>Not yet available</span>
+                    <span className={classnames(style.value, style.placeholderText)}>{this.state.peakAgentsOnlineNow}</span>
+                  </div>
+                  <div className={style.singleRowRight}>
+                    <h3 className={style.subheading}>Agent Seach Queries</h3>
+                    <img src="assets/info-icon.svg" alt="info icon" data-tooltip={`Total search queries for agents to find other agents`} data-tooltip-positions="bottom;left;top;right" onClick={this.triggerHoverFromClickOnMobileOnly}
+                         className={style.info}></img>
+                    <hr className={style.hr}></hr>
+                    <span className={classnames(style.value, style.placeholderText)}>{this.state.totalSearchQueriesForAgentsToFindOtherAgents}</span>
                   </div>
                 </div>
                  <div className={style.mobileFooter}>This page and the data presented on it is for information purposes only. Whilst every effort is made to ensure it is accurate, Fetch.ai makes absolutely no guarantees as to its accuracy. Nothing on this page indicates financial advice, and the FET token is strictly a utility token. Please consult the tokenomics paper or project white paper for more information
