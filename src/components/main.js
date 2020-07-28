@@ -79,7 +79,7 @@ export default class MainPage extends Component {
       recentLargeTransfers: "",
       currentCirculatingSupply: "",
       totalSearchQueriesForAgentsToFindOtherAgents: "",
-      totalAgentsOnlineRightNow: "",
+      peakAgentsOnlineNow: "",
       totalAgentsFound: ""
     }
   }
@@ -122,7 +122,7 @@ export default class MainPage extends Component {
       }
       this.setState({totalStaked: json.totalStaked,
         unreleasedAmount: json.unreleasedAmount,
-    totalAgentsOnlineRightNow: json.totalAgentsOnlineRightNow.insertCommas(),
+    peakAgentsOnlineNow: json.peakAgentsOnlineNow.insertCommas(),
     totalAgentsFound: json.totalAgentsFound.insertCommas(),
       totalSearchQueriesForAgentsToFindOtherAgents: json.totalSearchQueriesForAgentsToFindOtherAgents.insertCommas(),
         recentlyTransfered: parseInt(json.recentlyTransfered) > 0 ? json.recentlyTransfered.insertCommas() : UNAVAILABLE_MESSAGE,
@@ -264,11 +264,11 @@ export default class MainPage extends Component {
                     <span className={classnames(style.value, this.state.recentLargeTransfers == UNAVAILABLE_MESSAGE ? style.unavailablePlaceholderText : false)}>{(this.state.recentLargeTransfers == "") ? "loading" :  this.state.recentLargeTransfers}</span>
 </div>
                     <div className={style.singleRowLeft}>
-                    <h3 className={style.subheading}>Total Agents Online</h3>
-                          <img src="assets/info-icon.svg" alt="info icon" data-tooltip={`The total number of agents online right now`} data-tooltip-positions="bottom;left;top;right" onClick={this.triggerHoverFromClickOnMobileOnly}
+                    <h3 className={style.subheading}>Peak Concurrent Agents</h3>
+                          <img src="assets/info-icon.svg" alt="info icon" data-tooltip={`The total number of agents online concurrently at peak time`} data-tooltip-positions="bottom;left;top;right" onClick={this.triggerHoverFromClickOnMobileOnly}
                          className={style.info}></img>
                     <hr className={style.hr}></hr>
-                    <span className={classnames(style.value, style.placeholderText)}>{this.state.totalAgentsOnlineRightNow}</span>
+                    <span className={classnames(style.value, style.placeholderText)}>{this.state.peakAgentsOnlineNow}</span>
                   </div>
                   <div className={style.singleRowRight}>
                     <h3 className={style.subheading}>Agent Seach Queries</h3>
