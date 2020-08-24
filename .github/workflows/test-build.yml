@@ -8,7 +8,7 @@ on:
       - '*'
 
 jobs:
-  Test image building:
+  test-image-build-pr:
     runs-on: ubuntu-20.04
 
     steps:
