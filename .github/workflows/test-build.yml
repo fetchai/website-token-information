@@ -1,0 +1,28 @@
+name: Build and push images
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup GCloud
+        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          service_account_key: ${{ secrets.GCLOUD_KEY_IMAGES }}
+
+      - name: Login to GCR Registry
+        run: |
+          gcloud auth configure-docker
+      - name: Build and Publish Private Images
+        uses: ejfitzgerald/action-docker-tag@v0.2.0-alpha2
+        with:
+          repo: gcr.io/fetch-ai-images/token-info-frontend
