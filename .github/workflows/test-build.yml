@@ -1,0 +1,19 @@
+name: Test build during PRs
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  test-image-build-pr:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Test docker image building
+        run: |
+          docker build -t test-build .
