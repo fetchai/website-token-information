@@ -45,7 +45,7 @@
   "devDependencies": {
     "live-server": "^0.6.3",
     "webpack": "^1.5.1",
-    "webpack-dev-server": "^1.7.0"
+    "webpack-dev-server": "^3.1.11"
   },
   "homepage": "https://github.com/radubrehar/tooltip",
   "keywords": [
