@@ -1,4 +1,4 @@
-name: Build and push images
+name: Test build during PRs
 on:
   push:
     branches:
@@ -14,15 +14,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Setup GCloud
-        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-        with:
-          service_account_key: ${{ secrets.GCLOUD_KEY_IMAGES }}
-
-      - name: Login to GCR Registry
+      - name: Test docker image building
         run: |
-          gcloud auth configure-docker
-      - name: Build and Publish Private Images
-        uses: ejfitzgerald/action-docker-tag@v0.2.0-alpha2
-        with:
-          repo: gcr.io/fetch-ai-images/token-info-frontend
+          docker run -t test-build .
