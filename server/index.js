@@ -189,7 +189,7 @@ function totalStaked () {
       )
     })
     .catch(err => {
-      console.log('staking api request rejected with status : ', err)
+      console.log('mettalex contract balanceof  request rejected with status : ', err)
     })
 }
 
