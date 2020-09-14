@@ -152,7 +152,7 @@ function MettalexCirculatingSupply () {
   Promise.all([promise1, promise2]).then((arrayOfPromises) => {
      circulatingSupplyMettalex = TOTAL_SUPPLY_METTALEX.sub(arrayOfPromises[0].sub(arrayOfPromises[1])).toString()
   }).catch(err => {
-      console.log('staking api request rejected with status : ', err)
+      console.log('Mettalex contract balanceof api request rejected with status : ', err)
     })
 
 
@@ -189,7 +189,7 @@ function totalStaked () {
       )
     })
     .catch(err => {
-      console.log('mettalex contract balanceof  request rejected with status : ', err)
+      console.log('staking api request rejected with status : ', err)
     })
 }
 
