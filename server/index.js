@@ -5,7 +5,7 @@ const axios = require('axios')
 const BN = require('bn.js')
 const parseString = require('xml2js').parseString
 const app = express()
-const port = process.env.PORT || 8000
+const port = process.env.PORT || 7000
 const PROJECT_ID = 'cab205e574974e6d903844cb7da7537d'
 
 const DIST_DIR = path.join(__dirname, '../dist')
@@ -150,7 +150,8 @@ function MettalexCirculatingSupply () {
   const promise2 = balance(contract, METTALEX_FOUNDATION_ADDRESS)
 
   Promise.all([promise1, promise2]).then((arrayOfPromises) => {
-     circulatingSupplyMettalex = TOTAL_SUPPLY_METTALEX.sub(arrayOfPromises[0].sub(arrayOfPromises[1])).toString()
+   const toDeduct =  arrayOfPromises[0].add(arrayOfPromises[1])
+     circulatingSupplyMettalex = TOTAL_SUPPLY_METTALEX.sub(toDeduct).toString()
   }).catch(err => {
       console.log('Mettalex contract balanceof api request rejected with status : ', err)
     })
@@ -248,7 +249,6 @@ app.get('/token_information_api', (req, res) => {
 
 
 app.get('/mettalex_circulating_supply', (req, res) => {
-
   res.send(circulatingSupplyMettalex)
 })
 
