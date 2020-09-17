@@ -5,7 +5,7 @@ const axios = require('axios')
 const BN = require('bn.js')
 const parseString = require('xml2js').parseString
 const app = express()
-const port = process.env.PORT || 7000
+const port = process.env.PORT || 8000
 const PROJECT_ID = 'cab205e574974e6d903844cb7da7537d'
 
 const DIST_DIR = path.join(__dirname, '../dist')
