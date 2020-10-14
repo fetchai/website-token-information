@@ -13,7 +13,7 @@ import tooltip  from '../../imported-modules/tooltip';
 const TOTAL_FET_SUPPLY_DISPLAY_STRING = "1,152,997,575";
 const TOTAL_LOCKED = "109534769";
 const TOTAL_HOLDERS = "5,642";
-const TOKEN_CONTRACT = "0x1d287cc25dad7ccaf76a26bc660c5f7c8e2a05bd";
+const TOKEN_CONTRACT = "0xaea46A60368A7bD060eec7DF8CBa43b7EF41Ad85";
 const STAKING_CONTRACT = "0x4f3C38cD3267329f93418F4b106231022cC264c0";
 const PRICES_HOVERABLE_MESSAGE = "Live Binance Price";
 const UNAVAILABLE_MESSAGE = "Temporarily unavailable";
@@ -219,7 +219,7 @@ export default class MainPage extends Component {
                     <img src="assets/info-icon.svg" alt="info icon" data-tooltip="Fetch.ai's Ethereum Token Contract" data-tooltip-positions="bottom;left;top;right" onClick={this.triggerHoverFromClickOnMobileOnly}
                          className={style.info}></img>
                     <hr className={style.fullWidthHr}></hr>
-                    <span className={classnames(style.value, style.viewPort)} onClick = {() => {window.open("https://etherscan.io/address/0x1d287cc25dad7ccaf76a26bc660c5f7c8e2a05bd",  '_blank');}}>{TOKEN_CONTRACT}</span>
+                    <span className={classnames(style.value, style.viewPort)} onClick = {() => {window.open("https://etherscan.io/address/0xaea46A60368A7bD060eec7DF8CBa43b7EF41Ad85",  '_blank');}}>{TOKEN_CONTRACT}</span>
                   </div>
 
                   <div className={style.singleRowLeft}>
