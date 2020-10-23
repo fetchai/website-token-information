@@ -53,7 +53,7 @@ npm install
 
 - Or Alternatively (advised for ease of use) you can change the below line in the package.json to add your credentials in and then run ``npm run dev``
 
-```"dev": "webpack --mode development && PGUSER=test \\\n  PGHOST=localhost \\\n  PGPASSWORD=myPassword \\\n  PGDATABASE=douglas \\\n  PGPORT=5432 \\node server/index.js",```
+```"dev": "webpack --mode development && PGUSER=test \fettxs\\n  PGHOST=localhost \\\n  PGPASSWORD=myPassword \\\n  PGDATABASE=douglas \\\n  PGPORT=5432 \\node server/index.js",```
 
 - Note: After starting the server it takes around ten seconds of running before results will be correct, but they should then remain correct permanently. 
 
