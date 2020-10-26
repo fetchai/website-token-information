@@ -112,22 +112,31 @@ function FETRemainingInContract () {
 
   contract.methods.balanceOf(CONTRACT_OWNER_ADDRESS).call((error, balance) => {
 
-      if (error || balance === null) {
+
+      if (error || balance === null)
+      {
       console.log("error in FETRemainingInContract", error)
+      console.log("balance is ")
     return
       }
 
     contract.methods.decimals().call((error, decimals) => {
       if (error || balance === null) return
-            console.log("error in FETRemainingInContract to decimals", error)
-            unreleasedAmount = new BN(balance.toString()).div(NUMERATOR).toString()
+
+      const denominator = new BN(balance.toString())
+      if(denominator.isZero()){
+        unreleasedAmount = "0"
+      } else {
+              unreleasedAmount = new BN(balance.toString()).div(NUMERATOR).toString()
+      }
+
+      console.log("unreleasedAmount", unreleasedAmount)
     })
   })
 }
 
  FETRemainingInContract()
  setInterval(FETRemainingInContract, ONE_HOUR)
-
 
 function getActiveValidators() {
     axios
@@ -241,8 +250,21 @@ function MettalexCirculatingSupply () {
       contract.methods.balanceOf(address).call((error, balance) => {
         contract.methods.decimals().call((error, decimals) => {
           if (error) return reject()
-          console.log("ettalex contract balanceof api request re", )
-          res = new BN(balance.toString()).div(NUMERATOR)
+          console.log("ettalex contract balanceof api request re")
+          let denominator = new BN(balance.toString())
+
+                if(denominator.isZero()){
+        res = new BN("0")
+                            console.log("denominator1111111")
+      } else {
+                            console.log("denominator2222222", denominator.toString())
+                  debugger;
+        res = denominator.div(NUMERATOR)
+                                    debugger;
+                                              console.log("denominator999999", denominator.toString())
+
+      }
+          console.log("denominator33333")
           resolve(res)
         })
       })
@@ -250,8 +272,8 @@ function MettalexCirculatingSupply () {
   }
 }
 
- // MettalexCirculatingSupply()
- // setInterval(MettalexCirculatingSupply, ONE_HOUR)
+ MettalexCirculatingSupply()
+ setInterval(MettalexCirculatingSupply, ONE_HOUR)
 
 function calcCurrentCirculatingSupply () {
   if (totalStaked === '' || unreleasedAmount === '') return
@@ -260,17 +282,22 @@ function calcCurrentCirculatingSupply () {
   currentCirculatingSupply = TOTAL_FET_SUPPLY.sub(new BN(totalStaked)).sub(new BN(TOTAL_LOCKED)).sub(new BN(unreleasedAmount)).abs().toString()
 }
 
-// calcCurrentCirculatingSupply()
-// setInterval(calcCurrentCirculatingSupply, 5000)
+calcCurrentCirculatingSupply()
+setInterval(calcCurrentCirculatingSupply, 5000)
 
 function AgentInformation () {
   axios
     .get(FETCH_AGENTS)
     .then(resp => {
+
+
       if (resp.status !== 200) return
       // parse the xml
       parseString(resp.data, function (err, result) {
         const response = result.response
+
+        console.log("response 777777", response)
+
         totalAgentsEver = response.statistics[0].total_agents_ever[0]
         totalAgentsOnlineRightNow = new BN(response.statistics[0].total_agents_ever[0]).sub(new BN(response.statistics[0].expired_agents[0])).toString()
         peakAgentsOnlineNow = response.statistics[0].peaks[0].peak[0]._
@@ -281,8 +308,8 @@ function AgentInformation () {
     })
 }
 
-// AgentInformation()
-// setInterval(AgentInformation, 15000)
+AgentInformation()
+setInterval(AgentInformation, 15000)
 
 app.use(express.static(DIST_DIR))
 
