@@ -37,7 +37,6 @@ const BN = require('bn.js')
 const parseString = require('xml2js').parseString
 const app = express()
 
-
 let unreleasedAmount = ''
 let twentyFourHoursAgoEthereumBlockNumber
 let fetTransferedInLastTwentyFourHours = ''
@@ -61,8 +60,6 @@ let totalStaked = ""
 let circulatingSupplyMettalex = ''
 
 setup()
-
-
 
 String.prototype.insertCommas = function () {
   return this.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
@@ -152,6 +149,8 @@ function getActiveValidators() {
 }
 
 getActiveValidators()
+setInterval(getActiveValidators, ONE_HOUR)
+
 
 function getTotals() {
 
@@ -189,6 +188,7 @@ function getTotals() {
 }
 
 getTotals()
+ setInterval(getTotals, ONE_HOUR)
 
 function calculateAverageBlockTime() {
   let currentBlockTime;
@@ -222,12 +222,10 @@ function calculateAverageBlockTime() {
 
     averageBlockTime = diffSeconds/blocksOverWhichToAverage
   }
-
-
-
 }
-calculateAverageBlockTime()
 
+calculateAverageBlockTime()
+setInterval(calculateAverageBlockTime, ONE_HOUR)
 
 function MettalexCirculatingSupply () {
 
