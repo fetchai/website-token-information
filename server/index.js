@@ -25,9 +25,9 @@ METTALEX_CONTRACT_ABI_STRINGIFIED,
 
 const Web3 = require('web3')
 const {setup, getCurrentBlockData} = require('./scraper');
-const  DatabaseMethods  = require('./databaseMethods').DatabaseMethods;
 
-debugger;
+const  DAO  = require('./DAO')
+const  FetxDAO  = require('./FetxDao')
 
 const express = require('express')
 const axios = require('axios')
@@ -58,7 +58,6 @@ let lockedPeriodBlocks = ""
 let totalUnstaked = ""
 let totalLocked = ""
 let totalStaked = ""
-
 let circulatingSupplyMettalex = ''
 
 setup()
@@ -86,19 +85,23 @@ function getEthereumBlockNumberFrom24HoursAgo () {
 }
 
 getEthereumBlockNumberFrom24HoursAgo()
-//setInterval(getEthereumBlockNumberFrom24HoursAgo, 15000)
+setInterval(getEthereumBlockNumberFrom24HoursAgo, 15000)
 
 async function getSummedFETTransactions(){
- const databaseMethods =  new DatabaseMethods()
-  await databaseMethods.connect()
-   fetTransferedInLastTwentyFourHours = databaseMethods.getSummedFETTransactions()
+  const dao = await DAO.getInstance()
+ const fetxDAO = new FetxDAO(dao)
+  fetTransferedInLastTwentyFourHours = await fetxDAO.getSummedFETTransactions()
 }
 
 setInterval(getSummedFETTransactions, 5000)
 
+async function countLargeTransactions(){
+      const dao = await DAO.getInstance()
+     const fetxDAO = new FetxDAO(dao)
+      largeTransferCountInLastTwentyFourHours = await fetxDAO.countLargeTransactions(twentyFourHoursAgoEthereumBlockNumber)
+}
 
-
-//setInterval(countLargeTransactions, 5000)
+setInterval(countLargeTransactions, 5000)
 
 function FETRemainingInContract () {
   const web3 = new Web3(new Web3.providers.HttpProvider('https://mainnet.infura.io/v3/' + PROJECT_ID))
@@ -112,10 +115,7 @@ function FETRemainingInContract () {
       if (error || balance === null) {
       console.log("error in FETRemainingInContract", error)
     return
-
       }
-
-
 
     contract.methods.decimals().call((error, decimals) => {
       if (error || balance === null) return
@@ -125,17 +125,14 @@ function FETRemainingInContract () {
   })
 }
 
-// FETRemainingInContract()
-//setInterval(FETRemainingInContract, ONE_HOUR)
+ FETRemainingInContract()
+ setInterval(FETRemainingInContract, ONE_HOUR)
 
-//
+
 function getActiveValidators() {
     axios
     .get(`${LCD_URL}/staking/validators`)
     .then(resp => {
-      // console.log("respance", resp.data.result)
-      // console.log("respance", resp.data.result)
-
       activeValidators = resp.data.result.filter((validator) => {
         return validator.status === 2
       }).length
@@ -146,211 +143,188 @@ function getActiveValidators() {
 }
 
 getActiveValidators()
-//
-// function getTotals() {
-//
-//      function getAccruedGlobalPrincipal(contract) {
-//     return  contract.methods._accruedGlobalPrincipal().call()
-//   }
-//
-//    function getAccruedGlobalLiquidity(contract) {
-//     return  contract.methods._accruedGlobalLiquidity().call()
-//   }
-//
-//    function getLocked(contract) {
-//     return contract.methods._accruedGlobalLocked().call()
-//   }
-//    function getLockPeriod(contract) {
-//     return contract.methods._lockPeriodInBlocks().call()
-//   }
-//
-//   const web3 = new Web3(new Web3.providers.HttpProvider('https://mainnet.infura.io/v3/52a657432c274299a973790b857c5d2c'))
-//   const contract = new web3.eth.Contract(JSON.parse(STAKING_CONTRACT_ABI_STRINGIFIED), STAKING_CONTRACT_ADDRESS)
-//
-//   const promise1 = getAccruedGlobalPrincipal(contract)
-//   const promise2 = getAccruedGlobalLiquidity(contract)
-//   const promise3 = getLocked(contract)
-//   const promise4 = getLockPeriod(contract)
-//
-//   Promise.all([promise1, promise2, promise3, promise4]).then((arrayOfPromises) => {
-//     totalLocked = arrayOfPromises[1].principal;
-//     totalStaked = new BN(arrayOfPromises[0]).sub(new BN(arrayOfPromises[1].principal)).sub(new BN(arrayOfPromises[2].principal))
-//     totalUnstaked = arrayOfPromises[2].principal
-//     lockedPeriodBlocks =  arrayOfPromises[3]
-//   }).catch(err => {
-//       console.log('FAILURE contract balanceof api request rejected with status : ', err)
-//     })
-// }
-//
-// getTotals()
-//
-// function calculateAverageBlockTime() {
-//   let currentBlockTime;
-//   let pastBlockTime;
-//   const blocksOverWhichToAverage = 100
-//
-//    getCurrentBlockData(getPastBlockData, (time) => currentBlockTime = time)
-//
-//   function getPastBlockData(height) {
-//
-//       const pastHeight = height - blocksOverWhichToAverage
-//
-//       if(pastHeight <= 0) {
-//         console.log("this program cannot calc average block time until at least a 100 block 100")
-//       }
-//
-//       axios
-//       .get(`${RPC_URL}/block?height=${pastHeight}`)
-//       .then(resp => {
-//             console.log("currentBlockTimeTime", resp.data.result.block.header.time)
-//             pastBlockTime = resp.data.result.block.header.time
-//             calcAverage()
-//       })
-//   }
-//
-//   function calcAverage(){
-//      const past = new Date(pastBlockTime).getTime()
-//      const current = new Date(currentBlockTime).getTime()
-//      const diff = current - past;
-//      const diffSeconds = diff/1000
-//
-//     averageBlockTime = diffSeconds/blocksOverWhichToAverage
-//   }
-//
-//
-//
-// }
-// calculateAverageBlockTime()
-//
-//
-// function MettalexCirculatingSupply () {
-//
-//   const web3 = new Web3(new Web3.providers.HttpProvider('https://mainnet.infura.io/v3/' + PROJECT_ID))
-//   const contract = new web3.eth.Contract(JSON.parse(METTALEX_CONTRACT_ABI_STRINGIFIED), METTALEX_CONTRACT_ADDRESS)
-//
-//   const promise1 = balance(contract, METTALEX_STAKING_ADDRESS)
-//   const promise2 = balance(contract, METTALEX_FOUNDATION_ADDRESS)
-//
-//   Promise.all([promise1, promise2]).then((arrayOfPromises) => {
-//    const toDeduct =  arrayOfPromises[0].add(arrayOfPromises[1])
-//      circulatingSupplyMettalex = TOTAL_SUPPLY_METTALEX.sub(toDeduct).toString()
-//   }).catch(err => {
-//       console.log('Mettalex contract balanceof api request rejected with status : ', err)
-//     })
-//
-//   function balance(contract, address){
-//     return new Promise(function(resolve, reject) {
-//       let res
-//       contract.methods.balanceOf(address).call((error, balance) => {
-//         contract.methods.decimals().call((error, decimals) => {
-//           if (error) return reject()
-//           res = new BN(balance.toString()).div(NUMERATOR)
-//           resolve(res)
-//         })
-//       })
-//     })
-//   }
-// }
-//
-// // MettalexCirculatingSupply()
-// // //setInterval(MettalexCirculatingSupply, ONE_HOUR)
-//
-// // /**
-// //  * gets staking data and saves it to text file as json string.
-// //  */
-// // function totalStaked () {
-// //   axios
-// //     .get(STAKING_API)
-// //     .then(resp => {
-// //       if (resp.status !== 200) return
-// //       staked = calculateTotalStaked(
-// //         resp.data.payload.phase,
-// //         resp.data.payload.finalisationPrice,
-// //         resp.data.payload.slotsSold
-// //       )
-// //     })
-// //     .catch(err => {
-// //       console.log('staking api request rejected with status : ', err)
-// //     })
-// // }
-// //
-// // // calc the total amount staked
-// // totalStaked()
-// // setInterval(totalStaked, 15000)
-//
-// function calcCurrentCirculatingSupply () {
-//   if (totalStaked === '' || unreleasedAmount === '') return
-//   // Total - locked - staked - remaining == current circulating supply.
-//   // Un-released tokens are understood to be the "remaining" part of this calculation
-//   debugger;
-//   currentCirculatingSupply = TOTAL_FET_SUPPLY.sub(new BN(totalStaked)).sub(new BN(TOTAL_LOCKED)).sub(new BN(unreleasedAmount)).abs().toString()
-// }
-//
+
+function getTotals() {
+
+     function getAccruedGlobalPrincipal(contract) {
+    return  contract.methods._accruedGlobalPrincipal().call()
+  }
+
+   function getAccruedGlobalLiquidity(contract) {
+    return  contract.methods._accruedGlobalLiquidity().call()
+  }
+
+   function getLocked(contract) {
+    return contract.methods._accruedGlobalLocked().call()
+  }
+   function getLockPeriod(contract) {
+    return contract.methods._lockPeriodInBlocks().call()
+  }
+
+  const web3 = new Web3(new Web3.providers.HttpProvider('https://mainnet.infura.io/v3/52a657432c274299a973790b857c5d2c'))
+  const contract = new web3.eth.Contract(JSON.parse(STAKING_CONTRACT_ABI_STRINGIFIED), STAKING_CONTRACT_ADDRESS)
+
+  const promise1 = getAccruedGlobalPrincipal(contract)
+  const promise2 = getAccruedGlobalLiquidity(contract)
+  const promise3 = getLocked(contract)
+  const promise4 = getLockPeriod(contract)
+
+  Promise.all([promise1, promise2, promise3, promise4]).then((arrayOfPromises) => {
+    totalLocked = arrayOfPromises[1].principal;
+    totalStaked = new BN(arrayOfPromises[0]).sub(new BN(arrayOfPromises[1].principal)).sub(new BN(arrayOfPromises[2].principal))
+    totalUnstaked = arrayOfPromises[2].principal
+    lockedPeriodBlocks =  arrayOfPromises[3]
+  }).catch(err => {
+      console.log('FAILURE contract balanceof api request rejected with status : ', err)
+    })
+}
+
+getTotals()
+
+function calculateAverageBlockTime() {
+  let currentBlockTime;
+  let pastBlockTime;
+  const blocksOverWhichToAverage = 100
+
+   getCurrentBlockData(getPastBlockData, (time) => currentBlockTime = time)
+
+  function getPastBlockData(height) {
+
+      const pastHeight = height - blocksOverWhichToAverage
+
+      if(pastHeight <= 0) {
+        console.log("this program cannot calc average block time until at least a 100 block 100")
+      }
+
+      axios
+      .get(`${RPC_URL}/block?height=${pastHeight}`)
+      .then(resp => {
+            console.log("currentBlockTimeTime", resp.data.result.block.header.time)
+            pastBlockTime = resp.data.result.block.header.time
+            calcAverage()
+      })
+  }
+
+  function calcAverage(){
+     const past = new Date(pastBlockTime).getTime()
+     const current = new Date(currentBlockTime).getTime()
+     const diff = current - past;
+     const diffSeconds = diff/1000
+
+    averageBlockTime = diffSeconds/blocksOverWhichToAverage
+  }
+
+
+
+}
+calculateAverageBlockTime()
+
+
+function MettalexCirculatingSupply () {
+
+  const web3 = new Web3(new Web3.providers.HttpProvider('https://mainnet.infura.io/v3/' + PROJECT_ID))
+  const contract = new web3.eth.Contract(JSON.parse(METTALEX_CONTRACT_ABI_STRINGIFIED), METTALEX_CONTRACT_ADDRESS)
+
+  const promise1 = balance(contract, METTALEX_STAKING_ADDRESS)
+  const promise2 = balance(contract, METTALEX_FOUNDATION_ADDRESS)
+
+  Promise.all([promise1, promise2]).then((arrayOfPromises) => {
+   const toDeduct =  arrayOfPromises[0].add(arrayOfPromises[1])
+     circulatingSupplyMettalex = TOTAL_SUPPLY_METTALEX.sub(toDeduct).toString()
+  }).catch(err => {
+      console.log('Mettalex contract balanceof api request rejected with status : ', err)
+  })
+
+  function balance(contract, address){
+    return new Promise(function(resolve, reject) {
+      let res
+      contract.methods.balanceOf(address).call((error, balance) => {
+        contract.methods.decimals().call((error, decimals) => {
+          if (error) return reject()
+          console.log("ettalex contract balanceof api request re", )
+          res = new BN(balance.toString()).div(NUMERATOR)
+          resolve(res)
+        })
+      })
+    })
+  }
+}
+
+ // MettalexCirculatingSupply()
+ // setInterval(MettalexCirculatingSupply, ONE_HOUR)
+
+function calcCurrentCirculatingSupply () {
+  if (totalStaked === '' || unreleasedAmount === '') return
+  // Total - locked - staked - remaining == current circulating supply.
+  // Un-released tokens are understood to be the "remaining" part of this calculation
+  currentCirculatingSupply = TOTAL_FET_SUPPLY.sub(new BN(totalStaked)).sub(new BN(TOTAL_LOCKED)).sub(new BN(unreleasedAmount)).abs().toString()
+}
+
 // calcCurrentCirculatingSupply()
-// //setInterval(calcCurrentCirculatingSupply, 5000)
-//
-// function AgentInformation () {
-//   axios
-//     .get(FETCH_AGENTS)
-//     .then(resp => {
-//       if (resp.status !== 200) return
-//       // parse the xml
-//       parseString(resp.data, function (err, result) {
-//         const response = result.response
-//         totalAgentsEver = response.statistics[0].total_agents_ever[0]
-//         totalAgentsOnlineRightNow = new BN(response.statistics[0].total_agents_ever[0]).sub(new BN(response.statistics[0].expired_agents[0])).toString()
-//         peakAgentsOnlineNow = response.statistics[0].peaks[0].peak[0]._
-//         totalSearchQueriesForAgentsToFindOtherAgents = response.statistics[0].total_search_queries[0]
-//         totalAgentsFound = response.statistics[0].total_agents_found[0]
-//       })
-//
-//     })
-// }
-//
+// setInterval(calcCurrentCirculatingSupply, 5000)
+
+function AgentInformation () {
+  axios
+    .get(FETCH_AGENTS)
+    .then(resp => {
+      if (resp.status !== 200) return
+      // parse the xml
+      parseString(resp.data, function (err, result) {
+        const response = result.response
+        totalAgentsEver = response.statistics[0].total_agents_ever[0]
+        totalAgentsOnlineRightNow = new BN(response.statistics[0].total_agents_ever[0]).sub(new BN(response.statistics[0].expired_agents[0])).toString()
+        peakAgentsOnlineNow = response.statistics[0].peaks[0].peak[0]._
+        totalSearchQueriesForAgentsToFindOtherAgents = response.statistics[0].total_search_queries[0]
+        totalAgentsFound = response.statistics[0].total_agents_found[0]
+      })
+
+    })
+}
+
 // AgentInformation()
-// //setInterval(AgentInformation, 15000)
-//
-// app.use(express.static(DIST_DIR))
-//
-// app.get('/token_information_api', (req, res) => {
-//   res.send({
-//     totalStaked: totalStaked,
-//     unreleasedAmount: unreleasedAmount,
-//     recentlyTransfered: fetTransferedInLastTwentyFourHours,
-//     recentLargeTransfers: largeTransferCountInLastTwentyFourHours,
-//     currentCirculatingSupply: currentCirculatingSupply,
-//     totalAgentsEver: totalAgentsEver,
-//     totalAgentsOnlineRightNow: totalAgentsOnlineRightNow,
-//     peakAgentsOnlineNow: peakAgentsOnlineNow,
-//     totalSearchQueriesForAgentsToFindOtherAgents: totalSearchQueriesForAgentsToFindOtherAgents,
-//     totalAgentsFound: totalAgentsFound,
-//   })
-// })
-//
-//
-// app.get('/staking', (req, res) => {
-//   res.send({
-//     lockedPeriodBlocks: lockedPeriodBlocks,
-//     totalUnstaked: totalUnstaked,
-//     totalLocked: totalLocked,
-//     totalStaked: totalStaked,
-//   })
-// })
-//
-// app.get(`/status/${NETWORK_NAME_OF_LCD_URL}`, (req, res) => {
-//   res.send({
-//      activeValidators: activeValidators,
-//     inactiveValidators: inactiveValidators,
-//     averageBlockTime: averageBlockTime
-//   })
-// })
-//
-//
-//
-//
-// app.get('/mettalex_circulating_supply', (req, res) => {
-//   res.send(circulatingSupplyMettalex)
-// })
+// setInterval(AgentInformation, 15000)
+
+app.use(express.static(DIST_DIR))
+
+app.get('/token_information_api', (req, res) => {
+  res.send({
+    totalStaked: totalStaked,
+    unreleasedAmount: unreleasedAmount,
+    recentlyTransfered: fetTransferedInLastTwentyFourHours,
+    recentLargeTransfers: largeTransferCountInLastTwentyFourHours,
+    currentCirculatingSupply: currentCirculatingSupply,
+    totalAgentsEver: totalAgentsEver,
+    totalAgentsOnlineRightNow: totalAgentsOnlineRightNow,
+    peakAgentsOnlineNow: peakAgentsOnlineNow,
+    totalSearchQueriesForAgentsToFindOtherAgents: totalSearchQueriesForAgentsToFindOtherAgents,
+    totalAgentsFound: totalAgentsFound,
+  })
+})
+
+
+app.get('/staking', (req, res) => {
+  res.send({
+    lockedPeriodBlocks: lockedPeriodBlocks,
+    totalUnstaked: totalUnstaked,
+    totalLocked: totalLocked,
+    totalStaked: totalStaked,
+  })
+})
+
+app.get(`/status/${NETWORK_NAME_OF_LCD_URL}`, (req, res) => {
+  res.send({
+     activeValidators: activeValidators,
+    inactiveValidators: inactiveValidators,
+    averageBlockTime: averageBlockTime
+  })
+})
+
+
+
+
+app.get('/mettalex_circulating_supply', (req, res) => {
+  res.send(circulatingSupplyMettalex)
+})
 
 
 app.listen(port, function () {

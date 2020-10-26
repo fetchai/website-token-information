@@ -1,12 +1,13 @@
 const axios = require('axios')
-const { LCD_URL, DB_NAME }  = require('./constants')
+const { LCD_URL, DB_NAME, RPC_URL }  = require('./constants')
 const { splitFetAmount }  = require('./utils')
-const  DatabaseMethods  = require('./databaseMethods').DatabaseMethods;
+const  DAO  = require('./DAO')
+const  FetxDAO  = require('./FetxDao')
 
 /**
  * @filedesc This goes through the transactions in history and adds them to database.
- * */
-
+ *
+ */
 
 /**
  *  we check if database exists, if not we create it.
@@ -16,19 +17,16 @@ const  DatabaseMethods  = require('./databaseMethods').DatabaseMethods;
  * @returns {Promise<void>}
  */
 async function setup() {
+   const dao = await DAO.getInstance()
 
-  debugger;
-   const databaseMethods =  new DatabaseMethods()
- await databaseMethods.connect()
-
-  await databaseMethods.createDatabaseIfNotExists()
- await databaseMethods.createTableIfNotExists()
-  await getTransactionsToCurrentBlock()
+ const fetxDAO = new FetxDAO(dao)
+ await fetxDAO.createTableIfNotExists()
+  await getTransactionsToCurrentBlock(fetxDAO)
   setInterval(getTransactionsToCurrentBlock, 50000)
 }
 
-async function getTransactionsToCurrentBlock() {
-  const maxprocessedBlocknumber = await getBiggestSavedBlockNumber()
+async function getTransactionsToCurrentBlock(fetxDAO) {
+  const maxprocessedBlocknumber = await fetxDAO.getBiggestSavedBlockNumber()
   const { height } = await getCurrentBlockData()
 
   console.log("maxprocessedBlocknumber", maxprocessedBlocknumber)
@@ -36,7 +34,6 @@ async function getTransactionsToCurrentBlock() {
 
   const transferEvents = await scrape(maxprocessedBlocknumber, height)
   console.log("before insertRows")
-  await insertTransfers(transferEvents)
 }
 
 
@@ -60,22 +57,31 @@ try {
     response = await axios
     .get(query)
 } catch {
-          // console.log("scrape error caught99999!!!!!", error.message)
+          console.log("scrape error caught99999!!!!!", error.message)
         error = true;
 }
+
+   const dao = await DAO.getInstance()
+   const fetxDAO = new FetxDAO(dao)
 
   let pageTotal = response.data.page_total
   let pageNumber = response.data.page_number
   let transferEvents = []
   // if it is paginated then get them all
   while(pageNumber < pageTotal){
-            // console.log("scraperLoopCount", pageNumber++)
+            console.log("scraperLoopCount", pageNumber++)
     pageNumber++;
     query + `&page=${pageNumber}`;
     const response = await  axios
     .get(query)
-     transferEvents = [transferEvents, ...getTransferEvents(response)]
+     transferEvents = getTransferEvents(response)
+
+
+    console.log("transferEvents" + transferEvents)
+    await fetxDAO.insertTransfers(transferEvents)
   }
+
+
   return transferEvents;
 }
 
@@ -114,3 +120,4 @@ function getTransferEvents(response){
 
 
 exports.setup = setup
+exports.getCurrentBlockData = getCurrentBlockData

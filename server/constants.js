@@ -14,7 +14,7 @@ module.exports = {
 DIST_DIR : path.join(__dirname, '../dist'),
  ONE_HOUR : 1000 * 60 * 60,
  TOTAL_LOCKED : '109534769',
-      DB_NAME : process.env.DB_NAME || "testing123",
+      DB_NAME : process.env.DB_NAME || "tesing123",
     DB_PASSWORD : process.env.DB_PASSWORD || "password",
     DB_USERNAME : process.env.DB_USERNAME || "newuser",
      MYSQL_PORT : process.env.MYSQL_PORT || 3306,
