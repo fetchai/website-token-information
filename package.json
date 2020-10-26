@@ -42,7 +42,8 @@
     "tendermint": "^5.0.2",
     "tooltip": "^1.6.1",
     "web3": "^1.2.6",
-    "xml2js": "^0.4.23"
+    "xml2js": "^0.4.23",
+    "decimal.js": "^10.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
