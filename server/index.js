@@ -32,9 +32,10 @@ const  FetxDAO  = require('./FetxDao')
 const express = require('express')
 const axios = require('axios')
 const BN = require('bn.js')
-
+const Prometheus = require('prom-client')
 
 const parseString = require('xml2js').parseString
+
 const app = express()
 
 let unreleasedAmount = ''
@@ -351,6 +352,10 @@ app.get('/mettalex_circulating_supply', (req, res) => {
   res.send(circulatingSupplyMettalex)
 })
 
+app.get('/metrics', (req, res) => {
+  res.set('Content-Type', Prometheus.register.contentType)
+  res.end(Prometheus.register.metrics())
+})
 
 app.listen(port, function () {
   console.log('App listening on port: ' + port)

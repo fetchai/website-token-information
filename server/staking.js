@@ -86,5 +86,5 @@ async function pollStakingContractState() {
 }
 
 async function isRewardsPoolBalanceSufficient(stakingContractState) {
-    return stakingContractState.rewardsPoolCurrentBalance >= stakingContractState.rewardsPoolMinimumNecessaryBalance
+    return stakingContractState.rewardsPoolCurrentBalance.gte(stakingContractState.rewardsPoolMinimumNecessaryBalance)
 }
