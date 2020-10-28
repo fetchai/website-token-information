@@ -4,6 +4,7 @@ const {
     PROJECT_ID,
 }  = require('./constants')
 const Web3 = require('web3')
+const { BN } = require('bn.js')
 const { Decimal } = require('decimal.js')
 const Prometheus = require('prom-client')
 
@@ -52,7 +53,7 @@ function canonicalFetToFet(canonicalVal) {
     const origPrecision = Decimal.precision
     Decimal.set({ precision: decimalPrecision })
     try {
-        return (new Decimal(canonicalVal)).div(fetErc20CanonicalMultiplier)
+        return (new Decimal(canonicalVal.toString())).div(fetErc20CanonicalMultiplier)
     }
     finally {
         Decimal.set({ precision: origPrecision })
@@ -60,10 +61,22 @@ function canonicalFetToFet(canonicalVal) {
 }
 
 
-function assetFromContractAsset(contractAsset) {
-    principal = canonicalFetToFet(contractAsset.principal)
-    compoundInterest = canonicalFetToFet(contractAsset.compoundInterest)
+function toDecimalFETAsset(contractAsset) {
+    principal = canonicalFetToFet(contractAsset.principal.toString())
+    compoundInterest = canonicalFetToFet(contractAsset.compoundInterest.toString())
     return { principal, compoundInterest }
+}
+
+
+function toBNCanonicalFETAsset(contractAsset) {
+    principal = new BN(contractAsset.principal.toString())
+    compoundInterest = new BN(contractAsset.compoundInterest.toString())
+    return { principal, compoundInterest }
+}
+
+
+function getAssetCompositeDecimalFET(assetDecimal) {
+    return assetDecimal.principal.add(assetDecimal.compoundInterest)
 }
 
 
@@ -76,10 +89,10 @@ async function pollStakingContractState() {
 
     //await Promise.all([accruedGlobalPrincipalPromise, accruedGlobalLiquidityPromise, accruedGlobalLockedPromise, rewardsPoolBalancePromise, lockPeriodPromise])
 
-    const usersFundsTransferredInToTheContract = canonicalFetToFet(await accruedGlobalPrincipalPromise)
-    const liquidFunds = assetFromContractAsset(await accruedGlobalLiquidityPromise)
-    const lockedFunds = assetFromContractAsset(await accruedGlobalLockedPromise)
-    const rewardsPoolBalance = canonicalFetToFet(await rewardsPoolBalancePromise)
+    const usersFundsTransferredInToTheContract = new BN(await accruedGlobalPrincipalPromise)
+    const liquidFunds = toBNCanonicalFETAsset(await accruedGlobalLiquidityPromise)
+    const lockedFunds = toBNCanonicalFETAsset(await accruedGlobalLockedPromise)
+    const rewardsPoolBalance = new BN(await rewardsPoolBalancePromise)
     const lockPeriod = parseInt(await lockPeriodPromise)
 
     const stakedFunds = usersFundsTransferredInToTheContract.sub(lockedFunds.principal).sub(liquidFunds.principal)
@@ -101,9 +114,24 @@ async function pollStakingContractState() {
 }
 
 
+function toDecimalFETState(canonicalContractState) {
+    return {
+        usersFundsTransferredInToTheContract: canonicalFetToFet(canonicalContractState.usersFundsTransferredInToTheContract),
+        liquidFunds: toDecimalFETAsset(canonicalContractState.liquidFunds),
+        lockedFunds: toDecimalFETAsset(canonicalContractState.lockedFunds),
+        stakedFunds: canonicalFetToFet(canonicalContractState.stakedFunds),
+        rewardsPoolBalance: canonicalFetToFet(canonicalContractState.rewardsPoolBalance),
+        rewardsPoolMinimumNecessaryBalance: canonicalFetToFet(canonicalContractState.rewardsPoolMinimumNecessaryBalance),
+        allFundsInTheContract: canonicalFetToFet(canonicalContractState.allFundsInTheContract),
+        lockPeriod: canonicalContractState.lockPeriod,
+    }
+}
+
+
 async function updatePrometheusMetrics() {
-    const s = await pollStakingContractState()
-    //console.log(`metrics: ${JSON.stringify(s, null, 4)}`)
+    const canonicalState = await pollStakingContractState()
+    const s = toDecimalFETState(canonicalState)
+
     console.log(`metrics: `, s)
 
     // Note(pb): Assumption is that this function is executed in the same
@@ -121,8 +149,9 @@ async function updatePrometheusMetrics() {
     metrics.rewardsPoolBalance.set(s.rewardsPoolBalance.toNumber())
     metrics.rewardsPoolMinimumNecessaryBalance.set(s.rewardsPoolMinimumNecessaryBalance.toNumber())
     metrics.lockPeriod.set(s.lockPeriod)
-}
 
+    return canonicalState
+}
 
 
 async function isRewardsPoolBalanceSufficient(stakingContractState) {
@@ -133,5 +162,8 @@ module.exports = {
     pollStakingContractState,
     isRewardsPoolBalanceSufficient,
     updatePrometheusMetrics,
-    metrics
+    toDecimalFETState,
+    toBNCanonicalFETAsset,
+    getAssetCompositeDecimalFET,
+    metrics,
 }

@@ -74,6 +74,7 @@ export default class MainPage extends Component {
       lastPrice: "",
       lowPrice: "",
       totalStaked: "",
+      //totalLocked: "",
       unreleasedAmount: "",
       recentlyTransfered: "",
       recentLargeTransfers: "",
@@ -121,7 +122,9 @@ export default class MainPage extends Component {
     } catch(error) {
         return;
       }
-      this.setState({totalStaked: json.totalStaked,
+      this.setState({
+          totalStaked: json.totalStaked,
+          //totalLocked: json.totalLocked,
         unreleasedAmount: json.unreleasedAmount,
     peakAgentsOnlineNow: json.peakAgentsOnlineNow.insertCommas(),
     totalAgentsFound: json.totalAgentsFound.insertCommas(),
@@ -227,7 +230,7 @@ export default class MainPage extends Component {
                     <img src="assets/info-icon.svg" alt="info icon" data-tooltip="Locked tokens: combination of FET <br> held in deposit and locked team tokens" data-tooltip-positions="bottom;left;top;right" onClick={this.triggerHoverFromClickOnMobileOnly}
                          className={style.info}></img>
                     <hr className={style.hr}></hr>
-                    <span className={style.value}>{TOTAL_LOCKED.insertCommas()}</span>
+                    <span className={style.value}>{TOTAL_LOCKED.insertCommas()/*this.state.totalLocked.insertCommas()*/}</span>
                   </div>
                   <div className={style.singleRowRight}>
                     <h3 className={style.subheading}>Total Staked</h3>
