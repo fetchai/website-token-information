@@ -32,7 +32,7 @@ async function getTransactionsToCurrentBlock(fetxDAO) {
   console.log("maxprocessedBlocknumber", maxprocessedBlocknumber)
   console.log("height ", height)
 
-  const transferEvents = await scrape(maxprocessedBlocknumber, height)
+  await scrape(maxprocessedBlocknumber, height)
   console.log("before insertRows")
 }
 

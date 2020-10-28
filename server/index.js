@@ -1,3 +1,5 @@
+const { divideByDecimals, removeDecimalComponent }  = require('./utils')
+
 const {
    ETHERSCAN_API_KEY,
  CONTRACT_ABI_STRINGIFIED,
@@ -28,7 +30,6 @@ const {setup, getCurrentBlockData} = require('./scraper');
 
 const  DAO  = require('./DAO')
 const  FetxDAO  = require('./FetxDao')
-
 const express = require('express')
 const axios = require('axios')
 const BN = require('bn.js')
@@ -179,7 +180,7 @@ function getTotals() {
 
   Promise.all([promise1, promise2, promise3, promise4]).then((arrayOfPromises) => {
     totalLocked = arrayOfPromises[1].principal;
-    totalStaked = new BN(arrayOfPromises[0]).sub(new BN(arrayOfPromises[1].principal)).sub(new BN(arrayOfPromises[2].principal))
+    totalStaked = new BN(arrayOfPromises[0]).sub(new BN(arrayOfPromises[1].principal)).sub(new BN(arrayOfPromises[2].principal)).toString()
     totalUnstaked = arrayOfPromises[2].principal
     lockedPeriodBlocks =  arrayOfPromises[3]
   }).catch(err => {
@@ -277,7 +278,10 @@ function calcCurrentCirculatingSupply () {
   if (totalStaked === '' || unreleasedAmount === '') return
   // Total - locked - staked - remaining == current circulating supply.
   // Un-released tokens are understood to be the "remaining" part of this calculation
-  currentCirculatingSupply = TOTAL_FET_SUPPLY.sub(new BN(totalStaked)).sub(new BN(TOTAL_LOCKED)).sub(new BN(unreleasedAmount)).abs().toString()
+
+
+  const totalStakedNonCanonicalFet = removeDecimalComponent(divideByDecimals(totalStaked, 18))
+  currentCirculatingSupply = TOTAL_FET_SUPPLY.sub(new BN(totalStakedNonCanonicalFet)).sub(new BN(TOTAL_LOCKED)).sub(new BN(unreleasedAmount)).abs().toString()
 }
 
 calcCurrentCirculatingSupply()
@@ -313,7 +317,7 @@ app.use(express.static(DIST_DIR))
 
 app.get('/token_information_api', (req, res) => {
   res.send({
-    totalStaked: totalStaked,
+    totalStaked: removeDecimalComponent(divideByDecimals(totalStaked, 18)),
     unreleasedAmount: unreleasedAmount,
     recentlyTransfered: fetTransferedInLastTwentyFourHours,
     recentLargeTransfers: largeTransferCountInLastTwentyFourHours,
