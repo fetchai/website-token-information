@@ -22,6 +22,7 @@ METTALEX_CONTRACT_ABI_STRINGIFIED,
   METTALEX_CONTRACT_ADDRESS
 }  = require('./constants')
 
+const staking = require('./staking')
 
 const Web3 = require('web3')
 const {setup, getCurrentBlockData} = require('./scraper');
@@ -53,6 +54,7 @@ let totalAgentsFound = ''
 let activeValidators = ''
 let inactiveValidators = ''
 let averageBlockTime = ''
+
 
 let lockedPeriodBlocks = ""
 let totalUnstaked = ""
@@ -309,6 +311,9 @@ function AgentInformation () {
 
 AgentInformation()
 setInterval(AgentInformation, 15000)
+
+staking.updatePrometheusMetrics()
+let stakingPollIntervalHandle = setInterval(staking.updatePrometheusMetrics, 30000);
 
 app.use(express.static(DIST_DIR))
 
