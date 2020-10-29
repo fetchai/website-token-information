@@ -10,7 +10,7 @@ DIST_DIR,
  ONE_HOUR,
  TOTAL_LOCKED,
  TOTAL_FET_SUPPLY,
- NUMERATOR ,
+ CANONICAL_FET_MULTIPLIER ,
  FETCH_AGENTS,
 TOTAL_SUPPLY_METTALEX ,
  LCD_URL,
@@ -21,8 +21,9 @@ METTALEX_STAKING_ADDRESS,
 METTALEX_CONTRACT_ABI_STRINGIFIED,
   METTALEX_CONTRACT_ADDRESS
 }  = require('./constants')
-
-
+const { Decimal } = require('decimal.js')
+const { queryERC20BalanceFET } = require('./utils')
+const staking = require('./staking')
 const Web3 = require('web3')
 const {setup, getCurrentBlockData} = require('./scraper');
 const { removeDecimalComponent, divideByDecimals  }  = require('./utils')
@@ -32,9 +33,10 @@ const  FetxDAO  = require('./FetxDao')
 const express = require('express')
 const axios = require('axios')
 const BN = require('bn.js')
-
+const Prometheus = require('prom-client')
 
 const parseString = require('xml2js').parseString
+
 const app = express()
 
 let unreleasedAmount = ''
@@ -42,6 +44,7 @@ let twentyFourHoursAgoEthereumBlockNumber
 let fetTransferedInLastTwentyFourHours = ''
 let largeTransferCountInLastTwentyFourHours = ''
 let currentCirculatingSupply = ''
+let circulatingSupplyMettalex = ''
 
 let totalAgentsEver = ''
 let totalAgentsOnlineRightNow = ''
@@ -53,11 +56,8 @@ let activeValidators = ''
 let inactiveValidators = ''
 let averageBlockTime = ''
 
-let lockedPeriodBlocks = ""
-let totalUnstaked = ""
-let totalLocked = ""
-let totalStaked = ""
-let circulatingSupplyMettalex = ''
+let stakingState = null
+let stakingStateUI = null
 
 setup()
 
@@ -100,36 +100,11 @@ async function countLargeTransactions(){
 
 setInterval(countLargeTransactions, 5000)
 
-function FETRemainingInContract () {
-  const web3 = new Web3(new Web3.providers.HttpProvider('https://mainnet.infura.io/v3/' + PROJECT_ID))
-  const contract = new web3.eth.Contract(JSON.parse(CONTRACT_ABI_STRINGIFIED), CONTRACT_ADDRESS)
-
-
-  console.log("CONTRACT_OWNER_ADDRESS ", CONTRACT_OWNER_ADDRESS)
-
-  contract.methods.balanceOf(CONTRACT_OWNER_ADDRESS).call((error, balance) => {
-
-
-      if (error || balance === null)
-      {
-      console.log("error in FETRemainingInContract", error)
-      console.log("balance is ")
-    return
-      }
-
-    contract.methods.decimals().call((error, decimals) => {
-      if (error || balance === null) return
-
-      const denominator = new BN(balance.toString())
-      if(denominator.isZero()){
-        unreleasedAmount = "0"
-      } else {
-              unreleasedAmount = new BN(balance.toString()).div(NUMERATOR).toString()
-      }
-
-      console.log("unreleasedAmount", unreleasedAmount)
-    })
-  })
+async function FETRemainingInContract () {
+    const web3 = new Web3(new Web3.providers.HttpProvider('https://mainnet.infura.io/v3/' + PROJECT_ID))
+    const contract = new web3.eth.Contract(JSON.parse(CONTRACT_ABI_STRINGIFIED), CONTRACT_ADDRESS)
+    unreleasedAmount = await queryERC20BalanceFET(contract, CONTRACT_OWNER_ADDRESS)
+    contract.address
 }
 
  FETRemainingInContract()
@@ -151,44 +126,6 @@ function getActiveValidators() {
 getActiveValidators()
 setInterval(getActiveValidators, ONE_HOUR)
 
-
-function getTotals() {
-
-     function getAccruedGlobalPrincipal(contract) {
-    return  contract.methods._accruedGlobalPrincipal().call()
-  }
-
-   function getAccruedGlobalLiquidity(contract) {
-    return  contract.methods._accruedGlobalLiquidity().call()
-  }
-
-   function getLocked(contract) {
-    return contract.methods._accruedGlobalLocked().call()
-  }
-   function getLockPeriod(contract) {
-    return contract.methods._lockPeriodInBlocks().call()
-  }
-
-  const web3 = new Web3(new Web3.providers.HttpProvider('https://mainnet.infura.io/v3/52a657432c274299a973790b857c5d2c'))
-  const contract = new web3.eth.Contract(JSON.parse(STAKING_CONTRACT_ABI_STRINGIFIED), STAKING_CONTRACT_ADDRESS)
-
-  const promise1 = getAccruedGlobalPrincipal(contract)
-  const promise2 = getAccruedGlobalLiquidity(contract)
-  const promise3 = getLocked(contract)
-  const promise4 = getLockPeriod(contract)
-
-  Promise.all([promise1, promise2, promise3, promise4]).then((arrayOfPromises) => {
-    totalLocked = arrayOfPromises[1].principal;
-    totalStaked = new BN(arrayOfPromises[0]).sub(new BN(arrayOfPromises[1].principal)).sub(new BN(arrayOfPromises[2].principal)).toString()
-    totalUnstaked = arrayOfPromises[2].principal
-    lockedPeriodBlocks =  arrayOfPromises[3]
-  }).catch(err => {
-      console.log('FAILURE contract balanceof api request rejected with status : ', err)
-    })
-}
-
-getTotals()
- setInterval(getTotals, ONE_HOUR)
 
 function calculateAverageBlockTime() {
   let currentBlockTime;
@@ -227,60 +164,28 @@ function calculateAverageBlockTime() {
 calculateAverageBlockTime()
 setInterval(calculateAverageBlockTime, ONE_HOUR)
 
-function MettalexCirculatingSupply () {
+async function MettalexCirculatingSupply () {
 
-  const web3 = new Web3(new Web3.providers.HttpProvider('https://mainnet.infura.io/v3/' + PROJECT_ID))
-  const contract = new web3.eth.Contract(JSON.parse(METTALEX_CONTRACT_ABI_STRINGIFIED), METTALEX_CONTRACT_ADDRESS)
-
-  const promise1 = balance(contract, METTALEX_STAKING_ADDRESS)
-  const promise2 = balance(contract, METTALEX_FOUNDATION_ADDRESS)
-
-  Promise.all([promise1, promise2]).then((arrayOfPromises) => {
-   const toDeduct =  arrayOfPromises[0].add(arrayOfPromises[1])
-     circulatingSupplyMettalex = TOTAL_SUPPLY_METTALEX.sub(toDeduct).toString()
-  }).catch(err => {
-      console.log('Mettalex contract balanceof api request rejected with status : ', err)
-  })
-
-  function balance(contract, address){
-    return new Promise(function(resolve, reject) {
-      let res
-      contract.methods.balanceOf(address).call((error, balance) => {
-        contract.methods.decimals().call((error, decimals) => {
-          if (error) return reject()
-          console.log("ettalex contract balanceof api request re")
-          let denominator = new BN(balance.toString())
-
-                if(denominator.isZero()){
-        res = new BN("0")
-                            console.log("denominator1111111")
-      } else {
-                            console.log("denominator2222222", denominator.toString())
-                  debugger;
-        res = denominator.div(NUMERATOR)
-                                    debugger;
-                                              console.log("denominator999999", denominator.toString())
-
-      }
-          console.log("denominator33333")
-          resolve(res)
-        })
-      })
-    })
-  }
+    try {
+        const web3 = new Web3(new Web3.providers.HttpProvider('https://mainnet.infura.io/v3/' + PROJECT_ID))
+        const contract = new web3.eth.Contract(JSON.parse(METTALEX_CONTRACT_ABI_STRINGIFIED), METTALEX_CONTRACT_ADDRESS)
+        const mettalexStakingBalancePromise = queryERC20BalanceFET(contract, METTALEX_STAKING_ADDRESS)
+        const mettalexFoundationBalancePromise = queryERC20BalanceFET(contract, METTALEX_FOUNDATION_ADDRESS)
+        circulatingSupplyMettalex = TOTAL_SUPPLY_METTALEX.sub(await mettalexStakingBalancePromise).sub(await mettalexFoundationBalancePromise)
+    }
+    catch(ex) {
+        console.log('Mettalex contract balanceof api request rejected with status : ', ex)
+    }
 }
 
  MettalexCirculatingSupply()
  setInterval(MettalexCirculatingSupply, ONE_HOUR)
 
 function calcCurrentCirculatingSupply () {
-  if (totalStaked === '' || unreleasedAmount === '') return
+  if (!stakingState || unreleasedAmount === '') return
   // Total - locked - staked - remaining == current circulating supply.
   // Un-released tokens are understood to be the "remaining" part of this calculation
-
-  const totalStakedNonCanonical = removeDecimalComponent(divideByDecimals(totalStaked, 18))
-
-  currentCirculatingSupply = TOTAL_FET_SUPPLY.sub(new BN(totalStakedNonCanonical)).sub(new BN(TOTAL_LOCKED)).sub(new BN(unreleasedAmount)).abs().toString()
+  currentCirculatingSupply = TOTAL_FET_SUPPLY.sub(stakingState.allFundsInTheContract).sub(new Decimal(unreleasedAmount)).abs().trunc().toString()
 }
 
 calcCurrentCirculatingSupply()
@@ -290,8 +195,6 @@ function AgentInformation () {
   axios
     .get(FETCH_AGENTS)
     .then(resp => {
-
-
       if (resp.status !== 200) return
       // parse the xml
       parseString(resp.data, function (err, result) {
@@ -312,11 +215,33 @@ function AgentInformation () {
 AgentInformation()
 setInterval(AgentInformation, 15000)
 
+
+
+async function updateStakingInfo() {
+    stakingState = staking.toDecimalFETState(await staking.updatePrometheusMetrics())
+    const lockedPeriodBlocks = stakingState.lockPeriod.toString()
+    const totalUnstaked = stakingState.liquidFunds.principal.trunc().toString() //staking.getAssetCompositeDecimalFET(stakingState.liquidFunds).toString(),
+    const totalLocked = stakingState.lockedFunds.principal.trunc().toString() //staking.getAssetCompositeDecimalFET(stakingState.lockedFunds).toString(),
+    const totalStaked = stakingState.stakedFunds.trunc().toString()
+
+    stakingStateUI = {
+        lockedPeriodBlocks,
+        totalUnstaked,
+        totalLocked,
+        totalStaked,
+    }
+
+    console.log("staking response:", stakingStateUI)
+}
+
+let stakingPollIntervalHandle = setInterval(updateStakingInfo, 30000);
+
 app.use(express.static(DIST_DIR))
 
 app.get('/token_information_api', (req, res) => {
   res.send({
-    totalStaked: removeDecimalComponent(divideByDecimals(totalStaked, 18)),
+    totalStaked: stakingStateUI ? stakingStateUI.totalStaked : "0",
+    //totalLocked: stakingStateUI ? stakingStateUI.totalLocked : "0",
     unreleasedAmount: unreleasedAmount,
     recentlyTransfered: fetTransferedInLastTwentyFourHours,
     recentLargeTransfers: largeTransferCountInLastTwentyFourHours,
@@ -330,13 +255,12 @@ app.get('/token_information_api', (req, res) => {
 })
 
 
-app.get('/staking', (req, res) => {
-  res.send({
-    lockedPeriodBlocks: lockedPeriodBlocks,
-    totalUnstaked: totalUnstaked,
-    totalLocked: totalLocked,
-    totalStaked: totalStaked,
-  })
+app.get('/staking', async (req, res) => {
+    if (! stakingStateUI) {
+        await updateStakingInfo()
+    }
+
+    res.send(stakingStateUI)
 })
 
 app.get(`/status/${NETWORK_NAME_OF_LCD_URL}`, (req, res) => {
@@ -354,6 +278,10 @@ app.get('/mettalex_circulating_supply', (req, res) => {
   res.send(circulatingSupplyMettalex)
 })
 
+app.get('/metrics', (req, res) => {
+  res.set('Content-Type', Prometheus.register.contentType)
+  res.end(Prometheus.register.metrics())
+})
 
 app.listen(port, function () {
   console.log('App listening on port: ' + port)

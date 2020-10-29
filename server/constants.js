@@ -1,8 +1,6 @@
 const path = require('path')
-const BN = require('bn.js')
-const { LCD_URL }  = require('./constants')
+const { Decimal } = require('decimal.js')
 
-const TEN_TO_EIGHTEEN =  '1' + '0'.repeat(18);
 
 module.exports = {
   ETHERSCAN_API_KEY: process.env.ETHERSCAN_API_KEY || '2WQZAX9F42ZFGXPBCKHXTTGYGU2A6CD6VG',
@@ -12,7 +10,7 @@ module.exports = {
  STAKING_CONTRACT_ADDRESS : process.env.STAKING_CONTRACT_ADDRESS || '0x351baC612B50e87B46e4b10A282f632D41397DE2',
  CONTRACT_OWNER_ADDRESS : process.env.CONTRACT_OWNER_ADDRESS || "0xaea46A60368A7bD060eec7DF8CBa43b7EF41Ad85",
  port : process.env.PORT || 9000,
- PROJECT_ID : 'cab205e574974e6d903844cb7da7537d',
+ PROJECT_ID : process.env.CONTRACT_OWNER_ADDRESS || 'cab205e574974e6d903844cb7da7537d',
 DIST_DIR : path.join(__dirname, '../dist'),
  ONE_HOUR : 1000 * 60 * 60,
  TOTAL_LOCKED : '109534769',
@@ -21,11 +19,10 @@ DIST_DIR : path.join(__dirname, '../dist'),
     DB_USERNAME : process.env.DB_USERNAME || "newuser",
      MYSQL_PORT : process.env.MYSQL_PORT || 3306,
      MYSQL_HOST : process.env.MYSQL_HOST || "127.0.0.1",
- TOTAL_FET_SUPPLY : new BN('1152997575'),
- TEN_TO_EIGHTEEN : TEN_TO_EIGHTEEN,
- NUMERATOR : new BN(TEN_TO_EIGHTEEN),
+ TOTAL_FET_SUPPLY : new Decimal('1152997575'),
+ CANONICAL_FET_MULTIPLIER : new Decimal('1e18'),
  FETCH_AGENTS : 'http://soef.fetch.ai:9002/',
-TOTAL_SUPPLY_METTALEX : new BN("40000000"),
+TOTAL_SUPPLY_METTALEX : new Decimal("40000000"),
 
  LCD_URL : process.env.LCD_URL || "http://rest-agent-land.fetch.ai",
 RPC_URL : process.env.RPC_URL || "https://rpc-agent-land.fetch.ai/",
@@ -34,7 +31,4 @@ RPC_URL : process.env.RPC_URL || "https://rpc-agent-land.fetch.ai/",
 METTALEX_STAKING_ADDRESS :  process.env.METTALEX_STAKING_ADDRESS || "0x7354f36fd74a656b4db8429c3fd937b99cd69e45",
 METTALEX_CONTRACT_ABI_STRINGIFIED : `[{"inputs":[{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_symbol","type":"string"},{"internalType":"uint256","name":"_cap","type":"uint256"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"cap","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"subtractedValue","type":"uint256"}],"name":"decreaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"addedValue","type":"uint256"}],"name":"increaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"mint","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"}]`,
   METTALEX_CONTRACT_ADDRESS :  process.env.METTALEX_STAKING_ADDRESS || "0x2e1e15c44ffe4df6a0cb7371cd00d5028e571d14",
-};
-
-
-
+}
