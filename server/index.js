@@ -26,7 +26,7 @@ const { queryERC20BalanceFET } = require('./utils')
 const staking = require('./staking')
 const Web3 = require('web3')
 const {setup, getCurrentBlockData} = require('./scraper');
-
+const { removeDecimalComponent, divideByDecimals  }  = require('./utils')
 const  DAO  = require('./DAO')
 const  FetxDAO  = require('./FetxDao')
 
