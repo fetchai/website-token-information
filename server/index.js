@@ -44,6 +44,7 @@ let twentyFourHoursAgoEthereumBlockNumber
 let fetTransferedInLastTwentyFourHours = ''
 let largeTransferCountInLastTwentyFourHours = ''
 let currentCirculatingSupply = ''
+let circulatingSupplyMettalex = ''
 
 let totalAgentsEver = ''
 let totalAgentsOnlineRightNow = ''
@@ -170,7 +171,7 @@ async function MettalexCirculatingSupply () {
         const contract = new web3.eth.Contract(JSON.parse(METTALEX_CONTRACT_ABI_STRINGIFIED), METTALEX_CONTRACT_ADDRESS)
         const mettalexStakingBalancePromise = queryERC20BalanceFET(contract, METTALEX_STAKING_ADDRESS)
         const mettalexFoundationBalancePromise = queryERC20BalanceFET(contract, METTALEX_FOUNDATION_ADDRESS)
-        currentCirculatingSupply = TOTAL_SUPPLY_METTALEX.sub(await mettalexStakingBalancePromise).sub(await mettalexFoundationBalancePromise)
+        circulatingSupplyMettalex = TOTAL_SUPPLY_METTALEX.sub(await mettalexStakingBalancePromise).sub(await mettalexFoundationBalancePromise)
     }
     catch(ex) {
         console.log('Mettalex contract balanceof api request rejected with status : ', ex)
@@ -184,7 +185,7 @@ function calcCurrentCirculatingSupply () {
   if (!stakingState || unreleasedAmount === '') return
   // Total - locked - staked - remaining == current circulating supply.
   // Un-released tokens are understood to be the "remaining" part of this calculation
-  currentCirculatingSupply = new Decimal(TOTAL_FET_SUPPLY).sub(stakingState.allFundsInTheContract).sub(new Decimal(unreleasedAmount)).abs().trunc().toString()
+  currentCirculatingSupply = TOTAL_FET_SUPPLY.sub(stakingState.allFundsInTheContract).sub(new Decimal(unreleasedAmount)).abs().trunc().toString()
 }
 
 calcCurrentCirculatingSupply()
