@@ -28,7 +28,6 @@ METTALEX_CONTRACT_ABI_STRINGIFIED,
 
 const mysql      = require('mysql');
 
-
  class DAO {
    Dao;
 
@@ -38,6 +37,7 @@ const mysql      = require('mysql');
     * @returns {Connection}
     */
   async connect(){
+    let error = false
     try {
       this.connection =  mysql.createConnection({
         host: MYSQL_HOST,
@@ -49,8 +49,16 @@ const mysql      = require('mysql');
        await this.createDatabaseIfNotExists()
 
     } catch(error) {
+      error = true
       console.log("Could not connect to database. Error : ", error.message)
+
+        if(error) {
+       throw new Error(error.message)
+     }
     }
+   console.log("error status is : ", error)
+
+
 
     return DAO.connection;
  }
@@ -78,6 +86,7 @@ const mysql      = require('mysql');
    const sql = `CREATE DATABASE IF NOT EXISTS ${DB_NAME}`;
     await this.connection.query(sql)
 }
+
 
 }
 
