@@ -1,29 +1,8 @@
 const {
-   ETHERSCAN_API_KEY,
- CONTRACT_ABI_STRINGIFIED,
-  STAKING_CONTRACT_ABI_STRINGIFIED, CONTRACT_ADDRESS,
- STAKING_CONTRACT_ADDRESS,
- CONTRACT_OWNER_ADDRESS ,
- port,
- PROJECT_ID,
-DIST_DIR,
   DB_NAME,
   MYSQL_HOST,
- ONE_HOUR,
- TOTAL_LOCKED,
- TOTAL_FET_SUPPLY,
- CANONICAL_FET_MULTIPLIER ,
- FETCH_AGENTS,
-TOTAL_SUPPLY_METTALEX ,
- LCD_URL,
-RPC_URL ,
- NETWORK_NAME_OF_LCD_URL,
- METTALEX_FOUNDATION_ADDRESS,
-METTALEX_STAKING_ADDRESS,
   DB_PASSWORD,
   DB_USERNAME,
-METTALEX_CONTRACT_ABI_STRINGIFIED,
-  METTALEX_CONTRACT_ADDRESS
 }  = require('./constants')
 
 const mysql      = require('mysql');
@@ -37,6 +16,12 @@ const mysql      = require('mysql');
     * @returns {Connection}
     */
   async connect(){
+
+    console.log(" DB_NAME MYSQL_HOST DB_PASSWORD DB_NAME",  DB_NAME)
+    console.log(" DB_NAME MYSQL_HOST DB_PASSWORD MYSQL_HOST",  MYSQL_HOST)
+    console.log(" DB_NAME MYSQL_HOST DB_PASSWORD DB_PASSWORD",   DB_PASSWORD)
+    console.log(" DB_NAME MYSQL_HOST DB_PASSWORD DB_USERNAME",   DB_USERNAME)
+
     let error = false
     try {
       this.connection =  mysql.createConnection({
@@ -47,6 +32,10 @@ const mysql      = require('mysql');
       })
 
        await this.createDatabaseIfNotExists()
+
+          console.log(" did not throw xxx")
+
+
 
     } catch(error) {
       error = true
