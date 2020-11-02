@@ -1,3 +1,5 @@
+import { runScraper } from './constants'
+
 const axios = require('axios')
 const { LCD_URL, DB_NAME, RPC_URL }  = require('./constants')
 const { splitFetAmount }  = require('./utils')
@@ -21,8 +23,12 @@ async function setup() {
 
  const fetxDAO = new FetxDAO(dao)
  await fetxDAO.createTableIfNotExists()
-  await getTransactionsToCurrentBlock(fetxDAO)
-  setInterval(getTransactionsToCurrentBlock, 50000)
+
+
+  if(runScraper) {
+    await getTransactionsToCurrentBlock(fetxDAO)
+    setInterval(getTransactionsToCurrentBlock, 50000)
+  }
 }
 
 async function getTransactionsToCurrentBlock(fetxDAO) {
