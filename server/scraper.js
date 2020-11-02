@@ -1,7 +1,6 @@
-import { runScraper } from './constants'
 
 const axios = require('axios')
-const { LCD_URL, DB_NAME, RPC_URL }  = require('./constants')
+const { LCD_URL, DB_NAME, RPC_URL, runScraper }  = require('./constants')
 const { splitFetAmount }  = require('./utils')
 const  DAO  = require('./DAO')
 const  FetxDAO  = require('./FetxDao')
