@@ -11,7 +11,7 @@ module.exports = {
  CONTRACT_OWNER_ADDRESS : process.env.CONTRACT_OWNER_ADDRESS || "0xaea46A60368A7bD060eec7DF8CBa43b7EF41Ad85",
  port : process.env.PORT || 9000,
   // boolean do we run scraper or not.
- runScraper :  process.env.runScraper,
+ runScraper :  process.env.runScraper || false,
  PROJECT_ID : process.env.CONTRACT_OWNER_ADDRESS || 'cab205e574974e6d903844cb7da7537d',
 DIST_DIR : path.join(__dirname, '../dist'),
  ONE_HOUR : 1000 * 60 * 60,
