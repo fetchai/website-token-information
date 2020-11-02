@@ -25,7 +25,7 @@ const mysql      = require('mysql');
    }
 
    async createTableIfNotExists () {
-     const sql = `CREATE TABLE IF NOT EXISTS fettxsCosmos
+     const sql = `CREATE TABLE IF NOT EXISTS fettxs
                              (ID SERIAL PRIMARY KEY,
                              fromaddr  VARCHAR(255)    NOT NULL,
                              toaddr VARCHAR(255) NOT NULL,
