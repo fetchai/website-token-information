@@ -59,7 +59,7 @@ let averageBlockTime = ''
 let stakingState = null
 let stakingStateUI = null
 
-setup()
+setTimeout(setup, 15000)
 
 String.prototype.insertCommas = function () {
   return this.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
