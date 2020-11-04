@@ -53,9 +53,7 @@ function removeDecimalComponent(val){
 
 
 module.exports = {
-    isNumeric,
     splitFetAmount,
-    sleep,
     queryERC20BalanceFET,
     removeDecimalComponent: removeDecimalComponent,
     divideByDecimals: divideByDecimals,
