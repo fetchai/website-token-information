@@ -8,7 +8,6 @@ const { BN } = require('bn.js')
 const { Decimal } = require('decimal.js')
 const Prometheus = require('prom-client')
 
-
 const decimalPrecision = 50
 const fetErc20CanonicalMultiplier = new Decimal('1e18', )
 const web3 = new Web3(new Web3.providers.HttpProvider(`https://mainnet.infura.io/v3/${PROJECT_ID}`))

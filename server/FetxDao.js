@@ -1,23 +1,4 @@
-const {
-   ETHERSCAN_API_KEY,
- CONTRACT_ABI_STRINGIFIED,
-  STAKING_CONTRACT_ABI_STRINGIFIED, CONTRACT_ADDRESS,
- STAKING_CONTRACT_ADDRESS,
- CONTRACT_OWNER_ADDRESS ,
- port,
- PROJECT_ID,
-DIST_DIR,
-  DB_NAME,
-  MYSQL_HOST,
-  DB_PASSWORD,
-  DB_USERNAME,
-METTALEX_CONTRACT_ABI_STRINGIFIED,
-  METTALEX_CONTRACT_ADDRESS
-}  = require('./constants')
-
-const mysql      = require('mysql');
-
- class FetxDAO {
+class FetxDAO {
    DAO
 
    constructor (DAO) {
@@ -25,14 +6,21 @@ const mysql      = require('mysql');
    }
 
    async createTableIfNotExists () {
+     let res;
      const sql = `CREATE TABLE IF NOT EXISTS fettxs
-                             (ID SERIAL PRIMARY KEY,
-                             fromaddr  VARCHAR(255)    NOT NULL,
+                             (ID int NOT NULL AUTO_INCREMENT,
+                             fromaddr  VARCHAR(255) NOT NULL,
                              toaddr VARCHAR(255) NOT NULL,
                              blocknumber BIGINT NOT NULL,
-                             fetValue  VARCHAR(255) NOT NULL);`
-     await this.DAO.connection.query(sql)
-   }
+                             fetValue  VARCHAR(255) NOT NULL,
+                             PRIMARY KEY (ID));`
+     try {
+        await this.DAO.connection.query(sql)
+     } catch(error){
+       console.log("error creating table ", error.message)
+     }
+     }
+
 
    async getBiggestSavedBlockNumber () {
      return new Promise(async  (resolve, reject) => {
@@ -69,8 +57,6 @@ const mysql      = require('mysql');
    }
 
    async countLargeTransactions (twentyFourHoursAgoEthereumBlockNumber) {
-     console.log("twentyFourHoursAgoEthereumBlockNumber99" + twentyFourHoursAgoEthereumBlockNumber)
-
      if (typeof twentyFourHoursAgoEthereumBlockNumber === 'undefined') {
        return
      }
@@ -105,10 +91,6 @@ const mysql      = require('mysql');
      })
 
      sql = sql.slice(0, -1)
-
-     console.log("before sql")
-     console.log("the sql", sql)
-     console.log("after sql")
 
      try {
        await this.DAO.connection.query(sql)

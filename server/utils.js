@@ -1,21 +1,12 @@
 const { Decimal } = require('decimal.js')
 
-
 function isNumeric(num){
   return !isNaN(num)
 }
 
-
 function splitFetAmount(value){
   return value.split("atestfet")[0]
 }
-
-function sleep(milliseconds) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, milliseconds);
-  });
-}
-
 
 async function queryERC20BalanceFET(contract, address) {
     console.log("balance address: ", address)
