@@ -10,6 +10,12 @@ function splitFetAmount(value){
   return value.split("atestfet")[0]
 }
 
+function sleep(milliseconds) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, milliseconds);
+  });
+}
+
 
 async function queryERC20BalanceFET(contract, address) {
     console.log("balance address: ", address)
@@ -58,6 +64,7 @@ function removeDecimalComponent(val){
 module.exports = {
     isNumeric,
     splitFetAmount,
+    sleep,
     queryERC20BalanceFET,
     removeDecimalComponent: removeDecimalComponent,
     divideByDecimals: divideByDecimals,

@@ -59,7 +59,8 @@ let averageBlockTime = ''
 let stakingState = null
 let stakingStateUI = null
 
-setup()
+// just to wait for mysql to setup on docker
+setTimeout(setup, 15000)
 
 String.prototype.insertCommas = function () {
   return this.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
@@ -199,9 +200,6 @@ function AgentInformation () {
       // parse the xml
       parseString(resp.data, function (err, result) {
         const response = result.response
-
-        console.log("response 777777", response)
-
         totalAgentsEver = response.statistics[0].total_agents_ever[0]
         totalAgentsOnlineRightNow = new BN(response.statistics[0].total_agents_ever[0]).sub(new BN(response.statistics[0].expired_agents[0])).toString()
         peakAgentsOnlineNow = response.statistics[0].peaks[0].peak[0]._
