@@ -19,10 +19,8 @@ const  FetxDAO  = require('./FetxDao')
  */
 async function setup() {
    const dao = await DAO.getInstance()
-
  const fetxDAO = new FetxDAO(dao)
  await fetxDAO.createTableIfNotExists()
-
 
   if(runScraper) {
     await getTransactionsToCurrentBlock(fetxDAO)
@@ -38,7 +36,6 @@ async function getTransactionsToCurrentBlock(fetxDAO) {
   console.log("height ", height)
 
   const transferEvents = await scrape(maxprocessedBlocknumber, height)
-  console.log("before insertRows")
 }
 
 
@@ -47,7 +44,7 @@ async function getCurrentBlockData() {
     // lets get current block first
    const response = await axios
       .get(`${RPC_URL}/block`)
-              .catch(error => {console.log("getCurrentBlockData error")})
+      .catch(error => {console.log("getCurrentBlockData error")})
           return { height: response.data.result.block.header.height, currentBlockTime: response.data.result.block.header.time }
   }
 
@@ -62,7 +59,6 @@ try {
     response = await axios
     .get(query)
 } catch {
-          console.log("scrape error caught99999!!!!!", error.message)
         error = true;
 }
 
@@ -100,7 +96,6 @@ function getTransferEvents(response){
    height = el.height
 
    if (typeof el["raw_log"] === "undefined"){
-       // console.log("transferEvents UNDEFINED")
        return
    }
 
