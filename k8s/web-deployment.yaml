@@ -54,6 +54,6 @@ spec:
 
           - name: ETHERSCAN_API_KEY
             valueFrom:
-            secretKeyRef:
-              name: etherscan-api-key
-              key: ETHERSCAN_API_KEY
+              secretKeyRef:
+                name: etherscan-api-key
+                key: ETHERSCAN_API_KEY
