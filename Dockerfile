@@ -6,6 +6,6 @@ RUN npm install
 COPY . ./
 RUN npm rebuild node-sass
 
-EXPOSE 8000
+EXPOSE 9000
 
 CMD [ "bash", "entrypoint.sh"]
