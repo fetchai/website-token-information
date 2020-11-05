@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    appkey: token-info-web
+  name: token-info-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      appkey: token-info-web
+  template:
+    metadata:
+      labels:
+        appkey: token-info-web
+    spec:
+      containers:
+        - image: gcr.io/fetch-ai-sandbox/token-info-frontend:v0.2.5
+          name: web
+          ports:
+            - containerPort: 9000
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "250m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
