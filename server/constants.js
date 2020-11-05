@@ -11,7 +11,7 @@ module.exports = {
  CONTRACT_OWNER_ADDRESS : process.env.CONTRACT_OWNER_ADDRESS || "0x8400ac235Ed4F139A3E05670A9A3C724e448129B",
  port : process.env.PORT || 9000,
  runScraper :  process.env.runScraper || false,
- PROJECT_ID : process.env.CONTRACT_OWNER_ADDRESS || 'cab205e574974e6d903844cb7da7537d',
+ PROJECT_ID : process.env.PROJECT_ID || 'cab205e574974e6d903844cb7da7537d',
 DIST_DIR : path.join(__dirname, '../dist'),
  ONE_HOUR : 1000 * 60 * 60,
  TOTAL_LOCKED : '109534769',
