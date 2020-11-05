@@ -15,7 +15,7 @@ spec:
         appkey: token-info-web
     spec:
       containers:
-        - image: gcr.io/fetch-ai-sandbox/token-info-frontend:v0.2.10
+        - image: gcr.io/fetch-ai-images/token-info-frontend:0.2.0
           name: web
           readinessProbe:
             httpGet:
