@@ -200,6 +200,11 @@ function AgentInformation () {
       // parse the xml
       parseString(resp.data, function (err, result) {
         const response = result.response
+
+        console.log("before response")
+        console.log("RESPONSE", response)
+        console.log("after response")
+
         totalAgentsEver = response.statistics[0].total_agents_ever[0]
         totalAgentsOnlineRightNow = new BN(response.statistics[0].total_agents_ever[0]).sub(new BN(response.statistics[0].expired_agents[0])).toString()
         peakAgentsOnlineNow = response.statistics[0].peaks[0].peak[0]._
