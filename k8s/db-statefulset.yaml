@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: token-info-db
+spec:
+  selector:
+    matchLabels:
+      appkey: token-info-db
+  serviceName: db
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        appkey: token-info-db
+    spec:
+      containers:
+      - name: db
+        image: mysql:5.7.32
+        
+        envFrom:
+        - secretRef:
+            name: db-creds
+
+        ports:
+        - name: mysql
+          containerPort: 3306
+        
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/mysql
+          subPath: mysql
+
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "500m"
+          limits:
+            memory: "500Mi"
+            cpu: "1500m"
+
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 10Gi

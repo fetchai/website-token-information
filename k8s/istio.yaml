@@ -1,0 +1,57 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: token-info2
+spec:
+  selector:
+    app: istio-fetchpubig
+    istio: ingressgateway
+  servers:
+  - hosts:
+    - token-info2.sandbox.fetch-ai.com
+    port:
+      name: http
+      number: 80
+      protocol: HTTP
+    tls:
+      httpsRedirect: true
+  - hosts:
+    - token-info2.sandbox.fetch-ai.com
+    port:
+      name: https
+      number: 443
+      protocol: HTTPS
+    tls:
+      credentialName: wildcard-sandbox
+      mode: SIMPLE
+      privateKey: sds
+      serverCertificate: sds
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: token-info2
+spec:
+  gateways:
+  - token-info2
+  hosts:
+    - token-info2.sandbox.fetch-ai.com
+  http:
+  - route:
+    - destination:
+        host: token-info-web
+        port:
+          number: 80
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: token-info2-sandbox-fetch-ai-com
+spec:
+  host: token-info2.sandbox.fetch-ai.com
+  trafficPolicy:
+    loadBalancer:
+      simple: LEAST_CONN
+    tls:
+      mode: DISABLE

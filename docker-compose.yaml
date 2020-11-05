@@ -5,18 +5,31 @@ services:
     ports:
     - "3306:3306"
     environment:
-    - MYSQL_ROOT_PASSWORD=password
-    - MYSQL_USER=newuser
-    - MYSQL_PASSWORD=password
-    - MYSQL_DATABASE=tesing123
+      MYSQL_ROOT_PASSWORD: "password"
+      MYSQL_USER: "newuser"
+      MYSQL_PASSWORD: "password"
+      MYSQL_DATABASE: "tesing123"
   web:
     build: .
     ports:
       - "9000:9000"
     environment:
-      - ETHERSCAN_API_KEY=2WQZAX9F42ZFGXPBCKHXTTGYGU2A6CD6VG
-      - DB_NAME=tesing123
-      - DB_PASSWORD=password
-      - DB_USERNAME=newuser
-      - MYSQL_PORT=3306
-      - MYSQL_HOST=db
+      CONTRACT_ADDRESS: "0xaea46A60368A7bD060eec7DF8CBa43b7EF41Ad85"
+      STAKING_CONTRACT_ADDRESS: "0x351baC612B50e87B46e4b10A282f632D41397DE2"
+      CONTRACT_OWNER_ADDRESS: "0x8400ac235Ed4F139A3E05670A9A3C724e448129B"
+      PORT: 9000
+      runScraper: "false"
+      PROJECT_ID: "cab205e574974e6d903844cb7da7537d"
+      MYSQL_PORT: 3306
+      MYSQL_HOST: "db"
+      ETHERSCAN_API_KEY: "2WQZAX9F42ZFGXPBCKHXTTGYGU2A6CD6VG"
+      FETCH_AGENTS: "http://soef.fetch.ai:9002/"
+      LCD_URL: "http://rest-agent-land.fetch.ai"
+      RPC_URL: "https://rpc-agent-land.fetch.ai/"
+      NETWORK_NAME_OF_LCD_URL: "agent-land"
+      METTALEX_FOUNDATION_ADDRESS: "0x2f2bd2745b24d73707817d1d5de1de7504241ac9"
+      METTALEX_STAKING_ADDRESS: "0x7354f36fd74a656b4db8429c3fd937b99cd69e45"
+      METTALEX_STAKING_ADDRESS: "0x2e1e15c44ffe4df6a0cb7371cd00d5028e571d14"
+      DB_NAME: "tesing123"
+      DB_PASSWORD: "password"
+      DB_USERNAME: "newuser"

@@ -1,0 +1,33 @@
+---
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: token-info2
+spec:
+  endpoints:
+  - dnsName:  token-info2.sandbox.fetch-ai.com
+    recordTTL: 180
+    recordType: CNAME
+    targets:
+    - fetchpub.sandbox.fetch-ai.com
+---
+# apiVersion: cert-manager.io/v1alpha2
+# kind: Certificate
+# metadata:
+#   name: token-info
+#   namespace: istio-system
+# spec:
+#   acme:
+#     config:
+#     - dns01:
+#         provider: clouddns
+#       domains:
+#       - token-info2.sandbox.fetch-ai.com
+#   commonName: token-info2.sandbox.fetch-ai.com
+#   dnsNames:
+#   - token-info2.sandbox.fetch-ai.com
+#   - www.token-info2.sandbox.fetch-ai.com
+#   issuerRef:
+#     kind: ClusterIssuer
+#     name: letsencrypt-dns
+#   secretName: token-info2
