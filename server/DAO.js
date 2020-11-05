@@ -1,4 +1,3 @@
-const {sleep} = require('./utils')
 
 const {
   DB_NAME,
@@ -35,7 +34,6 @@ const mysql      = require('mysql');
         password: DB_PASSWORD,
         database: DB_NAME,
       })
-
           console.log(" did not throw xxx")
 
     } catch(error) {
@@ -46,8 +44,6 @@ const mysql      = require('mysql');
        throw new Error(error.message)
      }
     }
-
-           await this.createDatabaseIfNotExists()
 
    console.log("error status is : ", error)
 
@@ -70,15 +66,19 @@ const mysql      = require('mysql');
 
       try {
           await this.instance.connect()
-
-        console.log("did not throw")
+         console.log("connected to database")
       } catch (error){
-        await sleep(5000)
-        await this.instance.connect()
-        console.log("did not throw 2")
+        console.log("connected to database on second attempt")
       }
 
-        await this.instance.createDatabaseIfNotExists
+
+      try {
+         await this.instance.createDatabaseIfNotExists
+      }
+      catch(error){
+        console.log("did not throw createDatabaseIfNotExists")
+      }
+
 		}
 
 		return DAO.instance

@@ -10,7 +10,6 @@ module.exports = {
  STAKING_CONTRACT_ADDRESS : process.env.STAKING_CONTRACT_ADDRESS || '0x351baC612B50e87B46e4b10A282f632D41397DE2',
  CONTRACT_OWNER_ADDRESS : process.env.CONTRACT_OWNER_ADDRESS || "0xaea46A60368A7bD060eec7DF8CBa43b7EF41Ad85",
  port : process.env.PORT || 9000,
-  // boolean do we run scraper or not.
  runScraper :  process.env.runScraper || false,
  PROJECT_ID : process.env.CONTRACT_OWNER_ADDRESS || 'cab205e574974e6d903844cb7da7537d',
 DIST_DIR : path.join(__dirname, '../dist'),
