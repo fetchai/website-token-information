@@ -15,8 +15,14 @@ spec:
         appkey: token-info-web
     spec:
       containers:
-        - image: gcr.io/fetch-ai-sandbox/token-info-frontend:v0.2.8
+        - image: gcr.io/fetch-ai-sandbox/token-info-frontend:v0.2.9
           name: web
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 9000
+            initialDelaySeconds: 30
+            periodSeconds: 10
           ports:
             - containerPort: 9000
           resources:
