@@ -222,7 +222,7 @@ export default class MainPage extends Component {
                     <img src="assets/info-icon.svg" alt="info icon" data-tooltip="Fetch.ai's Ethereum Token Contract" data-tooltip-positions="bottom;left;top;right" onClick={this.triggerHoverFromClickOnMobileOnly}
                          className={style.info}></img>
                     <hr className={style.fullWidthHr}></hr>
-                    <span className={classnames(style.value, style.viewPort)} onClick = {() => {window.open("https://etherscan.io/address/0xaea46A60368A7bD060eec7DF8CBa43b7EF41Ad85",  '_blank');}}>{TOKEN_CONTRACT}</span>
+                    <span className={classnames(style.value, style.viewPort)} onClick = {() => {window.open(`https://etherscan.io/address/${TOKEN_CONTRACT}`,  '_blank');}}>{TOKEN_CONTRACT}</span>
                   </div>
 
                   <div className={style.singleRowLeft}>
@@ -276,11 +276,11 @@ export default class MainPage extends Component {
                     <span className={classnames(style.value, style.placeholderText)}>{this.state.peakAgentsOnlineNow}</span>
                   </div>
                   <div className={style.singleRowRight}>
-                    <h3 className={style.subheading}>Agent Seach Queries</h3>
-                    <img src="assets/info-icon.svg" alt="info icon" data-tooltip={`Total search queries for agents to find other agents`} data-tooltip-positions="bottom;left;top;right" onClick={this.triggerHoverFromClickOnMobileOnly}
+                    <h3 className={style.subheading}>Total Agents Found</h3>
+                    <img src="assets/info-icon.svg" alt="info icon" data-tooltip={`Total number of agents found in searches by other agents`} data-tooltip-positions="bottom;left;top;right" onClick={this.triggerHoverFromClickOnMobileOnly}
                          className={style.info}></img>
                     <hr className={style.hr}></hr>
-                    <span className={classnames(style.value, style.placeholderText)}>{this.state.totalSearchQueriesForAgentsToFindOtherAgents}</span>
+                    <span className={classnames(style.value, style.placeholderText)}>{this.state.totalAgentsFound}</span>
                   </div>
                 </div>
                  <div className={style.mobileFooter}>This page and the data presented on it is for information purposes only. Whilst every effort is made to ensure it is accurate, Fetch.ai makes absolutely no guarantees as to its accuracy. Nothing on this page indicates financial advice, and the FET token is strictly a utility token. Please consult the tokenomics paper or project white paper for more information

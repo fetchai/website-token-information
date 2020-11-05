@@ -104,8 +104,8 @@ setInterval(countLargeTransactions, 5000)
 async function FETRemainingInContract () {
     const web3 = new Web3(new Web3.providers.HttpProvider('https://mainnet.infura.io/v3/' + PROJECT_ID))
     const contract = new web3.eth.Contract(JSON.parse(CONTRACT_ABI_STRINGIFIED), CONTRACT_ADDRESS)
-    unreleasedAmount = await queryERC20BalanceFET(contract, CONTRACT_OWNER_ADDRESS)
-    contract.address
+    const unreleasedAmountWithDecimal = await queryERC20BalanceFET(contract, CONTRACT_OWNER_ADDRESS)
+    unreleasedAmount = removeDecimalComponent(unreleasedAmountWithDecimal)
 }
 
  FETRemainingInContract()
