@@ -1,35 +1,69 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: token-info-db
 spec:
-  replicas: 1
   selector:
     matchLabels:
       appkey: token-info-db
+  serviceName: db
+  replicas: 1
   template:
     metadata:
       labels:
         appkey: token-info-db
     spec:
       containers:
-        - env:
-            - name: MYSQL_DATABASE
-              value: tesing123
-            - name: MYSQL_PASSWORD
-              value: password
-            - name: MYSQL_ROOT_PASSWORD
-              value: password
-            - name: MYSQL_USER
-              value: newuser
-          image: mysql:8.0
-          name: db
-          ports:
-            - containerPort: 3306
-          resources:
-            requests:
-              memory: "128Mi"
-              cpu: "500m"
-            limits:
-              memory: "500Mi"
-              cpu: "1500m"
+      - name: db
+        image: mysql:5.7.32
+        
+        env:
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: db-creds
+              key: MYSQL_DATABASE
+
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: db-creds
+              key: MYSQL_USER
+
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-creds
+              key: MYSQL_PASSWORD
+        
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-creds
+              key: MYSQL_ROOT_PASSWORD
+
+        ports:
+        - name: mysql
+          containerPort: 3306
+        
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/mysql
+          subPath: mysql
+
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "500m"
+          limits:
+            memory: "500Mi"
+            cpu: "1500m"
+
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 10Gi
