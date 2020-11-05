@@ -11,7 +11,6 @@ data:
   PROJECT_ID: "cab205e574974e6d903844cb7da7537d"
   MYSQL_PORT: "3306"
   MYSQL_HOST: "db"
-  ETHERSCAN_API_KEY: "2WQZAX9F42ZFGXPBCKHXTTGYGU2A6CD6VG"
   FETCH_AGENTS: "http://soef.fetch.ai:9002/"
   LCD_URL: "http://rest-agent-land.fetch.ai"
   RPC_URL: "https://rpc-agent-land.fetch.ai/"
