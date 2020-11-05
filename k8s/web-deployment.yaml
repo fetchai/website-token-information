@@ -26,3 +26,34 @@ spec:
             limits:
               memory: "256Mi"
               cpu: "500m"
+
+          env:
+          - name: MYSQL_DATABASE
+            valueFrom:
+              secretKeyRef:
+                name: db-creds
+                key: MYSQL_DATABASE
+
+          - name: MYSQL_USER
+            valueFrom:
+              secretKeyRef:
+                name: db-creds
+                key: MYSQL_USER
+
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: db-creds
+                key: MYSQL_PASSWORD
+          
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: db-creds
+                key: MYSQL_ROOT_PASSWORD
+
+          - name: ETHERSCAN_API_KEY
+            valueFrom:
+            secretKeyRef:
+              name: etherscan-api-key
+              key: ETHERSCAN_API_KEY
