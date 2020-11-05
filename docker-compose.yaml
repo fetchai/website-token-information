@@ -20,9 +20,6 @@ services:
       PORT: 9000
       runScraper: "false"
       PROJECT_ID: "cab205e574974e6d903844cb7da7537d"
-      DB_NAME: "tesing123"
-      DB_PASSWORD: "password"
-      DB_USERNAME: "newuser"
       MYSQL_PORT: 3306
       MYSQL_HOST: "db"
       ETHERSCAN_API_KEY: "2WQZAX9F42ZFGXPBCKHXTTGYGU2A6CD6VG"
@@ -33,3 +30,6 @@ services:
       METTALEX_FOUNDATION_ADDRESS: "0x2f2bd2745b24d73707817d1d5de1de7504241ac9"
       METTALEX_STAKING_ADDRESS: "0x7354f36fd74a656b4db8429c3fd937b99cd69e45"
       METTALEX_STAKING_ADDRESS: "0x2e1e15c44ffe4df6a0cb7371cd00d5028e571d14"
+      DB_NAME: "tesing123"
+      DB_PASSWORD: "password"
+      DB_USERNAME: "newuser"

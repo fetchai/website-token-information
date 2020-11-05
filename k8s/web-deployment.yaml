@@ -15,7 +15,7 @@ spec:
         appkey: token-info-web
     spec:
       containers:
-        - image: gcr.io/fetch-ai-sandbox/token-info-frontend:v0.2.7
+        - image: gcr.io/fetch-ai-sandbox/token-info-frontend:v0.2.8
           name: web
           ports:
             - containerPort: 9000
@@ -26,34 +26,11 @@ spec:
             limits:
               memory: "256Mi"
               cpu: "500m"
-
-          env:
-          - name: MYSQL_DATABASE
-            valueFrom:
-              secretKeyRef:
-                name: db-creds
-                key: MYSQL_DATABASE
-
-          - name: MYSQL_USER
-            valueFrom:
-              secretKeyRef:
-                name: db-creds
-                key: MYSQL_USER
-
-          - name: MYSQL_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: db-creds
-                key: MYSQL_PASSWORD
           
-          - name: MYSQL_ROOT_PASSWORD
-            valueFrom:
-              secretKeyRef:
+          envFrom:
+            - secretRef:
                 name: db-creds
-                key: MYSQL_ROOT_PASSWORD
-
-          - name: ETHERSCAN_API_KEY
-            valueFrom:
-              secretKeyRef:
+            - secretRef:
                 name: etherscan-api-key
-                key: ETHERSCAN_API_KEY
+            - configMapRef:
+                name: web-configmap
