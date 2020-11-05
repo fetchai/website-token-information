@@ -15,7 +15,7 @@ spec:
         appkey: token-info-web
     spec:
       containers:
-        - image: gcr.io/fetch-ai-sandbox/token-info-frontend:v0.2.5
+        - image: gcr.io/fetch-ai-sandbox/token-info-frontend:v0.2.6
           name: web
           ports:
             - containerPort: 9000
