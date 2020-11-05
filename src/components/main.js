@@ -222,7 +222,9 @@ export default class MainPage extends Component {
                     <img src="assets/info-icon.svg" alt="info icon" data-tooltip="Fetch.ai's Ethereum Token Contract" data-tooltip-positions="bottom;left;top;right" onClick={this.triggerHoverFromClickOnMobileOnly}
                          className={style.info}></img>
                     <hr className={style.fullWidthHr}></hr>
+                    <div className={style.textAlignCenter}>
                     <span className={classnames(style.value, style.viewPort)} onClick = {() => {window.open(`https://etherscan.io/address/${TOKEN_CONTRACT}`,  '_blank');}}>{TOKEN_CONTRACT}</span>
+                    </div>
                   </div>
 
                   <div className={style.singleRowLeft}>
@@ -245,7 +247,9 @@ export default class MainPage extends Component {
                     <img src="assets/info-icon.svg" alt="info icon" data-tooltip="Fetch.ai's Ethereum Contract used for staking " data-tooltip-positions="bottom;left;top;right" onClick={this.triggerHoverFromClickOnMobileOnly}
                          className={style.info}></img>
                     <hr className={style.fullWidthHr}></hr>
+                                        <div className={style.textAlignCenter}>
                     <span className={classnames(style.value, style.viewPort)} onClick = {() => {window.open(`https://etherscan.io/address/${STAKING_CONTRACT}`,  '_blank')}} >{STAKING_CONTRACT}</span>
+                  </div>
                   </div>
                 </div>
               </div>
