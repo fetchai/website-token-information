@@ -36,6 +36,25 @@ function displayIEErrorMessage() {
      }
    }
 
+
+   /**
+ * Get substring of address with three appended in middle of  dots; for UI display
+ *
+ * @param val subject
+ * @param number number of chars to keep before and after dots
+ * @returns {string} formatted string
+ * @param dots how many dots in middle of string
+ */
+function format(val, number = 12, dots = 5){
+  if (val === '') return ''
+  return (
+    val.substring(0, number) +
+    '.'.repeat(dots) +
+    val.substring(val.length - number)
+  )
+}
+
+
 function addCommas(nStr){
  nStr += '';
  var x = nStr.split('.');
@@ -224,6 +243,7 @@ export default class MainPage extends Component {
                     <hr className={style.fullWidthHr}></hr>
                     <div className={style.textAlignCenter}>
                     <span className={classnames(style.value, style.viewPort)} onClick = {() => {window.open(`https://etherscan.io/address/${TOKEN_CONTRACT}`,  '_blank');}}>{TOKEN_CONTRACT}</span>
+                    <span className={classnames(style.value, style.viewPortSmallPage)} onClick = {() => {window.open(`https://etherscan.io/address/${TOKEN_CONTRACT}`,  '_blank');}}>{format(TOKEN_CONTRACT)}</span>
                     </div>
                   </div>
 
@@ -249,6 +269,7 @@ export default class MainPage extends Component {
                     <hr className={style.fullWidthHr}></hr>
                                         <div className={style.textAlignCenter}>
                     <span className={classnames(style.value, style.viewPort)} onClick = {() => {window.open(`https://etherscan.io/address/${STAKING_CONTRACT}`,  '_blank')}} >{STAKING_CONTRACT}</span>
+                    <span className={classnames(style.value, style.viewPortSmallPage)} onClick = {() => {window.open(`https://etherscan.io/address/${STAKING_CONTRACT}`,  '_blank')}} >{format(STAKING_CONTRACT)}</span>
                   </div>
                   </div>
                 </div>
