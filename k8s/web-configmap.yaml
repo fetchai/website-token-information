@@ -10,7 +10,7 @@ data:
   runScraper: "false"
   PROJECT_ID: "cab205e574974e6d903844cb7da7537d"
   MYSQL_PORT: "3306"
-  MYSQL_HOST: "db"
+  MYSQL_HOST: "token-info-db"
   FETCH_AGENTS: "http://soef.fetch.ai:9002/"
   LCD_URL: "http://rest-agent-land.fetch.ai"
   RPC_URL: "https://rpc-agent-land.fetch.ai/"

@@ -23,7 +23,7 @@ spec:
       number: 443
       protocol: HTTPS
     tls:
-      credentialName: wildcard-sandbox
+      credentialName: token-info2
       mode: SIMPLE
       privateKey: sds
       serverCertificate: sds

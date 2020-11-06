@@ -11,23 +11,23 @@ spec:
     targets:
     - fetchpub.sandbox.fetch-ai.com
 ---
-# apiVersion: cert-manager.io/v1alpha2
-# kind: Certificate
-# metadata:
-#   name: token-info
-#   namespace: istio-system
-# spec:
-#   acme:
-#     config:
-#     - dns01:
-#         provider: clouddns
-#       domains:
-#       - token-info2.sandbox.fetch-ai.com
-#   commonName: token-info2.sandbox.fetch-ai.com
-#   dnsNames:
-#   - token-info2.sandbox.fetch-ai.com
-#   - www.token-info2.sandbox.fetch-ai.com
-#   issuerRef:
-#     kind: ClusterIssuer
-#     name: letsencrypt-dns
-#   secretName: token-info2
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: token-info2
+  namespace: istio-system
+spec:
+  acme:
+    config:
+    - dns01:
+        provider: clouddns
+      domains:
+      - token-info2.sandbox.fetch-ai.com
+  commonName: token-info2.sandbox.fetch-ai.com
+  dnsNames:
+  - token-info2.sandbox.fetch-ai.com
+  - www.token-info2.sandbox.fetch-ai.com
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-dns
+  secretName: token-info2
