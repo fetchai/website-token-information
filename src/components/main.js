@@ -233,7 +233,7 @@ export default class MainPage extends Component {
                      <img src="assets/info-icon.svg" alt="info icon" data-tooltip="The total number of agents found" data-tooltip-positions="bottom;left;top;right"
                          className={style.info} onClick={this.triggerHoverFromClickOnMobileOnly} ></img>
                     <hr className={style.hr}></hr>
-                    <span className={classnames(style.value, style.placeholderText)}>{this.state.totalAgentsFound}</span>
+                    <span className={classnames(style.value, style.placeholderText)}>{this.state.totalAgentsEver}</span>
                   </div>
 
                   <div className={style.fullWidthItem}>
