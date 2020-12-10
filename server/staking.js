@@ -2,7 +2,7 @@ const {
     STAKING_CONTRACT_ABI_STRINGIFIED,
     STAKING_CONTRACT_ADDRESS,
     PROJECT_ID,
-}  = require('./constants')
+} = require('./constants')
 const Web3 = require('web3')
 const { BN } = require('bn.js')
 const { Decimal } = require('decimal.js')
@@ -61,15 +61,15 @@ function canonicalFetToFet(canonicalVal) {
 
 
 function toDecimalFETAsset(contractAsset) {
-    principal = canonicalFetToFet(contractAsset.principal.toString())
-    compoundInterest = canonicalFetToFet(contractAsset.compoundInterest.toString())
+    const principal = canonicalFetToFet(contractAsset.principal.toString())
+    const compoundInterest = canonicalFetToFet(contractAsset.compoundInterest.toString())
     return { principal, compoundInterest }
 }
 
 
 function toBNCanonicalFETAsset(contractAsset) {
-    principal = new BN(contractAsset.principal.toString())
-    compoundInterest = new BN(contractAsset.compoundInterest.toString())
+    const principal = new BN(contractAsset.principal.toString())
+    const compoundInterest = new BN(contractAsset.compoundInterest.toString())
     return { principal, compoundInterest }
 }
 
@@ -86,8 +86,6 @@ async function pollStakingContractState() {
     const rewardsPoolBalancePromise = getRewardsPoolBalance(contract)
     const lockPeriodPromise = getLockPeriod(contract)
 
-    //await Promise.all([accruedGlobalPrincipalPromise, accruedGlobalLiquidityPromise, accruedGlobalLockedPromise, rewardsPoolBalancePromise, lockPeriodPromise])
-
     const usersFundsTransferredInToTheContract = new BN(await accruedGlobalPrincipalPromise)
     const liquidFunds = toBNCanonicalFETAsset(await accruedGlobalLiquidityPromise)
     const lockedFunds = toBNCanonicalFETAsset(await accruedGlobalLockedPromise)
@@ -98,7 +96,7 @@ async function pollStakingContractState() {
     const rewardsPoolMinimumNecessaryBalance = lockedFunds.compoundInterest.add(liquidFunds.compoundInterest)
     const allFundsInTheContract = usersFundsTransferredInToTheContract.add(rewardsPoolBalance)
 
-    retval = {
+    return {
         usersFundsTransferredInToTheContract,
         liquidFunds,
         lockedFunds,
@@ -108,8 +106,6 @@ async function pollStakingContractState() {
         allFundsInTheContract,
         lockPeriod,
     }
-
-    return retval
 }
 
 
@@ -154,7 +150,7 @@ async function updatePrometheusMetrics() {
 
 
 async function isRewardsPoolBalanceSufficient(stakingContractState) {
-    return stakingContractState.rewardsPoolCurrentBalance.gte(stakingContractState.rewardsPoolMinimumNecessaryBalance)
+    return stakingContractState.rewardsPoolBalance.gte(stakingContractState.rewardsPoolMinimumNecessaryBalance)
 }
 
 module.exports = {
