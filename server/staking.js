@@ -2,7 +2,7 @@ const {
     STAKING_CONTRACT_ABI_STRINGIFIED,
     STAKING_CONTRACT_ADDRESS,
     PROJECT_ID,
-}  = require('./constants')
+} = require('./constants')
 const Web3 = require('web3')
 const { BN } = require('bn.js')
 const { Decimal } = require('decimal.js')
@@ -14,16 +14,16 @@ const web3 = new Web3(new Web3.providers.HttpProvider(`https://mainnet.infura.io
 const contract = new web3.eth.Contract(JSON.parse(STAKING_CONTRACT_ABI_STRINGIFIED), STAKING_CONTRACT_ADDRESS)
 
 const metrics = {
-    usersFundsTransferredInToTheContract: new Prometheus.Gauge({ name: 'usersFundsTransferredInToTheContract', help: 'Funds which users deposited in to the contract (= principal) and have NOT withdrawn them yet' }),
-    liquidFundsPrincipal: new Prometheus.Gauge({ name: 'liquidFundsPrincipal', help: 'Users principal funds which are LIQUID (in [FET]). These funds can be withdrawn from the contract, or be staked, at any point in time' }),
-    liquidFundsRewards: new Prometheus.Gauge({ name: 'liquidFundsRewards', help: 'Users rewards funds which are LIQUID (in [FET]). These funds can be withdrawn from the contract, or be staked, at any point in time' }),
-    lockedFundsPrincipal: new Prometheus.Gauge({ name: 'lockedFundsPrincipal', help: 'Users principal funds which are in LOCKED state (in [FET]). Please be AWARE that some portion of this locked funds, or potentially even ALL of them, can be already LIQUID (this applies for these locked funds for which locked period already expired)'}),
-    lockedFundsRewards: new Prometheus.Gauge({ name: 'lockedFundsRewards', help: 'Users rewards funds which are in LOCKED state (in [FET]). Please be AWARE that some portion of this locked funds, or potentially even ALL of them, can be already LIQUID (this applies for these locked funds for which locked period already expired)'}),
-    stakedFunds: new Prometheus.Gauge({ name: 'stakedFunds', help: 'Funds which are in staked state (in [FET]). This means that *ALL* of these funds are illiquid for *AT MINIMUM* lock period before they can be taken out of the contract, since they needs to be destaked first'}),
-    rewardsPoolBalance: new Prometheus.Gauge({ name: 'rewardsPoolBalance', help: 'Balance in the rewards pool (in [FET])'}),
-    rewardsPoolMinimumNecessaryBalance: new Prometheus.Gauge({ name: 'rewardsPoolMinimumNecessaryBalance', help: 'This represents minimal balance theoretically necessary to be present in rewards pool at the this time. The "theoretically necessary" means, that if ALL users would at this point decide to withdraw ALL of their assets they van possibly withdraw (their liquidity & unlocked funds) then in theory this metrics represents absolute MAXIMUM what all users together can possibly withdraw at this very point'}),
-    allFundsInTheContract: new Prometheus.Gauge({ name: 'allFundsInTheContract', help: 'This metric represents ALL funds currently present in the contract (in [FET]) = all uses funds together in the the contract at this point(rewards excluded) + amount present in rewards pool. Thus this number must be equal to the contract balance'}),
-    lockPeriod: new Prometheus.Gauge({ name: 'lockPeriod', help: 'Balance in the rewards pool (in [FET])'}),
+    usersFundsTransferredInToTheContract: new Prometheus.Gauge({ name: 'staking_users_funds_transferred_in_to_the_contract', help: 'Funds which users deposited in to the contract (= principal) and have NOT withdrawn them yet' }),
+    liquidFundsPrincipal: new Prometheus.Gauge({ name: 'staking_liquid_funds_principal', help: 'Users principal funds which are LIQUID (in [FET]). These funds can be withdrawn from the contract, or be staked, at any point in time' }),
+    liquidFundsRewards: new Prometheus.Gauge({ name: 'staking_liquid_funds_rewards', help: 'Users rewards funds which are LIQUID (in [FET]). These funds can be withdrawn from the contract, or be staked, at any point in time' }),
+    lockedFundsPrincipal: new Prometheus.Gauge({ name: 'staking_locked_funds_principal', help: 'Users principal funds which are in LOCKED state (in [FET]). Please be AWARE that some portion of this locked funds, or potentially even ALL of them, can be already LIQUID (this applies for these locked funds for which locked period already expired)'}),
+    lockedFundsRewards: new Prometheus.Gauge({ name: 'staking_locked_funds_rewards', help: 'Users rewards funds which are in LOCKED state (in [FET]). Please be AWARE that some portion of this locked funds, or potentially even ALL of them, can be already LIQUID (this applies for these locked funds for which locked period already expired)'}),
+    stakedFunds: new Prometheus.Gauge({ name: 'staking_staked_funds', help: 'Funds which are in staked state (in [FET]). This means that *ALL* of these funds are illiquid for *AT MINIMUM* lock period before they can be taken out of the contract, since they needs to be destaked first'}),
+    rewardsPoolBalance: new Prometheus.Gauge({ name: 'staking_rewards_pool_balance', help: 'Balance in the rewards pool (in [FET])'}),
+    rewardsPoolMinimumNecessaryBalance: new Prometheus.Gauge({ name: 'staking_rewards_pool_minimum_necessary_balance', help: 'This represents minimal balance theoretically necessary to be present in rewards pool at the this time. The "theoretically necessary" means, that if ALL users would at this point decide to withdraw ALL of their assets they van possibly withdraw (their liquidity & unlocked funds) then in theory this metrics represents absolute MAXIMUM what all users together can possibly withdraw at this very point'}),
+    allFundsInTheContract: new Prometheus.Gauge({ name: 'staking_all_funds_in_the_contract', help: 'This metric represents ALL funds currently present in the contract (in [FET]) = all uses funds together in the the contract at this point(rewards excluded) + amount present in rewards pool. Thus this number must be equal to the contract balance'}),
+    lockPeriod: new Prometheus.Gauge({ name: 'staking_lock_period', help: 'Balance in the rewards pool (in [FET])'}),
 }
 
 
@@ -61,15 +61,15 @@ function canonicalFetToFet(canonicalVal) {
 
 
 function toDecimalFETAsset(contractAsset) {
-    principal = canonicalFetToFet(contractAsset.principal.toString())
-    compoundInterest = canonicalFetToFet(contractAsset.compoundInterest.toString())
+    const principal = canonicalFetToFet(contractAsset.principal.toString())
+    const compoundInterest = canonicalFetToFet(contractAsset.compoundInterest.toString())
     return { principal, compoundInterest }
 }
 
 
 function toBNCanonicalFETAsset(contractAsset) {
-    principal = new BN(contractAsset.principal.toString())
-    compoundInterest = new BN(contractAsset.compoundInterest.toString())
+    const principal = new BN(contractAsset.principal.toString())
+    const compoundInterest = new BN(contractAsset.compoundInterest.toString())
     return { principal, compoundInterest }
 }
 
@@ -86,8 +86,6 @@ async function pollStakingContractState() {
     const rewardsPoolBalancePromise = getRewardsPoolBalance(contract)
     const lockPeriodPromise = getLockPeriod(contract)
 
-    //await Promise.all([accruedGlobalPrincipalPromise, accruedGlobalLiquidityPromise, accruedGlobalLockedPromise, rewardsPoolBalancePromise, lockPeriodPromise])
-
     const usersFundsTransferredInToTheContract = new BN(await accruedGlobalPrincipalPromise)
     const liquidFunds = toBNCanonicalFETAsset(await accruedGlobalLiquidityPromise)
     const lockedFunds = toBNCanonicalFETAsset(await accruedGlobalLockedPromise)
@@ -98,7 +96,7 @@ async function pollStakingContractState() {
     const rewardsPoolMinimumNecessaryBalance = lockedFunds.compoundInterest.add(liquidFunds.compoundInterest)
     const allFundsInTheContract = usersFundsTransferredInToTheContract.add(rewardsPoolBalance)
 
-    retval = {
+    return {
         usersFundsTransferredInToTheContract,
         liquidFunds,
         lockedFunds,
@@ -108,8 +106,6 @@ async function pollStakingContractState() {
         allFundsInTheContract,
         lockPeriod,
     }
-
-    return retval
 }
 
 
@@ -154,7 +150,7 @@ async function updatePrometheusMetrics() {
 
 
 async function isRewardsPoolBalanceSufficient(stakingContractState) {
-    return stakingContractState.rewardsPoolCurrentBalance.gte(stakingContractState.rewardsPoolMinimumNecessaryBalance)
+    return stakingContractState.rewardsPoolBalance.gte(stakingContractState.rewardsPoolMinimumNecessaryBalance)
 }
 
 module.exports = {
