@@ -27,7 +27,8 @@ const metrics = {
     rewardsPoolBalance: new Prometheus.Gauge({ name: 'staking_rewards_pool_balance', help: 'Balance in the rewards pool (in [FET])'}),
     rewardsPoolMinimumNecessaryBalance: new Prometheus.Gauge({ name: 'staking_rewards_pool_minimum_necessary_balance', help: 'This represents minimal balance theoretically necessary to be present in rewards pool at the this time. The "theoretically necessary" means, that if ALL users would at this point decide to withdraw ALL of their assets they van possibly withdraw (their liquidity & unlocked funds) then in theory this metrics represents absolute MAXIMUM what all users together can possibly withdraw at this very point'}),
     allFundsInTheContract: new Prometheus.Gauge({ name: 'staking_all_funds_in_the_contract', help: 'This metric represents ALL funds currently present in the contract (in [FET]) = all user funds together in the the contract at this point(rewards excluded) + amount present in rewards pool. Thus this number must be equal to the contract balance'}),
-    excessFunds: new Prometheus.Gauge({ name: 'excess_funds', help: 'This metric represents all EXCESS funds currently present in the contract (in [FET]) = all funds which have been directly transferred to address of the staking contract via direct ERC20 `transfer(...)`. They are recoverable from the contract via `withdrawExcessTokens(...)` method (by admin role).'}),
+    excessFunds: new Prometheus.Gauge({ name: 'staking_excess_funds', help: 'This metric represents all EXCESS funds currently present in the contract (in [FET]) = all funds which have been directly transferred to address of the staking contract via direct ERC20 `transfer(...)`. They are recoverable from the contract via `withdrawExcessTokens(...)` method (by admin role).'}),
+    contractBalance: new Prometheus.Gauge({ name: 'staking_contract_balance', help: 'This metric represents FET balance on staking contract address (in [FET]) = this includes EVERYTHING = all FET funds sent to the contract address by any possible method = users added liquidity + rewards pool balance + direct ERC20 FET transfer(...) to staking contract address.'}),
     lockPeriod: new Prometheus.Gauge({ name: 'staking_lock_period', help: 'Balance in the rewards pool (in [FET])'}),
 }
 
@@ -92,21 +93,21 @@ async function pollCanonicalStakingContractState() {
     const accruedGlobalLiquidityPromise = getAccruedGlobalLiquidity(contract)
     const accruedGlobalLockedPromise = getAccruedGlobalLocked(contract)
     const rewardsPoolBalancePromise = getRewardsPoolBalance(contract)
-    const fetBalanceOnStakingContractPromise = getFETBalance()
+    const fetBalancePromise = getFETBalance()
     const lockPeriodPromise = getLockPeriod(contract)
 
     const usersFundsTransferredInToTheContract = new BN(await accruedGlobalPrincipalPromise)
     const liquidFunds = toBNCanonicalFETAsset(await accruedGlobalLiquidityPromise)
     const lockedFunds = toBNCanonicalFETAsset(await accruedGlobalLockedPromise)
     const rewardsPoolBalance = new BN(await rewardsPoolBalancePromise)
-    const fetBalanceOnStakingContract = new BN(await fetBalanceOnStakingContractPromise)
+    const contractBalance = new BN(await fetBalancePromise)
     const lockPeriod = parseInt(await lockPeriodPromise)
 
     const stakedFunds = usersFundsTransferredInToTheContract.sub(lockedFunds.principal).sub(liquidFunds.principal)
     const rewardsPoolMinimumNecessaryBalance = lockedFunds.compoundInterest.add(liquidFunds.compoundInterest)
     const allFundsInTheContract = usersFundsTransferredInToTheContract.add(rewardsPoolBalance)
 
-    const excessFunds = fetBalanceOnStakingContract.sub(allFundsInTheContract)
+    const excessFunds = contractBalance.sub(allFundsInTheContract)
 
     return {
         usersFundsTransferredInToTheContract,
@@ -117,6 +118,7 @@ async function pollCanonicalStakingContractState() {
         rewardsPoolMinimumNecessaryBalance,
         allFundsInTheContract,
         excessFunds,
+        contractBalance,
         lockPeriod,
     }
 }
@@ -132,6 +134,7 @@ function toDecimalFETState(canonicalContractState) {
         rewardsPoolMinimumNecessaryBalance: canonicalFetToFet(canonicalContractState.rewardsPoolMinimumNecessaryBalance),
         allFundsInTheContract: canonicalFetToFet(canonicalContractState.allFundsInTheContract),
         excessFunds: canonicalFetToFet(canonicalContractState.excessFunds),
+        contractBalance: canonicalFetToFet(canonicalContractState.contractBalance),
         lockPeriod: canonicalContractState.lockPeriod,
     }
 }
@@ -158,6 +161,7 @@ async function updatePrometheusMetrics() {
     metrics.rewardsPoolBalance.set(s.rewardsPoolBalance.toNumber())
     metrics.rewardsPoolMinimumNecessaryBalance.set(s.rewardsPoolMinimumNecessaryBalance.toNumber())
     metrics.excessFunds.set(s.excessFunds.toNumber())
+    metrics.contractBalance.set(s.contractBalance.toNumber())
     metrics.lockPeriod.set(s.lockPeriod)
 
     return canonicalState
