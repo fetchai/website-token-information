@@ -531,20 +531,20 @@ sizes of item values which vary by screen size.
   display:none !important;
 
   @media only screen and (max-width: 1700px) {
-      font-size: 1vw !important;
+      font-size: .95vw !important;
   }
 
   @media only screen and (min-width: 1700px) {
-      font-size: 1vw !important;
+      font-size: .95vw !important;
   }
 
   @media only screen and (min-width: 1400px) {
-      display:block !important;
+      display:inline-block !important;
   }
 
   @media only screen and (max-width: $single-column-max-width) {
     font-size: 2.75vw !important;
-    display:block !important;
+    display:inline-block !important;
   }
 }
 
@@ -554,7 +554,7 @@ sizes of item values which vary by screen size.
   display:none !important;
 
   @media (min-width:$single-column-max-width) and (max-width:1400px) {
-      display: block !important;
+      display: inline-block !important;
   };
 }
 
@@ -579,4 +579,12 @@ sizes of item values which vary by screen size.
 
 .text-align-center {
   text-align: center;
+}
+
+.clipboard {
+      margin-right: 2px;
+      float: right;
+      width: 14px;
+    margin-left: 5px;
+    margin-bottom: -3px;
 }

@@ -5,8 +5,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import classnames from 'classnames'
 import { fetchFetPrice, RateLimitError, toDisplayString } from '../other/fetchFetPrice'
 import { queryFetchApi } from '../other/query-api'
+import { withStyles } from "@material-ui/core/styles";
 // this module was modified to allow tooltips to be triggered manually rather than by click events, hence being moved from node modules
 import tooltip  from '../../imported-modules/tooltip';
+import Tooltip from '@material-ui/core/Tooltip';
 
 
 
@@ -25,7 +27,20 @@ const config  = {
   visibleStyle: { color: "black", background: "light-grey", padding: 5, showDelay: 100 }
 }
 
-const tool = tooltip(config)
+  let tool = tooltip(config)
+
+
+
+const CustomizedToolTip = withStyles({
+  tooltip: {
+     backgroundColor: "lightgray",
+  color: "black",
+  textAlign: "center",
+  padding:" 5px 3px",
+  borderRadius: "2px",
+  fontSize: "12px"
+  }
+})(Tooltip);
 
 function displayIEErrorMessage() {
      const ua = window.navigator.userAgent;
@@ -35,6 +50,25 @@ function displayIEErrorMessage() {
   window.alert("Does not Support IE, Please switch to modern browser")
      }
    }
+
+ /**
+ * Copy string to clipboard
+ *
+ * @param str subject
+ * @returns {Promise<unknown>} boolean successful copy or not
+ */
+   function copyToClipboard(str){
+  return new Promise((resolve, reject) => {
+    navigator.clipboard.writeText(str).then(
+      () => {
+        resolve(true)
+      },
+      () => {
+        reject(false)
+      }
+    )
+  })
+}
 
 
    /**
@@ -87,6 +121,7 @@ export default class MainPage extends Component {
       this.handleQueryFetchApi = this.handleQueryFetchApi.bind(this)
       this.handleFetPrice = this.handleFetPrice.bind(this)
       this.triggerHoverFromClickOnMobileOnly = this.triggerHoverFromClickOnMobileOnly.bind(this)
+      this.copyLogic = this.copyLogic.bind(this)
 
     this.state = {
       highPrice: "",
@@ -101,7 +136,8 @@ export default class MainPage extends Component {
       totalSearchQueriesForAgentsToFindOtherAgents: "",
       peakAgentsOnlineNow: "",
       totalAgentsFound: "",
-      totalAgentsEver: ""
+      totalAgentsEver: "",
+      copyText: "copy to clipboard"
     }
   }
 
@@ -118,11 +154,19 @@ export default class MainPage extends Component {
      if(!element.target.hasAttribute("visible-tooltip")){
       tool.target.hold()
     tool.target.showTooltip(element.target)
-        element.target.setAttribute('visible-tooltip', 'Hello World!');
+        // element.target.setAttribute('visible-tooltip', 'Hello World!');
      } else {
       element.target.removeAttribute('visible-tooltip')
        tool.target.clearTooltip();
      }
+  }
+
+
+  async copyLogic(address){
+    this.setState({copyText : "Copied"}, async () => {
+    await copyToClipboard(address);
+    }) ;
+
   }
 
 
@@ -242,8 +286,12 @@ export default class MainPage extends Component {
                          className={style.info}></img>
                     <hr className={style.fullWidthHr}></hr>
                     <div className={style.textAlignCenter}>
-                    <span className={classnames(style.value, style.viewPort)} onClick = {() => {window.open(`https://etherscan.io/address/${TOKEN_CONTRACT}`,  '_blank');}}>{TOKEN_CONTRACT}</span>
-                    <span className={classnames(style.value, style.viewPortSmallPage)} onClick = {() => {window.open(`https://etherscan.io/address/${TOKEN_CONTRACT}`,  '_blank');}}>{format(TOKEN_CONTRACT)}</span>
+                    <span className={classnames(style.value, style.viewPort)} onClick = { () => { window.open(`https://etherscan.io/address/${TOKEN_CONTRACT}`,  '_blank')}}>{TOKEN_CONTRACT}</span>
+                     <span className={classnames(style.value, style.viewPortSmallPage)} onClick = {async () => { console.log("span CLICKED"); window.open(`https://etherscan.io/address/${TOKEN_CONTRACT}`,  '_blank')}}>{format(TOKEN_CONTRACT)}</span>
+                   <CustomizedToolTip title={this.state.copyText} classes={"tool-tip"} className="tool-tip" arrow>
+                    <img src="assets/clipboard.svg" alt="info icon" className={style.clipboard}
+                     onMouseLeave={() => { setTimeout(this.setState.bind(this,{copyText : "Copy to Clipboard"}), 500)} } onClick={this.copyLogic}></img>
+</CustomizedToolTip>
                     </div>
                   </div>
 
@@ -268,8 +316,12 @@ export default class MainPage extends Component {
                          className={style.info}></img>
                     <hr className={style.fullWidthHr}></hr>
                                         <div className={style.textAlignCenter}>
-                    <span className={classnames(style.value, style.viewPort)} onClick = {() => {window.open(`https://etherscan.io/address/${STAKING_CONTRACT}`,  '_blank')}} >{STAKING_CONTRACT}</span>
-                    <span className={classnames(style.value, style.viewPortSmallPage)} onClick = {() => {window.open(`https://etherscan.io/address/${STAKING_CONTRACT}`,  '_blank')}} >{format(STAKING_CONTRACT)}</span>
+                    <span className={classnames(style.value, style.viewPort)} onClick = { () => { window.open(`https://etherscan.io/address/${STAKING_CONTRACT}`,  '_blank')} } >{STAKING_CONTRACT}</span>
+                    <span className={classnames(style.value, style.viewPortSmallPage)} onClick = { () => { window.open(`https://etherscan.io/address/${STAKING_CONTRACT}`,  '_blank')}} >{format(STAKING_CONTRACT)}</span>
+                      <CustomizedToolTip title={this.state.copyText} classes={"tool-tip"} className="tool-tip" arrow>
+                    <img src="assets/clipboard.svg" alt="info icon" className={style.clipboard}
+                     onMouseLeave={() => { setTimeout(this.setState.bind(this,{copyText : "Copy to Clipboard"}), 500)} } onClick={this.copyLogic}></img>
+</CustomizedToolTip>
                   </div>
                   </div>
                 </div>
