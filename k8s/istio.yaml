@@ -9,7 +9,7 @@ spec:
     istio: ingressgateway
   servers:
   - hosts:
-    - token-info2.sandbox.fetch-ai.com
+    - token-info2.sandbox-london-b.fetch-ai.com
     port:
       name: http
       number: 80
@@ -17,7 +17,7 @@ spec:
     tls:
       httpsRedirect: true
   - hosts:
-    - token-info2.sandbox.fetch-ai.com
+    - token-info2.sandbox-london-b.fetch-ai.com
     port:
       name: https
       number: 443
@@ -36,7 +36,7 @@ spec:
   gateways:
   - token-info2
   hosts:
-    - token-info2.sandbox.fetch-ai.com
+    - token-info2.sandbox-london-b.fetch-ai.com
   http:
   - route:
     - destination:
@@ -49,7 +49,7 @@ kind: DestinationRule
 metadata:
   name: token-info2-sandbox-fetch-ai-com
 spec:
-  host: token-info2.sandbox.fetch-ai.com
+  host: token-info2.sandbox-london-b.fetch-ai.com
   trafficPolicy:
     loadBalancer:
       simple: LEAST_CONN

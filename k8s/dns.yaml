@@ -5,11 +5,11 @@ metadata:
   name: token-info2
 spec:
   endpoints:
-  - dnsName:  token-info2.sandbox.fetch-ai.com
+  - dnsName:  token-info2.sandbox-london-b.fetch-ai.com
     recordTTL: 180
     recordType: CNAME
     targets:
-    - fetchpub.sandbox.fetch-ai.com
+    - fetchpub.sandbox-london-b.fetch-ai.com
 ---
 apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
@@ -22,11 +22,11 @@ spec:
     - dns01:
         provider: clouddns
       domains:
-      - token-info2.sandbox.fetch-ai.com
-  commonName: token-info2.sandbox.fetch-ai.com
+      - token-info2.sandbox-london-b.fetch-ai.com
+  commonName: token-info2.sandbox-london-b.fetch-ai.com
   dnsNames:
-  - token-info2.sandbox.fetch-ai.com
-  - www.token-info2.sandbox.fetch-ai.com
+  - token-info2.sandbox-london-b.fetch-ai.com
+  - www.token-info2.sandbox-london-b.fetch-ai.com
   issuerRef:
     kind: ClusterIssuer
     name: letsencrypt-dns
