@@ -55,7 +55,7 @@
     "babel-loader": "^8.1.0",
     "css-loader": "^3.5.2",
     "html-webpack-plugin": "^4.2.0",
-    "node-sass": "^4.13.1",
+    "node-sass": "^7.0.1",
     "prettier": "2.0.4",
     "sass-loader": "^8.0.2",
     "style-loader": "^1.1.3",
